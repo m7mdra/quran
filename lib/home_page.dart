@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:quran/suras_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -19,7 +20,6 @@ class _HomePageState extends State<HomePage> {
   Stack buildBody(BuildContext context) {
     return Stack(
       children: [
-
         Image.asset(
           'assets/images/main_background.png',
           fit: BoxFit.fitWidth,
@@ -43,19 +43,19 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         Align(
-          alignment: AlignmentDirectional(0.0,0.0),
+          alignment: AlignmentDirectional(0.0, 0.0),
           child: ListView(
             primary: true,
             shrinkWrap: true,
             children: [
               Align(
-                child: Image.asset('assets/images/logo.png', width: 90, height: 90),
+                child: Image.asset('assets/images/logo.png', width: 90),
                 alignment: AlignmentDirectional(0, -0.9),
               ),
               Container(
                 padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.width * 0.4,
+                height: MediaQuery.of(context).size.width * 0.35,
                 child: Card(
                   elevation: 6,
                   shape: RoundedRectangleBorder(
@@ -94,21 +94,29 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               StaggeredGridView.countBuilder(
-                primary: false,
-                padding: const EdgeInsets.only(left: 8,right: 8),
-                shrinkWrap: true,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-                itemCount: homeMenuDataList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  var item = homeMenuDataList[index];
-                  return HomeMenuItem(item: item);
-                },
-                crossAxisCount: 2,
-                staggeredTileBuilder: (int index) {
-                  return StaggeredTile.fit(1);
-                },
-              )
+                  primary: false,
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  shrinkWrap: true,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  itemCount: homeMenuDataList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var item = homeMenuDataList[index];
+                    return HomeMenuItem(
+                      item: item,
+                      onTap: () {
+                        print(index);
+                        if (index == 0) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SurasPage()));
+                        }
+                      },
+                    );
+                  },
+                  crossAxisCount: 2,
+                  staggeredTileBuilder: (int index) => StaggeredTile.fit(1))
             ],
           ),
         ),
@@ -147,9 +155,12 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomeMenuItem extends StatelessWidget {
+  final VoidCallback onTap;
+
   const HomeMenuItem({
     Key key,
     @required this.item,
+    this.onTap,
   }) : super(key: key);
 
   final HomeMenuData item;
@@ -157,41 +168,41 @@ class HomeMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
-          onTap: (){
-
-          },
+          onTap: onTap,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 16,right: 16,top: 20),
-                child: SvgPicture.asset(item.image),
+                padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
+                child: SvgPicture.asset(
+                  item.image,
+                  fit: BoxFit.none,
+                ),
               ),
               SizedBox(
-                height: 20,
+                height: 10,
               ),
               Padding(
-                padding: const EdgeInsetsDirectional.only(start: 8,end: 8),
+                padding: const EdgeInsetsDirectional.only(start: 8, end: 8),
                 child: Text(item.title,
                     style: TextStyle(
                       fontFamily: 'Cairo',
                       color: Color(0xff777777),
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w700,
                       fontStyle: FontStyle.normal,
                     )),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8,right: 8,bottom: 16),
+                padding: const EdgeInsets.only(left: 8, right: 8, bottom: 16),
                 child: Text(item.subtitle,
                     style: TextStyle(
                       fontFamily: 'Cairo',
                       color: Color(0xff777777),
-                      fontSize: 14,
+                      fontSize: 12,
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
                     )),
@@ -227,6 +238,4 @@ final homeMenuDataList = [
       image: 'assets/images/islamics.svg',
       title: 'إسلاميات',
       subtitle: 'يحتوي علي الأدعية ، الأذكار و حصن المسلم '),
-
-
 ];

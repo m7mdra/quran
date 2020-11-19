@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/home_page.dart';
-import 'package:quran/splash_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -39,13 +37,15 @@ class MyApp extends StatelessWidget {
         return Directionality(textDirection: TextDirection.rtl, child: widget);
       },
       title: 'Flutter Demo',
-      darkTheme: ThemeData(),
       theme: ThemeData(
         fontFamily: 'cairo',
         primarySwatch: _swatch,
         primaryColor: Color(_swatchPrimaryValue),
         backgroundColor: Color(0xFFFCFCFC),
-        appBarTheme: AppBarTheme(centerTitle: true, elevation: 0),
+        appBarTheme: AppBarTheme(
+            centerTitle: true,
+            elevation: 0,
+            iconTheme: IconThemeData().copyWith(color: Colors.white)),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: HomePage(),
