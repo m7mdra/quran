@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quran/main.dart';
+import 'package:quran/quran_by_juz_page.dart';
+
+import 'package:quran/quran_by_sura_page.dart';
 
 class SurasPage extends StatefulWidget {
   @override
@@ -7,13 +10,39 @@ class SurasPage extends StatefulWidget {
 }
 
 class _SurasPageState extends State<SurasPage> with TickerProviderStateMixin {
+  PageController _pageController;
+  TabController _tabController;
+  var currentPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    _pageController = PageController(keepPage: true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          _tabController.animateTo(index,
+              duration: Duration(milliseconds: 200), curve: Curves.linear);
+        },
+        children: [
+          QuranBySuraPage(),
+          QuranByJuzPage()
+        ],
+      ),
       appBar: IslamicAppBar(
         title: 'سور القران ',
         bottom: TabBar(
-indicatorWeight:5,
+          onTap: (index) {
+            _pageController.animateToPage(index,
+                duration: Duration(milliseconds: 300), curve: Curves.linear);
+          },
+          indicatorWeight: 5,
           labelColor: Colors.white,
           unselectedLabelStyle: TextStyle(
             fontFamily: 'Cairo',
@@ -36,7 +65,7 @@ indicatorWeight:5,
               text: 'الاجزاء',
             )
           ],
-          controller: TabController(length: 2, vsync: this),
+          controller: _tabController,
         ),
       ),
     );
