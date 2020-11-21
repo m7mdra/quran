@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:quran/home_page.dart';
+import 'package:quran/sura_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -48,17 +48,19 @@ class MyApp extends StatelessWidget {
             iconTheme: IconThemeData().copyWith(color: Colors.white)),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: SuraPage(),
     );
   }
 }
 
 class IslamicAppBar extends AppBar {
   IslamicAppBar({
+    double height,
     String title,
     PreferredSizeWidget bottom,
     List<Widget> actions,
   }) : super(
+            toolbarHeight: height,
             actions: actions,
             bottom: bottom,
             title: Text(title,
