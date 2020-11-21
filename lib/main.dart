@@ -34,12 +34,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       themeMode: ThemeMode.system,
-
       builder: (context, widget) {
         return Directionality(textDirection: TextDirection.rtl, child: widget);
       },
       title: 'Flutter Demo',
-      darkTheme: ThemeData.dark().copyWith(backgroundColor: Color(0xff373636)),
+      darkTheme: ThemeData.dark().copyWith(
+          backgroundColor: Color(0xff373636),
+          appBarTheme: AppBarTheme(elevation: 0,centerTitle: true)),
       theme: ThemeData(
         fontFamily: 'cairo',
         brightness: Brightness.light,
@@ -59,8 +60,8 @@ class MyApp extends StatelessWidget {
 
 class IslamicAppBar extends AppBar {
   IslamicAppBar({
+    @required String title,
     double height,
-    String title,
     PreferredSizeWidget bottom,
     List<Widget> actions,
   }) : super(

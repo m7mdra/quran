@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:quran/islamics_page.dart';
 import 'package:quran/suras_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -104,6 +105,12 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => SurasPage()));
+                        }
+                        if(index==3){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => IslamicsPage()));
                         }
                       },
                     );

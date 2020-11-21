@@ -18,7 +18,6 @@ class _QuranBySuraPageState extends State<QuranBySuraPage>
           return ListTile(
             dense: true,
             onTap: () {},
-            tileColor: index%2==0 ? Color(0xffF8F8F8) : Colors.transparent,
             leading: Text("﴿${index + 1}﴾",
                 style: TextStyle(
                   fontFamily: 'AlQalamQuranMajeed',
