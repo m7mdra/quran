@@ -1,8 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44">
-    <g fill="#605959" transform="translate(.5 .5)">
-        <rect width="43" height="43" stroke="rgba(0,0,0,0)" opacity="0.12" rx="8"/>
-        <text font-family="SegoeUI-Bold, Segoe UI" font-size="18px" font-weight="700" transform="translate(34 29)">
-            <tspan x="-23.801" y="0">EN</tspan>
-        </text>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="43" height="43" viewBox="0 0 43 43">
+  <g id="Group_86" transform="translate(0 0)">
+    <rect id="Rectangle_36" width="43" height="43" rx="8" transform="translate(0 0)" fill="#605959" opacity="0.12"/>
+    <text id="EN" transform="translate(34 29)" fill="#605959" font-size="18" font-family="LucidaGrande-Bold, Lucida Grande" font-weight="700"><tspan x="-24.645" y="0">EN</tspan></text>
+  </g>
 </svg>

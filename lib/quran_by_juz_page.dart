@@ -17,11 +17,10 @@ class _QuranByJuzPageState extends State<QuranByJuzPage> with AutomaticKeepAlive
           return ListTile(
             dense: true,
             onTap: () {},
-            tileColor: index%2==0 ? Color(0xffF8F8F8) : Colors.transparent,
+            tileColor: index%2==0 ? Color(0xffCACACA) : Colors.transparent,
             leading: Text("﴿${index + 1}﴾",
                 style: TextStyle(
                   fontFamily: 'AlQalamQuranMajeed',
-                  color: Color(0xff000000),
                   fontSize: 18,
                   fontWeight: FontWeight.w400,
                   fontStyle: FontStyle.normal,

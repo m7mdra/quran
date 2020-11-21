@@ -22,7 +22,6 @@ class _QuranBySuraPageState extends State<QuranBySuraPage>
             leading: Text("﴿${index + 1}﴾",
                 style: TextStyle(
                   fontFamily: 'AlQalamQuranMajeed',
-                  color: Color(0xff000000),
                   fontSize: 18,
                   fontWeight: FontWeight.w400,
                   fontStyle: FontStyle.normal,

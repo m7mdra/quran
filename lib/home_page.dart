@@ -48,10 +48,6 @@ class _HomePageState extends State<HomePage> {
             primary: true,
             shrinkWrap: true,
             children: [
-              Align(
-                child: Image.asset('assets/images/logo.png', width: 90),
-                alignment: AlignmentDirectional(0, -0.9),
-              ),
               Container(
                 padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
                 width: MediaQuery.of(context).size.width,
@@ -68,20 +64,17 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text("أخر صفحة",
                               style: TextStyle(
-                                color: Color(0xff777777),
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
                               )),
                           Text("الجزء الثاني - صفحة رقم 112",
                               style: TextStyle(
                                 fontFamily: 'Cairo',
-                                color: Color(0xff777777),
                                 fontSize: 12,
                               )),
                           Text("اَل عِمران",
                               style: TextStyle(
                                 fontFamily: 'Al-QuranAlKareem',
-                                color: Color(0xff87af17),
                                 fontSize: 20,
                               ))
                         ],
@@ -127,7 +120,7 @@ class _HomePageState extends State<HomePage> {
   AppBar buildAppBar() {
     return AppBar(
       leading: IconButton(
-          icon: SvgPicture.asset('assets/images/ic_menu.svg'),
+          icon: SvgPicture.asset(isDarkMode(context)?'assets/images/ic_menu_dark.svg':'assets/images/ic_menu.svg'),
           onPressed: () {},
           splashRadius: 20,
           iconSize: 40),
@@ -135,24 +128,33 @@ class _HomePageState extends State<HomePage> {
       elevation: 0,
       actions: [
         IconButton(
-            icon: Image.asset('assets/images/ic_lang.png'),
+            icon: SvgPicture.asset(isDarkMode(context)
+                ? 'assets/images/ic_lang_dark.svg'
+                : 'assets/images/ic_lang.svg'),
             onPressed: () {},
             splashRadius: 20,
             iconSize: 40),
         IconButton(
-            icon: Image.asset('assets/images/ic_settings.png'),
+            icon: SvgPicture.asset(isDarkMode(context)
+                ? 'assets/images/ic_settings_dark.svg'
+                : 'assets/images/ic_settings.svg'),
             onPressed: () {},
             splashRadius: 20,
             iconSize: 40),
         IconButton(
-            icon: Image.asset('assets/images/ic_reminder.png'),
+            icon: SvgPicture.asset(isDarkMode(context)
+                ? 'assets/images/ic_reminder_dark.svg'
+                : 'assets/images/ic_reminder.svg'),
             onPressed: () {},
             splashRadius: 20,
             iconSize: 40),
       ],
     );
   }
+  bool isDarkMode(context) => Theme.of(context).brightness == Brightness.dark;
+
 }
+
 
 class HomeMenuItem extends StatelessWidget {
   final VoidCallback onTap;
@@ -190,7 +192,6 @@ class HomeMenuItem extends StatelessWidget {
                 child: Text(item.title,
                     style: TextStyle(
                       fontFamily: 'Cairo',
-                      color: Color(0xff777777),
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       fontStyle: FontStyle.normal,
@@ -201,7 +202,6 @@ class HomeMenuItem extends StatelessWidget {
                 child: Text(item.subtitle,
                     style: TextStyle(
                       fontFamily: 'Cairo',
-                      color: Color(0xff777777),
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,

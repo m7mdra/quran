@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:quran/sura_page.dart';
+import 'package:quran/home_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,12 +33,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      themeMode: ThemeMode.system,
+
       builder: (context, widget) {
         return Directionality(textDirection: TextDirection.rtl, child: widget);
       },
       title: 'Flutter Demo',
+      darkTheme: ThemeData.dark().copyWith(backgroundColor: Color(0xff373636)),
       theme: ThemeData(
         fontFamily: 'cairo',
+        brightness: Brightness.light,
         primarySwatch: _swatch,
         primaryColor: Color(_swatchPrimaryValue),
         backgroundColor: Color(0xFFFCFCFC),
@@ -48,7 +52,7 @@ class MyApp extends StatelessWidget {
             iconTheme: IconThemeData().copyWith(color: Colors.white)),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SuraPage(),
+      home: HomePage(),
     );
   }
 }
