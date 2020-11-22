@@ -24,6 +24,7 @@ class _IslamicsPageState extends State<IslamicsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: IslamicAppBar(
+        context: context,
         title: 'اسلاميات',
       ),
       body: GridView.builder(

@@ -17,53 +17,28 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _key,
-        appBar: hideControls
-            ? PreferredSize(child: Container(), preferredSize: Size.zero)
-            : IslamicAppBar(
-                title: 'سورة البقرة',
-                height: 56,
-                actions: [
-                  IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.share),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16.0),
-          child: SelectableText(
-            sura.verses.map((e) => "${e.text} ﴿${e.number}﴾").join(),
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Al-QuranAlKareem',
-              color: Color(0xff000000),
-              fontSize: 23,
-              fontWeight: FontWeight.w500,
-              fontStyle: FontStyle.normal,
+      key: _key,
+      appBar: hideControls
+          ? PreferredSize(child: Container(), preferredSize: Size.zero)
+          : IslamicAppBar(
+              context: context,
+              title: 'سورة البقرة',
+              height: 56,
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {},
+                ),
+                IconButton(
+                  icon: Icon(Icons.share),
+                  onPressed: () {},
+                ),
+              ],
             ),
-          ),
-        ));
+    );
   }
 }
 
-class Delegate extends FlowDelegate {
-  @override
-  void paintChildren(FlowPaintingContext context) {
-    for (int i = 0; i < context.childCount; i++) {
-      context.paintChild(i);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant FlowDelegate oldDelegate) {
-    return true;
-  }
-}
 /*itemBuilder: (context, index) {
             return Text(
                 "${sura.verses[index].text} ﴿${sura.verses[index].number}﴾",

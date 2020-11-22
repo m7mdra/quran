@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quran/home_page.dart';
+import 'package:quran/sura_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,18 +34,28 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.dark,
       builder: (context, widget) {
         return Directionality(textDirection: TextDirection.rtl, child: widget);
       },
       title: 'Flutter Demo',
-      darkTheme: ThemeData.dark().copyWith(
-          backgroundColor: Color(0xff373636),
-          appBarTheme: AppBarTheme(elevation: 0,centerTitle: true)),
+      darkTheme: ThemeData(
+        fontFamily: 'Cairo',
+        accentColor: Color(_swatchAccentValue),
+        primaryColor: Color(_swatchPrimaryValue),
+        backgroundColor: Color(0xff373636),
+        brightness: Brightness.dark,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        appBarTheme: AppBarTheme(
+            elevation: 0,
+            centerTitle: true,
+            iconTheme: IconThemeData().copyWith(color: Colors.white)),
+      ),
       theme: ThemeData(
-        fontFamily: 'cairo',
+        fontFamily: 'Cairo',
         brightness: Brightness.light,
         primarySwatch: _swatch,
+        accentColor: Color(_swatchAccentValue),
         primaryColor: Color(_swatchPrimaryValue),
         backgroundColor: Color(0xFFFCFCFC),
         appBarTheme: AppBarTheme(
@@ -53,7 +64,7 @@ class MyApp extends StatelessWidget {
             iconTheme: IconThemeData().copyWith(color: Colors.white)),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: SuraPage(),
     );
   }
 }
@@ -61,6 +72,7 @@ class MyApp extends StatelessWidget {
 class IslamicAppBar extends AppBar {
   IslamicAppBar({
     @required String title,
+    @required BuildContext context,
     double height,
     PreferredSizeWidget bottom,
     List<Widget> actions,

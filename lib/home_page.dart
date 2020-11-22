@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/islamics_page.dart';
+import 'package:quran/notes_bookmarks_page.dart';
 import 'package:quran/suras_page.dart';
+
+import 'common.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -106,6 +109,12 @@ class _HomePageState extends State<HomePage> {
                               MaterialPageRoute(
                                   builder: (context) => SurasPage()));
                         }
+                        if(index ==1){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NotesBookMarksPage()));
+                        }
                         if(index==3){
                           Navigator.push(
                               context,
@@ -158,7 +167,6 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-  bool isDarkMode(context) => Theme.of(context).brightness == Brightness.dark;
 
 }
 

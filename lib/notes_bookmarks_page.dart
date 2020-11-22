@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:quran/main.dart';
-import 'package:quran/quran_by_juz_page.dart';
+import 'package:quran/bookmarks_page.dart';
+import 'package:quran/notes_page.dart';
 
-import 'package:quran/quran_by_sura_page.dart';
+import 'main.dart';
 
-class SurasPage extends StatefulWidget {
+class NotesBookMarksPage extends StatefulWidget {
   @override
-  _SurasPageState createState() => _SurasPageState();
+  _NotesBookMarksPageState createState() => _NotesBookMarksPageState();
 }
 
-class _SurasPageState extends State<SurasPage> with TickerProviderStateMixin {
+class _NotesBookMarksPageState extends State<NotesBookMarksPage>
+    with TickerProviderStateMixin {
   PageController _pageController;
   TabController _tabController;
-  var currentPage = 0;
 
   @override
   void initState() {
@@ -20,13 +20,15 @@ class _SurasPageState extends State<SurasPage> with TickerProviderStateMixin {
     _tabController = TabController(length: 2, vsync: this);
     _pageController = PageController(keepPage: true);
   }
-@override
+
+  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     _tabController.dispose();
     _pageController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,13 +39,12 @@ class _SurasPageState extends State<SurasPage> with TickerProviderStateMixin {
               duration: Duration(milliseconds: 200), curve: Curves.linear);
         },
         children: [
-          QuranBySuraPage(),
-          QuranByJuzPage()
+          BookmarksPage(),
+          NotesPage()
         ],
       ),
       appBar: IslamicAppBar(
-        context: context,
-        title: 'سور القران ',
+        title: 'العلامات والملاحظات',
         bottom: TabBar(
           onTap: (index) {
             _pageController.animateToPage(index,
@@ -66,14 +67,14 @@ class _SurasPageState extends State<SurasPage> with TickerProviderStateMixin {
               fontSize: 20.0),
           tabs: [
             Tab(
-              text: 'السور',
+              text: 'العلامات',
             ),
             Tab(
-              text: 'الاجزاء',
+              text: 'الملاحظات',
             )
           ],
           controller: _tabController,
-        ),
+        ), context: context,
       ),
     );
   }
