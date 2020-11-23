@@ -13,11 +13,12 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
   var sura = Sura.fromJson(jsonDecode(DATA));
   GlobalKey<ScaffoldState> _key = GlobalKey();
   var hideControls = false;
-
+var expanded = false;
+var _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _key,
+      key: _scaffoldKey,
       appBar: hideControls
           ? PreferredSize(child: Container(), preferredSize: Size.zero)
           : IslamicAppBar(
@@ -35,7 +36,88 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
                 ),
               ],
             ),
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Wrap(
+              children: sura.verses.map((e) {
+                print("﴿${e.number}﴾".length);
+                return InkWell(
+                  borderRadius: BorderRadius.circular(16),
+                  onTap: () {
+                    displayModalBottomSheet(context);
+                  },
+                  child: Text.rich(
+                    TextSpan(
+                        text: "${e.text}".trim(),
+                        style: TextStyle(
+                            fontFamily: 'alquran',
+                            fontSize: 23,
+                            fontWeight: FontWeight.bold),
+                        children: [
+                          TextSpan(
+                              text: ' ﴿${e.number}﴾',
+                              style: TextStyle(
+                                fontFamily: "Al-QuranAlKareem",
+                                fontSize: 18,
+                              ))
+                        ]),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontStyle: FontStyle.normal,
+                    ),
+                    softWrap: true,
+                    textDirection: TextDirection.rtl,
+                  ),
+                );
+              }).toList(),
+              crossAxisAlignment: WrapCrossAlignment.center,
+              alignment: WrapAlignment.center,
+              textDirection: TextDirection.rtl,
+              runAlignment: WrapAlignment.center,
+              runSpacing: 0,
+              spacing: 0,
+            ),
+          ),
+
+        ],
+      ),
     );
+  }
+
+  void displayPersistentBottomSheet() {
+    _scaffoldKey.currentState.showBottomSheet<void>((BuildContext context) {
+      return Container(
+
+        child: Card(
+          color: Color(0xffffffff),
+          margin: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(16),topRight: Radius.circular(16))),
+          child: Text(
+            'This is a persistent bottom sheet. Drag downwards to dismiss it.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 24.0,
+            ),
+          ),
+        ),
+      );
+    });
+  }
+  void displayModalBottomSheet(context) {
+    showModalBottomSheet(
+      barrierColor: Colors.transparent,
+        context: context,
+        isScrollControlled: true,
+        isDismissible: false,
+        builder: (BuildContext bc) {
+          return Card(
+            margin: EdgeInsets.zero,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(16),topRight: Radius.circular(16))),
+
+          );
+        });
   }
 }
 

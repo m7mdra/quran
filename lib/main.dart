@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quran/home_page.dart';
+import 'package:quran/splash_page.dart';
 import 'package:quran/sura_page.dart';
 
 void main() {
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.system,
       builder: (context, widget) {
         return Directionality(textDirection: TextDirection.rtl, child: widget);
       },
