@@ -30,7 +30,7 @@ class _QuranBySuraPageState extends State<QuranBySuraPage>
             ),
             title: Text("آل عمران",
                 style: TextStyle(
-                  fontFamily: 'Al-QuranAlKareem',
+                  fontFamily: 'alquran',
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
                   fontStyle: FontStyle.normal,

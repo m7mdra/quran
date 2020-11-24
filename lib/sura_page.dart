@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/fake_data.dart';
 import 'package:quran/main.dart';
 
@@ -13,8 +14,9 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
   var sura = Sura.fromJson(jsonDecode(DATA));
   GlobalKey<ScaffoldState> _key = GlobalKey();
   var hideControls = false;
-var expanded = false;
-var _scaffoldKey = GlobalKey<ScaffoldState>();
+  var expanded = false;
+  var _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +48,11 @@ var _scaffoldKey = GlobalKey<ScaffoldState>();
                 return InkWell(
                   borderRadius: BorderRadius.circular(16),
                   onTap: () {
-                    displayModalBottomSheet(context);
+                    try {
+                      displayModalBottomSheet(context);
+                    } catch (error) {
+                      print(error);
+                    }
                   },
                   child: Text.rich(
                     TextSpan(
@@ -80,60 +86,165 @@ var _scaffoldKey = GlobalKey<ScaffoldState>();
               spacing: 0,
             ),
           ),
-
         ],
       ),
     );
   }
 
-  void displayPersistentBottomSheet() {
-    _scaffoldKey.currentState.showBottomSheet<void>((BuildContext context) {
-      return Container(
-
-        child: Card(
-          color: Color(0xffffffff),
-          margin: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(16),topRight: Radius.circular(16))),
-          child: Text(
-            'This is a persistent bottom sheet. Drag downwards to dismiss it.',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 24.0,
-            ),
-          ),
-        ),
-      );
-    });
-  }
   void displayModalBottomSheet(context) {
     showModalBottomSheet(
-      barrierColor: Colors.transparent,
+        barrierColor: Colors.transparent,
         context: context,
         isScrollControlled: true,
         isDismissible: false,
         builder: (BuildContext bc) {
-          return Card(
-            margin: EdgeInsets.zero,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(16),topRight: Radius.circular(16))),
-
-          );
+          return SuraInfoModalSheet();
         });
   }
 }
 
-/*itemBuilder: (context, index) {
-            return Text(
-                "${sura.verses[index].text} ﴿${sura.verses[index].number}﴾",
-                style: TextStyle(
+class SuraInfoModalSheet extends StatefulWidget {
+  const SuraInfoModalSheet({
+    Key key,
+  }) : super(key: key);
 
-                  fontFamily: 'Al-QuranAlKareem',
-                  color: Color(0xff000000),
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
-                  fontStyle: FontStyle.normal,
+  @override
+  _SuraInfoModalSheetState createState() => _SuraInfoModalSheetState();
+}
 
-                ),textAlign: TextAlign.center,);
-          },*/
+class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 200,
+      child: Card(
+        child: Stack(
+          children: [
+            Align(
+
+              child: PlayButtonWidget(),
+              alignment: AlignmentDirectional(0.0, -1.65),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text("سُورة البَقَرةْ",
+                          style: TextStyle(
+                            fontFamily: 'alquran',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          )),
+                      Text("بدء الإستماع",
+                          style: TextStyle(
+                            fontFamily: 'Cairo',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                          )),
+                      Text("الجزْءُ الأَّوَلْ",
+                          style: TextStyle(
+                            fontFamily: 'alquran',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          ))
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SuraOptions(
+                        title: 'حفظ الصفحة',
+                        image: 'assets/images/bookmark_sura.svg',
+                      ),
+                      SuraOptions(
+                        title: 'التفسير الميسر',
+                        image: 'assets/images/tafseer.svg',
+                      ),
+                      SuraOptions(
+                        title: 'إختيار القارئ',
+                        image: 'assets/images/choose_reader.svg',
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+        margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16), topRight: Radius.circular(16))),
+      ),
+    );
+  }
+}
+
+class SuraOptions extends StatelessWidget {
+  final String image;
+  final String title;
+
+  const SuraOptions({Key key, this.image, this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SvgPicture.asset(image),
+        Text(title,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              fontStyle: FontStyle.normal,
+            ))
+      ],
+    );
+  }
+}
+
+class PlayButtonWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          width: 75,
+          height: 75,
+          decoration: BoxDecoration(
+              color: Color(0xff95B93E).withAlpha((255 / 0.16).round()),
+              shape: BoxShape.circle),
+        ),
+        Container(
+          width: 55,
+          height: 55,
+          child: IconButton(
+            icon: Icon(Icons.play_arrow),
+            onPressed: () {},
+            color: Colors.white,
+          ),
+          decoration:
+              BoxDecoration(color: Color(0xff95B93E), shape: BoxShape.circle),
+        ),
+      ],
+    );
+  }
+}
 
 class Sura {
   int number;

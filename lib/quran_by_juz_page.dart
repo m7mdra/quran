@@ -19,7 +19,7 @@ class _QuranByJuzPageState extends State<QuranByJuzPage> with AutomaticKeepAlive
             onTap: () {},
             leading: Text("﴿${index + 1}﴾",
                 style: TextStyle(
-                  fontFamily: 'AlQalamQuranMajeed',
+                  fontFamily: 'alquran',
                   fontSize: 18,
                   fontWeight: FontWeight.w400,
                   fontStyle: FontStyle.normal,
@@ -33,7 +33,6 @@ class _QuranByJuzPageState extends State<QuranByJuzPage> with AutomaticKeepAlive
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
                   fontStyle: FontStyle.normal,
-
 
                 )
             ),
