@@ -12,7 +12,6 @@ class SuraPage extends StatefulWidget {
 
 class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
   var sura = Sura.fromJson(jsonDecode(DATA));
-  GlobalKey<ScaffoldState> _key = GlobalKey();
   var hideControls = false;
   var expanded = false;
   var _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -20,6 +19,7 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       key: _scaffoldKey,
       appBar: hideControls
           ? PreferredSize(child: Container(), preferredSize: Size.zero)
@@ -30,11 +30,14 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
               actions: [
                 IconButton(
                   icon: Icon(Icons.search),
-                  onPressed: () {},
+                  onPressed: () {
+                  },
                 ),
                 IconButton(
                   icon: Icon(Icons.share),
-                  onPressed: () {},
+                  onPressed: () {
+
+                  },
                 ),
               ],
             ),
