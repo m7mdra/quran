@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
             iconTheme: IconThemeData().copyWith(color: Colors.white)),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: QiblaPage(),
+      home: SuraPage(),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/fake_data.dart';
 import 'package:quran/main.dart';
+import 'package:quran/popup_menu.dart';
 
 class SuraPage extends StatefulWidget {
   @override
@@ -14,13 +15,13 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
   var sura = Sura.fromJson(jsonDecode(DATA));
   var hideControls = false;
   var expanded = false;
-  var _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  PopupMenu menu = PopupMenu(backgroundColor: Colors.white);
+ 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    PopupMenu.context = context;
 
-      key: _scaffoldKey,
+    return Scaffold(
       appBar: hideControls
           ? PreferredSize(child: Container(), preferredSize: Size.zero)
           : IslamicAppBar(
@@ -30,14 +31,11 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
               actions: [
                 IconButton(
                   icon: Icon(Icons.search),
-                  onPressed: () {
-                  },
+                  onPressed: () {},
                 ),
                 IconButton(
                   icon: Icon(Icons.share),
-                  onPressed: () {
-
-                  },
+                  onPressed: () {},
                 ),
               ],
             ),
@@ -46,16 +44,18 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
           SingleChildScrollView(
             padding: const EdgeInsets.all(16),
             child: Wrap(
+              key: ObjectKey(1),
               children: sura.verses.map((e) {
+                var _ayaKay = GlobalKey(debugLabel: 'keykey');
                 print("﴿${e.number}﴾".length);
                 return InkWell(
+                  key: _ayaKay,
                   borderRadius: BorderRadius.circular(16),
-                  onTap: () {
-                    try {
-                      displayModalBottomSheet(context);
-                    } catch (error) {
-                      print(error);
-                    }
+                  onTap: (){
+menu.show(
+                        widgetKey: _ayaKay,
+                        onAddCarClick: () {},
+                        onAddRealStateClick: () {});
                   },
                   child: Text.rich(
                     TextSpan(
@@ -124,7 +124,6 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
         child: Stack(
           children: [
             Align(
-
               child: PlayButtonWidget(),
               alignment: AlignmentDirectional(0.0, -1.65),
             ),
