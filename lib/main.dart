@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.dark,
       builder: (context, widget) {
         return Directionality(textDirection: TextDirection.rtl, child: widget);
       },

@@ -49,6 +49,7 @@ class PopupMenu {
   static var itemHeight = 65.0;
   static var arrowHeight = 10.0;
   OverlayEntry _entry;
+  OverlayEntry _barrierEntry;
 
   /// The left top point of this menu.
   Offset _offset;

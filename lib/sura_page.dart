@@ -17,9 +17,10 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
   var sura = Sura.fromJson(jsonDecode(DATA));
   var hideControls = false;
   var expanded = false;
-  PopupMenu menu = PopupMenu(backgroundColor: Colors.white);
+
 
   var key = GlobalKey();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -51,7 +52,6 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
       body: Stack(
         children: [
           SingleChildScrollView(
-
             padding: const EdgeInsets.all(16),
             child: Text.rich(
               TextSpan(
@@ -65,18 +65,34 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
                       .map((e) => TextSpan(
                           text: "${e.text} ﴿${e.number}﴾",
                           semanticsLabel: 'semanticsLabel',
-                          recognizer: DoubleTapGestureRecognizer(kind: PointerDeviceKind.touch)
+                          recognizer: DoubleTapGestureRecognizer()
                             ..onDoubleTapDown = (tapDown) {
-                            print(e.toJson());
+                              print(e.toJson());
                               var rect = Rect.fromCircle(
                                   center: tapDown.globalPosition, radius: 0);
-                              menu.show(
+                              PopupMenu(context: context).show(
                                   rect: rect,
                                   builder: (context) {
                                     return Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        SvgPicture.asset(
-                                            'assets/images/play_aya.svg')
+
+                                        IconButton(
+                                          icon: Image.asset(
+                                              'assets/images/tafseer_aya.png',
+                                              width: 50,
+                                              height: 50,
+                                              fit: BoxFit.cover),
+                                          onPressed: () {},
+                                        ),
+                                        IconButton(
+                                          icon: Image.asset(
+                                              'assets/images/play_aya.png',
+                                              width: 50,
+                                              height: 50,
+                                              fit: BoxFit.cover),
+                                          onPressed: () {},
+                                        ),
                                       ],
                                     );
                                   });
