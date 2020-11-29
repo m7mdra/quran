@@ -65,7 +65,6 @@ class PopupMenu {
   PopupMenuStateChanged stateChanged;
 
   Size _screenSize; // 屏幕的尺寸
-
   /// Cannot be null
   static BuildContext context;
 
@@ -93,11 +92,7 @@ class PopupMenu {
     }
   }
 
-  void show(
-      {Rect rect,
-      GlobalKey widgetKey,
-      VoidCallback onAddCarClick,
-      VoidCallback onAddRealStateClick}) {
+  void show({@required WidgetBuilder builder, Rect rect, GlobalKey widgetKey}) {
     if (rect == null && widgetKey == null) {
       print("'rect' and 'key' can't be both null");
       return;
@@ -110,7 +105,7 @@ class PopupMenu {
     _calculatePosition(PopupMenu.context);
 
     _entry = OverlayEntry(builder: (context) {
-      return buildPopupMenuLayout(_offset, onAddCarClick, onAddRealStateClick);
+      return buildPopupMenuLayout(_offset, builder(context));
     });
 
     Overlay.of(PopupMenu.context).insert(_entry);
@@ -156,16 +151,15 @@ class PopupMenu {
   }
 
   double menuWidth() {
-    return MediaQuery.of(context).size.width - 32;
+    return MediaQuery.of(context).size.width - 100;
   }
 
   // This height exclude the arrow
   double menuHeight() {
-    return 200;
+    return 100;
   }
 
-  Widget buildPopupMenuLayout(Offset offset, VoidCallback onAddCarClick,
-      VoidCallback onAddRealStateClick) {
+  Widget buildPopupMenuLayout(Offset offset, Widget widget) {
     return Material(
       color: Colors.black54,
       child: LayoutBuilder(builder: (context, constraints) {
@@ -206,8 +200,6 @@ class PopupMenu {
                   left: offset.dx,
                   top: offset.dy,
                   child: Container(
-                    width: menuWidth(),
-                    height: menuHeight(),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -220,34 +212,7 @@ class PopupMenu {
                               decoration: BoxDecoration(
                                   color: _backgroundColor,
                                   borderRadius: BorderRadius.circular(10.0)),
-                              child: Column(
-                                children: [
-                                  Text(
-                                     'إعلان جديد',
-                                  ),
-                                  Divider(),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width,
-                                    child: OutlinedButton.icon(
-                                        onPressed: (){
-                                          onAddCarClick();
-                                          dismiss();
-                                        },
-                                        icon:
-                                            Icon(Icons.directions_car_rounded),
-                                        label: Text('سيارة')),
-                                  ),
-                                  SizedBox(
-                                      width: MediaQuery.of(context).size.width,
-                                      child: OutlinedButton.icon(
-                                          onPressed: (){
-                                            onAddRealStateClick();
-                                            dismiss();
-                                          },
-                                          icon: Icon(Icons.business_sharp),
-                                          label: Text('عقار'))),
-                                ],
-                              ),
+                              child: widget,
                             )),
                       ],
                     ),

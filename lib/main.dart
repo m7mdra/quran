@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:quran/home_page.dart';
-import 'package:quran/qibla_page.dart';
-import 'package:quran/splash_page.dart';
+
 import 'package:quran/sura_page.dart';
 
 void main() {

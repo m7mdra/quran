@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/fake_data.dart';
 import 'package:quran/main.dart';
@@ -16,7 +18,14 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
   var hideControls = false;
   var expanded = false;
   PopupMenu menu = PopupMenu(backgroundColor: Colors.white);
- 
+
+  var key = GlobalKey();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     PopupMenu.context = context;
@@ -42,51 +51,45 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
       body: Stack(
         children: [
           SingleChildScrollView(
+
             padding: const EdgeInsets.all(16),
-            child: Wrap(
-              key: ObjectKey(1),
-              children: sura.verses.map((e) {
-                var _ayaKay = GlobalKey(debugLabel: 'keykey');
-                print("﴿${e.number}﴾".length);
-                return InkWell(
-                  key: _ayaKay,
-                  borderRadius: BorderRadius.circular(16),
-                  onTap: (){
-menu.show(
-                        widgetKey: _ayaKay,
-                        onAddCarClick: () {},
-                        onAddRealStateClick: () {});
-                  },
-                  child: Text.rich(
-                    TextSpan(
-                        text: "${e.text}".trim(),
-                        style: TextStyle(
-                            fontFamily: 'alquran',
-                            fontSize: 23,
-                            fontWeight: FontWeight.bold),
-                        children: [
-                          TextSpan(
-                              text: ' ﴿${e.number}﴾',
-                              style: TextStyle(
-                                fontFamily: "Al-QuranAlKareem",
-                                fontSize: 18,
-                              ))
-                        ]),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontStyle: FontStyle.normal,
-                    ),
-                    softWrap: true,
-                    textDirection: TextDirection.rtl,
-                  ),
-                );
-              }).toList(),
-              crossAxisAlignment: WrapCrossAlignment.center,
-              alignment: WrapAlignment.center,
+            child: Text.rich(
+              TextSpan(
+                  text: "",
+                  semanticsLabel: 'semanticsLabel',
+                  style: TextStyle(
+                      fontFamily: 'alquran',
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold),
+                  children: sura.verses
+                      .map((e) => TextSpan(
+                          text: "${e.text} ﴿${e.number}﴾",
+                          semanticsLabel: 'semanticsLabel',
+                          recognizer: DoubleTapGestureRecognizer(kind: PointerDeviceKind.touch)
+                            ..onDoubleTapDown = (tapDown) {
+                            print(e.toJson());
+                              var rect = Rect.fromCircle(
+                                  center: tapDown.globalPosition, radius: 0);
+                              menu.show(
+                                  rect: rect,
+                                  builder: (context) {
+                                    return Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                            'assets/images/play_aya.svg')
+                                      ],
+                                    );
+                                  });
+                            }))
+                      .toList()),
+              semanticsLabel: 'semanticsLabel',
+              key: key,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontStyle: FontStyle.normal,
+              ),
+              softWrap: true,
               textDirection: TextDirection.rtl,
-              runAlignment: WrapAlignment.center,
-              runSpacing: 0,
-              spacing: 0,
             ),
           ),
         ],

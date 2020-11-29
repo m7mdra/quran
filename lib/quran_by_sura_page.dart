@@ -20,7 +20,7 @@ class _QuranBySuraPageState extends State<QuranBySuraPage>
             onTap: () {},
             leading: Text("﴿${index + 1}﴾",
                 style: TextStyle(
-                  fontFamily: 'AlQalamQuranMajeed',
+                  fontFamily: 'Al-QuranAlKareem',
                   fontSize: 18,
                   fontWeight: FontWeight.w400,
                   fontStyle: FontStyle.normal,
