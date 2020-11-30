@@ -18,19 +18,9 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
   var hideControls = false;
   var expanded = false;
 
-
-  var key = GlobalKey();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     PopupMenu.context = context;
-
     return Scaffold(
       appBar: hideControls
           ? PreferredSize(child: Container(), preferredSize: Size.zero)
@@ -41,7 +31,9 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
               actions: [
                 IconButton(
                   icon: Icon(Icons.search),
-                  onPressed: () {},
+                  onPressed: () {
+                    displayModalBottomSheet(context);
+                  },
                 ),
                 IconButton(
                   icon: Icon(Icons.share),
@@ -49,66 +41,74 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
                 ),
               ],
             ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Text.rich(
-              TextSpan(
-                  text: "",
-                  semanticsLabel: 'semanticsLabel',
-                  style: TextStyle(
-                      fontFamily: 'alquran',
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold),
-                  children: sura.verses
-                      .map((e) => TextSpan(
-                          text: "${e.text} ﴿${e.number}﴾",
-                          semanticsLabel: 'semanticsLabel',
-                          recognizer: DoubleTapGestureRecognizer()
-                            ..onDoubleTapDown = (tapDown) {
-                              print(e.toJson());
-                              var rect = Rect.fromCircle(
-                                  center: tapDown.globalPosition, radius: 0);
-                              PopupMenu(context: context).show(
-                                  rect: rect,
-                                  builder: (context) {
-                                    return Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-
-                                        IconButton(
-                                          icon: Image.asset(
-                                              'assets/images/tafseer_aya.png',
-                                              width: 50,
-                                              height: 50,
-                                              fit: BoxFit.cover),
-                                          onPressed: () {},
-                                        ),
-                                        IconButton(
-                                          icon: Image.asset(
-                                              'assets/images/play_aya.png',
-                                              width: 50,
-                                              height: 50,
-                                              fit: BoxFit.cover),
-                                          onPressed: () {},
-                                        ),
-                                      ],
-                                    );
-                                  });
-                            }))
-                      .toList()),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Text.rich(
+          TextSpan(
+              text: "",
               semanticsLabel: 'semanticsLabel',
-              key: key,
-              textAlign: TextAlign.center,
               style: TextStyle(
-                fontStyle: FontStyle.normal,
-              ),
-              softWrap: true,
-              textDirection: TextDirection.rtl,
-            ),
+                  fontFamily: 'alquran',
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold),
+              children: sura.verses
+                  .map((e) => TextSpan(
+                      text: "${e.text} ﴿${e.number}﴾",
+                      semanticsLabel: 'semanticsLabel',
+                      recognizer: DoubleTapGestureRecognizer()
+                        ..onDoubleTapDown = (tapDown) {
+                          print(e.toJson());
+                          var rect = Rect.fromCircle(
+                              center: tapDown.globalPosition, radius: 0);
+                          PopupMenu(context: context).show(
+                              rect: rect,
+                              builder: (context) {
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    IconButton(
+                                      icon: Image.asset(
+                                          'assets/images/tafseer_aya.png',
+                                          width: 27,
+                                          height: 27,
+                                          fit: BoxFit.cover),
+                                      onPressed: () {
+                                        print('Hello from tafseer button');
+                                      },
+                                    ),
+                                    IconButton(
+                                      iconSize: 31,
+                                      color: Theme.of(context).primaryColor,
+                                      icon: Icon(Icons.play_circle_fill),
+                                      onPressed: () {
+                                        print('Hello from play button');
+                                      },
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8, bottom: 8),
+                                      child: VerticalDivider(
+                                        width: 1,
+                                      ),
+                                    ),
+                                    ToggleableFontOptions.normal(false),
+                                    ToggleableFontOptions.large(true),
+                                    ToggleableFontOptions.bold(true)
+                                  ],
+                                );
+                              });
+                        }))
+                  .toList()),
+          semanticsLabel: 'semanticsLabel',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontStyle: FontStyle.normal,
           ),
-        ],
+          softWrap: true,
+          textDirection: TextDirection.rtl,
+        ),
       ),
     );
   }
@@ -117,8 +117,6 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
     showModalBottomSheet(
         barrierColor: Colors.transparent,
         context: context,
-        isScrollControlled: true,
-        isDismissible: false,
         builder: (BuildContext bc) {
           return SuraInfoModalSheet();
         });
@@ -337,5 +335,94 @@ class Verses {
     data['translation_en'] = this.translationEn;
     data['translation_id'] = this.translationId;
     return data;
+  }
+}
+
+enum FontOptions { normal, bold, large }
+
+class ToggleableFontOptions extends StatelessWidget {
+  final FontOptions option;
+  final bool isSelected;
+
+  ToggleableFontOptions.normal(this.isSelected) : option = FontOptions.normal;
+
+  ToggleableFontOptions.bold(this.isSelected) : option = FontOptions.bold;
+
+  ToggleableFontOptions.large(this.isSelected) : option = FontOptions.large;
+
+  String get _text {
+    switch (option) {
+      case FontOptions.normal:
+        return 'Aa';
+      case FontOptions.bold:
+        return 'B';
+      case FontOptions.large:
+        return 'Aa';
+      default:
+        return '';
+    }
+  }
+
+  TextStyle style(BuildContext context) {
+    switch (option) {
+      case FontOptions.normal:
+        return TextStyle(
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.normal,
+          fontSize: 13,
+          color: _textColor(context),
+        );
+      case FontOptions.bold:
+        return TextStyle(
+          fontStyle: FontStyle.normal,
+          fontWeight: FontWeight.w800,
+          fontSize: 14,
+          color: _textColor(context),
+        );
+      case FontOptions.large:
+        return TextStyle(
+            fontStyle: FontStyle.normal,
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+            color: _textColor(context));
+      default:
+        return TextStyle();
+    }
+  }
+
+  Color _backgroundColor(BuildContext context) {
+    return isSelected
+        ? Color(0xff9CBD17).withAlpha((200 / 0.15).round())
+        : Colors.transparent;
+  }
+
+  Color _borderColor(BuildContext context) {
+    return isSelected ? Color(0xff9CBD17) : Theme.of(context).dividerColor;
+  }
+
+  Color _textColor(BuildContext context) {
+    return isSelected
+        ? Color(0xff9CBD17)
+        : Theme.of(context).textTheme.bodyText1.color;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(
+            color: _backgroundColor(context),
+            border: Border.all(color: _borderColor(context)),
+            borderRadius: BorderRadius.circular(4)),
+        child: Text(
+          _text,
+          textAlign: TextAlign.center,
+          style: style(context),
+        ),
+      ),
+    );
   }
 }

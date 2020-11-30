@@ -157,12 +157,12 @@ class PopupMenu {
 
   // This height exclude the arrow
   double menuHeight() {
-    return 100;
+    return 70;
   }
 
   Widget buildPopupMenuLayout(Offset offset, Widget widget) {
     return Material(
-      color: Colors.black54,
+      color: Colors.black26,
       child: LayoutBuilder(builder: (context, constraints) {
         return GestureDetector(
           behavior: HitTestBehavior.translucent,
@@ -193,7 +193,7 @@ class PopupMenu {
                   child: CustomPaint(
                     size: Size(15.0, arrowHeight),
                     painter: TrianglePainter(
-                        isDown: _isDown, color: _backgroundColor),
+                        isDown: _isDown, color: Theme.of(context).cardColor),
                   ),
                 ),
                 // menu content
@@ -205,14 +205,14 @@ class PopupMenu {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(8.0),
                             child: Container(
                               width: menuWidth(),
                               height: menuHeight(),
-                              padding: const EdgeInsets.all(16),
+                              padding: const EdgeInsets.all(0),
                               decoration: BoxDecoration(
-                                  color: _backgroundColor,
-                                  borderRadius: BorderRadius.circular(10.0)),
+                                  color: Theme.of(context).cardColor,
+                                  borderRadius: BorderRadius.circular(8.0)),
                               child: widget,
                             )),
                       ],
