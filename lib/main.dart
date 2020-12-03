@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:quran/home_page.dart';
 
 import 'package:quran/sura_page.dart';
 
@@ -65,7 +66,7 @@ class MyApp extends StatelessWidget {
             iconTheme: IconThemeData().copyWith(color: Colors.white)),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SuraPage(),
+      home: HomePage(),
     );
   }
 }
