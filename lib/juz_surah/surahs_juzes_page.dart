@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:quran/juz_surah/surahs/surahs_page.dart';
 import 'package:quran/main.dart';
-import 'package:quran/surah/juz/juz_page.dart';
 
-import 'package:quran/surah/surah_by_number_page.dart';
+import 'juzes/juz_page.dart';
 
-class SurahsPage extends StatefulWidget {
+
+class SurahsJuzesPage extends StatefulWidget {
   @override
-  _SurahsPageState createState() => _SurahsPageState();
+  _SurahsJuzesPageState createState() => _SurahsJuzesPageState();
 }
 
-class _SurahsPageState extends State<SurahsPage> with TickerProviderStateMixin {
+class _SurahsJuzesPageState extends State<SurahsJuzesPage> with TickerProviderStateMixin {
   PageController _pageController;
   TabController _tabController;
   var currentPage = 0;
@@ -37,7 +38,7 @@ class _SurahsPageState extends State<SurahsPage> with TickerProviderStateMixin {
               duration: Duration(milliseconds: 200), curve: Curves.linear);
         },
         children: [
-          SurahByNumberPage(),
+          SurahsPage(),
           JuzPage()
         ],
       ),

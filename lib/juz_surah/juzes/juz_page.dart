@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/di.dart';
-import 'package:quran/surah/juz/bloc/bloc.dart';
+import 'package:quran/juz_surah/juzes/bloc/bloc.dart';
+
+
 
 class JuzPage extends StatefulWidget {
   @override
@@ -38,7 +40,7 @@ class JuzWidget extends StatefulWidget {
   _JuzWidgetState createState() => _JuzWidgetState();
 }
 
-class _JuzWidgetState extends State<JuzWidget> {
+class _JuzWidgetState extends State<JuzWidget> with AutomaticKeepAliveClientMixin{
   JuzBloc _bloc;
 
   @override
@@ -123,4 +125,7 @@ class _JuzWidgetState extends State<JuzWidget> {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
