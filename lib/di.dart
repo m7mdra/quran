@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:get_it/get_it.dart';
+import 'package:quran/data/quran_api.dart';
 
 var _registrar = GetIt.instance;
 
@@ -32,6 +33,8 @@ class DependencyProvider {
         responseBody: true,
         responseHeader: true,
       ));
+    _registrar.registerSingleton(client);
+    _registrar.registerSingleton(QuranApi(client));
   }
 
   static T provide<T>() {
