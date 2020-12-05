@@ -8,18 +8,23 @@ import 'package:quran/fake_data.dart';
 import 'package:quran/main.dart';
 import 'package:quran/popup_menu.dart';
 
-class SuraPage extends StatefulWidget {
+import 'data/model/surah_response.dart';
+
+class SurahPage extends StatefulWidget {
+  final Surah surah;
+
+  const SurahPage({Key key, this.surah}) : super(key: key);
+
   @override
-  _SuraPageState createState() => _SuraPageState();
+  _SurahPageState createState() => _SurahPageState();
 }
 
-class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
-  var sura = Sura.fromJson(jsonDecode(DATA));
+class _SurahPageState extends State<SurahPage> with TickerProviderStateMixin {
   var hideControls = false;
-  var expanded = false;
 
   @override
   Widget build(BuildContext context) {
+
     PopupMenu.context = context;
     return Scaffold(
       appBar: hideControls
@@ -51,9 +56,9 @@ class _SuraPageState extends State<SuraPage> with TickerProviderStateMixin {
                   fontFamily: 'alquran',
                   fontSize: 23,
                   fontWeight: FontWeight.bold),
-              children: sura.verses
+              children: widget.surah.ayahs
                   .map((e) => TextSpan(
-                      text: "${e.text} ﴿${e.number}﴾",
+                      text: "${e.text} ﴿${e.numberInSurah}﴾",
                       semanticsLabel: 'semanticsLabel',
                       recognizer: DoubleTapGestureRecognizer()
                         ..onDoubleTapDown = (tapDown) {
@@ -262,79 +267,6 @@ class PlayButtonWidget extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-class Sura {
-  int number;
-  String name;
-  String transliterationEn;
-  String translationEn;
-  int totalVerses;
-  String revelationType;
-  List<Verses> verses;
-
-  Sura(
-      {this.number,
-      this.name,
-      this.transliterationEn,
-      this.translationEn,
-      this.totalVerses,
-      this.revelationType,
-      this.verses});
-
-  Sura.fromJson(Map<String, dynamic> json) {
-    number = json['number'];
-    name = json['name'];
-    transliterationEn = json['transliteration_en'];
-    translationEn = json['translation_en'];
-    totalVerses = json['total_verses'];
-    revelationType = json['revelation_type'];
-    if (json['verses'] != null) {
-      verses = new List<Verses>();
-      json['verses'].forEach((v) {
-        verses.add(new Verses.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['number'] = this.number;
-    data['name'] = this.name;
-    data['transliteration_en'] = this.transliterationEn;
-    data['translation_en'] = this.translationEn;
-    data['total_verses'] = this.totalVerses;
-    data['revelation_type'] = this.revelationType;
-    if (this.verses != null) {
-      data['verses'] = this.verses.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Verses {
-  int number;
-  String text;
-  String translationEn;
-  String translationId;
-
-  Verses({this.number, this.text, this.translationEn, this.translationId});
-
-  Verses.fromJson(Map<String, dynamic> json) {
-    number = json['number'];
-    text = json['text'];
-    translationEn = json['translation_en'];
-    translationId = json['translation_id'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['number'] = this.number;
-    data['text'] = this.text;
-    data['translation_en'] = this.translationEn;
-    data['translation_id'] = this.translationId;
-    return data;
   }
 }
 

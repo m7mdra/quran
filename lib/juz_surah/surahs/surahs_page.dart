@@ -1,9 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/data/model/surah_response.dart';
 import 'package:quran/di.dart';
 import 'package:quran/juz_surah/surahs/bloc/bloc.dart';
+import 'package:quran/sura_page.dart';
 
 class SurahsPage extends StatefulWidget {
   @override
@@ -18,10 +18,20 @@ class _SurahsPageState extends State<SurahsPage>
     return Scaffold(
       body: ListView.separated(
         itemBuilder: (context, index) {
-          return IndexedSurahWidget(index: index + 1);
+          return IndexedSurahWidget(
+            index: index + 1,
+            onPress: (surah) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SurahPage(
+                            surah: surah,
+                          )));
+            },
+          );
         },
-        separatorBuilder: (context,index){
-          return Divider(height: 1 );
+        separatorBuilder: (context, index) {
+          return Divider(height: 1);
         },
         itemCount: 114,
       ),
@@ -34,10 +44,12 @@ class _SurahsPageState extends State<SurahsPage>
 
 class IndexedSurahWidget extends StatefulWidget {
   final int index;
+  final Function(Surah) onPress;
 
   const IndexedSurahWidget({
     Key key,
     this.index,
+    this.onPress,
   }) : super(key: key);
 
   @override
@@ -78,18 +90,20 @@ class _IndexedSurahWidgetState extends State<IndexedSurahWidget>
     }
     return null;
   }
-  String _titleForState(SurahsState state){
-    if(state is SurahLoadingState){
+
+  String _titleForState(SurahsState state) {
+    if (state is SurahLoadingState) {
       return 'جاري تحميل السورة';
     }
-    if(state is SurahSuccessState){
+    if (state is SurahSuccessState) {
       return state.surah.name;
     }
-    if(state is SurahErrorState){
+    if (state is SurahErrorState) {
       return 'فشل تحميل السورة';
     }
     return '';
   }
+
   Widget _subtitleWidgetForState(SurahsState state) {
     if (state is SurahLoadingState) {
       return Text('جاري التحميل');
@@ -107,6 +121,7 @@ class _IndexedSurahWidgetState extends State<IndexedSurahWidget>
 
     return null;
   }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -114,25 +129,27 @@ class _IndexedSurahWidgetState extends State<IndexedSurahWidget>
       cubit: _bloc,
       builder: (BuildContext context, state) {
         return ListTile(
-          trailing: _trailingWidgetForState(state),
-          dense: true,
-          onTap: state is SurahSuccessState ? () {} : null,
-          leading: Text("﴿${widget.index}﴾",
-              style: TextStyle(
-                fontFamily: 'Al-QuranAlKareem',
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.normal,
-              )),
-          title: Text(_titleForState(state),
-              style: TextStyle(
-                fontFamily: 'alquran',
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-                fontStyle: FontStyle.normal,
-              )),
-          subtitle: _subtitleWidgetForState(state)
-        );
+            trailing: _trailingWidgetForState(state),
+            dense: true,
+            onTap:
+                state is SurahSuccessState ? (){
+                  widget.onPress(state.surah);
+                } : null,
+            leading: Text("﴿${widget.index}﴾",
+                style: TextStyle(
+                  fontFamily: 'Al-QuranAlKareem',
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                )),
+            title: Text(_titleForState(state),
+                style: TextStyle(
+                  fontFamily: 'alquran',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w500,
+                  fontStyle: FontStyle.normal,
+                )),
+            subtitle: _subtitleWidgetForState(state));
       },
     );
   }

@@ -79,7 +79,9 @@ flutter:
       fonts:
         - asset: assets/fonts/alquran/alquran.ttf
         - asset: assets/fonts/alquran/alquran-bold.ttf
-
+    - family: QQMajeed
+      fonts:
+        - asset: assets/fonts/alquran/Al-Qalam-Quran-Majeed.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
