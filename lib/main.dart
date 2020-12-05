@@ -4,6 +4,7 @@ import 'package:quran/data/model/surah_response.dart';
 import 'package:quran/data/quran_api.dart';
 import 'package:quran/di.dart';
 import 'package:quran/home_page.dart';
+import 'package:quran/splash_page.dart';
 
 import 'data/model/juz_response.dart';
 
@@ -70,7 +71,7 @@ class MyApp extends StatelessWidget {
             iconTheme: IconThemeData().copyWith(color: Colors.white)),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: HomePage(),
+      home: SplashPage(),
     );
   }
 }
