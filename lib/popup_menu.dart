@@ -2,6 +2,7 @@ import 'dart:core';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:quran/surah_details_page.dart';
 
 import 'triangle_painter.dart';
 
@@ -93,7 +94,11 @@ class PopupMenu {
     }
   }
 
-  void show({@required WidgetBuilder builder, Rect rect, GlobalKey widgetKey}) {
+  void show(
+      {Rect rect,
+      GlobalKey widgetKey,
+      VoidCallback onPlayClick,
+      VoidCallback onTafseerCallback}) {
     if (rect == null && widgetKey == null) {
       print("'rect' and 'key' can't be both null");
       return;
@@ -106,7 +111,7 @@ class PopupMenu {
     _calculatePosition(PopupMenu.context);
 
     _entry = OverlayEntry(builder: (context) {
-      return buildPopupMenuLayout(_offset, builder(context));
+      return buildPopupMenuLayout(_offset, onPlayClick, onTafseerCallback);
     });
 
     Overlay.of(PopupMenu.context).insert(_entry);
@@ -160,7 +165,8 @@ class PopupMenu {
     return 70;
   }
 
-  Widget buildPopupMenuLayout(Offset offset, Widget widget) {
+  Widget buildPopupMenuLayout(
+      Offset offset, VoidCallback onPlayClick, VoidCallback onTafseerCallback) {
     return Material(
       color: Colors.black26,
       child: LayoutBuilder(builder: (context, constraints) {
@@ -178,7 +184,7 @@ class PopupMenu {
           onVerticalDragStart: (DragStartDetails details) {
             dismiss();
           },
-          onHorizontalDragStart: (DragStartDetails details) {
+          onPanStart: (DragStartDetails details) {
             dismiss();
           },
           child: Container(
@@ -213,7 +219,43 @@ class PopupMenu {
                               decoration: BoxDecoration(
                                   color: Theme.of(context).cardColor,
                                   borderRadius: BorderRadius.circular(8.0)),
-                              child: widget,
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  IconButton(
+                                    icon: Image.asset(
+                                        'assets/images/tafseer_aya.png',
+                                        width: 27,
+                                        height: 27,
+                                        fit: BoxFit.cover),
+                                    onPressed: () async {
+                                      dismiss();
+                                      onTafseerCallback();
+                                    },
+                                  ),
+                                  IconButton(
+                                    iconSize: 31,
+                                    color: Theme.of(context).primaryColor,
+                                    icon: Icon(Icons.play_circle_fill),
+                                    onPressed: () {
+                                      dismiss();
+                                      onPlayClick();
+                                    },
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8, bottom: 8),
+                                    child: VerticalDivider(
+                                      width: 1,
+                                    ),
+                                  ),
+                                  ToggleableFontOptions.normal(false),
+                                  ToggleableFontOptions.large(true),
+                                  ToggleableFontOptions.bold(true)
+                                ],
+                              ),
                             )),
                       ],
                     ),

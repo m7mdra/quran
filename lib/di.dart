@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:get_it/get_it.dart';
-import 'package:quran/data/quran_api.dart';
+import 'package:quran/data/local/tafseer_database_client.dart';
+import 'package:quran/data/network/quran_api.dart';
+
+import 'data/local/tafseer_repository.dart';
 
 var _registrar = GetIt.instance;
 
@@ -35,6 +38,8 @@ class DependencyProvider {
       ));
     _registrar.registerSingleton(client);
     _registrar.registerSingleton(QuranApi(client));
+    _registrar.registerSingleton<TafseerRepository>(TafseerDataBaseClient());
+    _registrar.registerSingleton<TafseerDataBaseClient>(TafseerDataBaseClient());
   }
 
   static T provide<T>() {

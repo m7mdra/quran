@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/model/surah_response.dart';
 import 'package:quran/di.dart';
 import 'package:quran/juz_surah/surahs/bloc/bloc.dart';
-import 'package:quran/sura_page.dart';
+import 'package:quran/surah_details_page.dart';
 
 class SurahsPage extends StatefulWidget {
   @override
@@ -24,7 +24,7 @@ class _SurahsPageState extends State<SurahsPage>
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => SurahPage(
+                      builder: (context) => SurahDetailsPage(
                             surah: surah,
                           )));
             },
@@ -124,6 +124,7 @@ class _IndexedSurahWidgetState extends State<IndexedSurahWidget>
 
   @override
   Widget build(BuildContext context) {
+
     super.build(context);
     return BlocBuilder(
       cubit: _bloc,
@@ -131,10 +132,11 @@ class _IndexedSurahWidgetState extends State<IndexedSurahWidget>
         return ListTile(
             trailing: _trailingWidgetForState(state),
             dense: true,
-            onTap:
-                state is SurahSuccessState ? (){
-                  widget.onPress(state.surah);
-                } : null,
+            onTap: state is SurahSuccessState
+                ? () {
+                    widget.onPress(state.surah);
+                  }
+                : null,
             leading: Text("﴿${widget.index}﴾",
                 style: TextStyle(
                   fontFamily: 'Al-QuranAlKareem',

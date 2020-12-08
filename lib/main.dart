@@ -1,15 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:quran/data/local/tafseer_database_client.dart';
 import 'package:quran/data/model/surah_response.dart';
-import 'package:quran/data/quran_api.dart';
+import 'package:quran/data/network/quran_api.dart';
 import 'package:quran/di.dart';
 import 'package:quran/home_page.dart';
+import 'package:quran/juz_surah/surahs_juzes_page.dart';
 import 'package:quran/splash_page.dart';
 
-import 'data/model/juz_response.dart';
 
 main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await DependencyProvider.build();
+  await DependencyProvider.provide<TafseerDataBaseClient>().initDatabase();
   runApp(MyApp());
 }
 
@@ -71,7 +74,7 @@ class MyApp extends StatelessWidget {
             iconTheme: IconThemeData().copyWith(color: Colors.white)),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SplashPage(),
+      home: SurahsJuzesPage(),
     );
   }
 }

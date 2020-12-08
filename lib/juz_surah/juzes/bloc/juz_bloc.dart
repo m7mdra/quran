@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quran/data/quran_api.dart';
+import 'package:quran/data/network/quran_api.dart';
 
 import 'juz_event.dart';
 import 'juz_state.dart';
