@@ -33,7 +33,7 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
           ? PreferredSize(child: Container(), preferredSize: Size.zero)
           : IslamicAppBar(
               context: context,
-              title: 'سورة البقرة',
+              title: widget.surah.name,
               height: 56,
               actions: [
                 IconButton(
@@ -52,7 +52,9 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
         padding: const EdgeInsets.all(16),
         child: Text.rich(
           TextSpan(
-              text: "",
+              text: widget.surah.number == 1
+                  ? ''
+                  : "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيم \n",
               semanticsLabel: 'semanticsLabel',
               style: TextStyle(
                   fontFamily: 'alquran',
@@ -60,7 +62,8 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
                   fontWeight: FontWeight.bold),
               children: widget.surah.ayahs
                   .map((e) => TextSpan(
-                      text: "${e.text} ﴿${e.numberInSurah}﴾",
+                      text:
+                          "${widget.surah.number == 1 ? e.text : e.text.replaceFirst("بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
                       semanticsLabel: 'semanticsLabel',
                       recognizer: DoubleTapGestureRecognizer()
                         ..onDoubleTapDown = (tapDown) {
@@ -69,9 +72,7 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
                   .toList()),
           semanticsLabel: 'semanticsLabel',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontStyle: FontStyle.normal,
-          ),
+
           softWrap: true,
           textDirection: TextDirection.rtl,
         ),
@@ -82,51 +83,53 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
   void showContextMenuAt(TapDownDetails tapDown, BuildContext context, Ayah e) {
     var rect = Rect.fromCircle(center: tapDown.globalPosition, radius: 0);
     var popMenu = PopupMenu(context: context);
-    popMenu.show(rect: rect,onPlayClick: (){
-
-    },onTafseerCallback: ()async{
-     var tafseer = await  tafseerProvider.getSingleTafseer(e.number);
-     showTafseerDialog(tafseer);
-    });
+    popMenu.show(
+        rect: rect,
+        onPlayClick: () {},
+        onTafseerCallback: () async {
+          var tafseer = await tafseerProvider.getSingleTafseer(e.number);
+          showTafseerDialog(tafseer);
+        });
   }
-  showTafseerDialog(Tafseer tafseer){
-  return  showDialog(
+
+  showTafseerDialog(Tafseer tafseer) {
+    return showDialog(
         context: context,
         builder: (context) {
           return Center(
               child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16)),
-                margin: const EdgeInsets.all(16),
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text("التفسير الميَّسر",
-                          style: TextStyle(
-                              fontFamily: 'Cairo',
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal)),
-                      Divider(),
-                      Text(tafseer.ayaInfo,
-                          style: TextStyle(
-                            fontFamily: 'Cairo',
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                          )),
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: Text('اغلاق'),
-                      )
-                    ],
-                  ),
-                ),
-              ));
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            margin: const EdgeInsets.all(16),
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text("التفسير الميَّسر",
+                      style: TextStyle(
+                          fontFamily: 'Cairo',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.normal)),
+                  Divider(),
+                  Text(tafseer.ayaInfo,
+                      style: TextStyle(
+                        fontFamily: 'Cairo',
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      )),
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('اغلاق'),
+                  )
+                ],
+              ),
+            ),
+          ));
         });
   }
 
