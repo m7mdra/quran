@@ -8,6 +8,7 @@ import 'package:quran/data/model/tafseer.dart';
 import 'package:quran/main.dart';
 import 'package:quran/popup_menu.dart';
 
+import 'data/local/readers_provider.dart';
 import 'data/model/surah_response.dart';
 import 'di.dart';
 
@@ -44,7 +45,9 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
                 ),
                 IconButton(
                   icon: Icon(Icons.share),
-                  onPressed: () {},
+                  onPressed: () {
+                    showReadersDialog();
+                  },
                 ),
               ],
             ),
@@ -72,12 +75,38 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
                   .toList()),
           semanticsLabel: 'semanticsLabel',
           textAlign: TextAlign.center,
-
           softWrap: true,
           textDirection: TextDirection.rtl,
         ),
       ),
     );
+  }
+
+  showReadersDialog() async {
+    var readers = await ReadersProvider().load();
+    showDialog(
+        context: context,
+        builder: (context) {
+
+          return Dialog(
+
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                var reader = readers.data[index];
+                return ListTile(
+                  dense: false,
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
+                  title: Text(reader.name),
+                  subtitle: Text(reader.englishName),
+                );
+              },
+              itemCount: readers.data.length,
+            ),
+          );
+        });
   }
 
   void showContextMenuAt(TapDownDetails tapDown, BuildContext context, Ayah e) {
