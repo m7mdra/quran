@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/model/surah_response.dart';
 import 'package:quran/di.dart';
 import 'package:quran/juz_surah/surahs/bloc/bloc.dart';
-import 'package:quran/surah_details_page.dart';
+import 'package:quran/surah_details/surah_details_page.dart';
 
 class SurahsPage extends StatefulWidget {
   @override

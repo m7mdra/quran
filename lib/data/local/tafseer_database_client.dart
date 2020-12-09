@@ -59,25 +59,33 @@ class TafseerDataBaseClient implements TafseerRepository {
 
   @override
   Future<Tafseer> getSingleTafseer(int ayahId) async {
-    var db = await database;
-    var query = await db
-        .rawQuery("SELECT  * FROM moyassar_ayat_Test WHERE AyaID = $ayahId");
-    List<Tafseer> list = [];
-    query.forEach((element) {
-      list.add(Tafseer.fromMap(element));
-    });
-    return list.first;
+    try {
+      var db = await database;
+      var query = await db
+          .rawQuery("SELECT  * FROM moyassar_ayat_Test WHERE AyaID = $ayahId");
+      List<Tafseer> list = [];
+      query.forEach((element) {
+        list.add(Tafseer.fromMap(element));
+      });
+      return list.first;
+    } catch (error) {
+      throw error;
+    }
   }
 
   @override
   Future<List<Tafseer>> getSurahTafseer(int start, int end) async {
-    var db = await database;
-    var query = await db.rawQuery(
-        "SELECT * FROM moyassar_ayat_Test WHERE AyaID  BETWEEN $start AND $end;  ");
-    List<Tafseer> list = [];
-    query.forEach((element) {
-      list.add(Tafseer.fromMap(element));
-    });
-    return list;
+    try {
+      var db = await database;
+      var query = await db.rawQuery(
+          "SELECT * FROM moyassar_ayat_Test WHERE AyaID  BETWEEN $start AND $end;  ");
+      List<Tafseer> list = [];
+      query.forEach((element) {
+        list.add(Tafseer.fromMap(element));
+      });
+      return list;
+    } catch (error) {
+      throw error;
+    }
   }
 }

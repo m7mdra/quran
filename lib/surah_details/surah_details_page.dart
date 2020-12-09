@@ -1,16 +1,18 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:quran/data/local/tafseer_repository.dart';
 import 'package:quran/data/model/juz_response.dart';
-import 'package:quran/data/model/tafseer.dart';
 import 'package:quran/main.dart';
 import 'package:quran/popup_menu.dart';
+import 'package:quran/surah_details/bloc/tafseer/tafseer_bloc.dart';
+import 'package:quran/surah_details/bloc/tafseer/tafseer_event.dart';
+import 'package:quran/surah_details/bloc/tafseer/tafseer_state.dart';
 
-import 'data/local/readers_provider.dart';
-import 'data/model/surah_response.dart';
-import 'di.dart';
+import '../data/local/readers_provider.dart';
+import '../data/model/surah_response.dart';
+import '../di.dart';
 
 class SurahDetailsPage extends StatefulWidget {
   final Surah surah;
@@ -24,7 +26,14 @@ class SurahDetailsPage extends StatefulWidget {
 class _SurahDetailsPageState extends State<SurahDetailsPage>
     with TickerProviderStateMixin {
   var hideControls = false;
-  var tafseerProvider = DependencyProvider.provide<TafseerRepository>();
+  TafseerBloc _tafseerBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _tafseerBloc = TafseerBloc(DependencyProvider.provide());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,16 +96,16 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     showDialog(
         context: context,
         builder: (context) {
-
           return Dialog(
-
             child: ListView.builder(
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 var reader = readers.data[index];
                 return ListTile(
+                  selected: index == 1,
                   dense: false,
-                  onTap: (){
+                  trailing: index == 1 ? Icon(Icons.check_box) : null,
+                  onTap: () {
                     Navigator.pop(context);
                   },
                   title: Text(reader.name),
@@ -116,49 +125,72 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
         rect: rect,
         onPlayClick: () {},
         onTafseerCallback: () async {
-          var tafseer = await tafseerProvider.getSingleTafseer(e.number);
-          showTafseerDialog(tafseer);
+          _tafseerBloc.add(LoadTafseerForAyah(e.number));
+          showTafseerDialog();
         });
   }
 
-  showTafseerDialog(Tafseer tafseer) {
+  showTafseerDialog() {
     return showDialog(
         context: context,
         builder: (context) {
           return Center(
-              child: Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            margin: const EdgeInsets.all(16),
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("التفسير الميَّسر",
-                      style: TextStyle(
-                          fontFamily: 'Cairo',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal)),
-                  Divider(),
-                  Text(tafseer.ayaInfo,
-                      style: TextStyle(
-                        fontFamily: 'Cairo',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      )),
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('اغلاق'),
-                  )
-                ],
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
+              margin: const EdgeInsets.all(16),
+              child: BlocBuilder(
+                cubit: _tafseerBloc,
+                builder: (context, state) {
+                  if (state is TafseerForAyahLoadedState) {
+                    return SingleChildScrollView(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text("التفسير الميَّسر",
+                              style: TextStyle(
+                                  fontFamily: 'Cairo',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal)),
+                          Divider(),
+                          Text(state.tafseer.ayaInfo,
+                              style: TextStyle(
+                                fontFamily: 'Cairo',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                              )),
+                          FlatButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('اغلاق'),
+                          )
+                        ],
+                      ),
+                    );
+                  } else if (state is TafseerErrorState) {
+                    return Padding(
+                      padding: const EdgeInsets.all(48.0),
+                      child: Text(
+                        'فشل ايجاد تفسير للاية',
+                        style: TextStyle(
+                            color: Theme.of(context).errorColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    );
+                  } else
+                    return Padding(
+                      padding: const EdgeInsets.all(48.0),
+                      child: CircularProgressIndicator(),
+                    );
+                },
               ),
             ),
-          ));
+          );
         });
   }
 

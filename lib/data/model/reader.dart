@@ -1,8 +1,7 @@
 class Readers {
   List<Data> data;
 
-  Readers({
-      this.data});
+  Readers({this.data});
 
   Readers.fromJson(dynamic json) {
     if (json["data"] != null) {
@@ -20,7 +19,6 @@ class Readers {
     }
     return map;
   }
-
 }
 
 class Data {
@@ -30,16 +28,16 @@ class Data {
   String englishName;
   String format;
   String type;
-  dynamic direction;
 
-  Data({
-      this.identifier, 
-      this.language, 
-      this.name, 
-      this.englishName, 
-      this.format, 
-      this.type, 
-      this.direction});
+  bool isSelected(String id) => id == identifier;
+
+  Data(
+      {this.identifier,
+      this.language,
+      this.name,
+      this.englishName,
+      this.format,
+      this.type});
 
   Data.fromJson(dynamic json) {
     identifier = json["identifier"];
@@ -48,7 +46,6 @@ class Data {
     englishName = json["englishName"];
     format = json["format"];
     type = json["type"];
-    direction = json["direction"];
   }
 
   Map<String, dynamic> toJson() {
@@ -59,8 +56,6 @@ class Data {
     map["englishName"] = englishName;
     map["format"] = format;
     map["type"] = type;
-    map["direction"] = direction;
     return map;
   }
-
 }
