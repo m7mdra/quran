@@ -34,7 +34,7 @@ dependencies:
   flutter_svg: ^0.19.1
   flutter_staggered_grid_view: "^0.3.2"
   shared_preferences: ^0.5.12+4
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -53,6 +53,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/images/readers_images/
     - assets/data/QuranData.sqlite
     - assets/data/readers.json
   #   - images/a_dot_ham.jpeg

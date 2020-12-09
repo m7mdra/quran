@@ -178,47 +178,95 @@ class ReadersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: BlocBuilder(
-        cubit: context.bloc<ReadersBloc>(),
-        builder: (BuildContext context, state) {
-          if (state is ReadersLoadedState) {
-            var list = state.list;
-            return ListView.builder(
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                var reader = list[index];
-                return ListTile(
-                  selected: reader.isSelect,
-                  dense: false,
-                  trailing: reader.isSelect ? Icon(Icons.check_box) : null,
-                  onTap: () {
-                    context.bloc<ReadersBloc>().add(SetDefaultReader(reader));
-                    Navigator.pop(context);
-                  },
-                  title: Text(reader.name),
-                  subtitle: Text(reader.englishName),
-                );
+      child: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              onChanged: (query){
+                context.bloc<ReadersBloc>().add(FindReaderByKeyword(query));
               },
-              itemCount: list.length,
-            );
-          } else if (state is ReadersErrorState) {
-            return Padding(
-              padding: const EdgeInsets.all(48.0),
-              child: Text(
-                'فشل تحميل القارئين ',
-                style: TextStyle(
-                    color: Theme.of(context).errorColor,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700),
-              ),
-            );
-          } else {
-            return Padding(
-              padding: const EdgeInsets.all(48.0),
-              child: CircularProgressIndicator(),
-            );
-          }
-        },
+              decoration: InputDecoration(
+                  hintText: "بحث باسم القارئ", suffixIcon: Icon(Icons.search)),
+            ),
+          ),
+          BlocBuilder(
+            cubit: context.bloc<ReadersBloc>(),
+            builder: (BuildContext context, state) {
+              if (state is ReadersLoadedState) {
+                var list = state.list;
+                return ListView.builder(
+                  primary: false,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    var reader = list[index];
+                    return ListTile(
+                      leading: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage(
+                                        "assets/images/readers_images/${reader.identifier}.jpg"))),
+                          ),
+                          VerticalDivider(),
+                        ],
+                      ),
+                      selected: reader.isSelect,
+                      dense: false,
+                      trailing: reader.isSelect ? Icon(Icons.check_box) : null,
+                      onTap: () {
+                        context
+                            .bloc<ReadersBloc>()
+                            .add(SetDefaultReader(reader));
+                        Navigator.pop(context);
+                      },
+                      title: Text(reader.name),
+                      subtitle: Text(reader.englishName),
+                    );
+                  },
+                  itemCount: list.length,
+                );
+              } else if (state is ReadersErrorState) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(48.0),
+                    child: Text(
+                      'فشل تحميل القارئين ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Theme.of(context).errorColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                );
+              } else if (state is ReadersEmptyState) {
+                return  Padding(
+                  padding: const EdgeInsets.all(48.0),
+                  child: Text(
+                    'لم يتم ايجاد قارئيين بمفتاح البحث',
+                    textAlign: TextAlign.center,
+
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700),
+                  ),
+                );
+              } else {
+                return Padding(
+                  padding: const EdgeInsets.all(48.0),
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
+        ],
       ),
     );
   }

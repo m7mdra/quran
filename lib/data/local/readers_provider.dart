@@ -4,11 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:quran/data/model/reader.dart';
 
 class ReadersProvider {
-  Future<Readers> load() async {
+  Future<List<Reader>> load() async {
     try {
       var jsonData =
           await rootBundle.loadString("assets/data/readers.json", cache: true);
-      return Readers.fromJson(jsonDecode(jsonData));
+      return Readers.fromJson(jsonDecode(jsonData)).list;
     } catch (error) {
       throw error;
     }
