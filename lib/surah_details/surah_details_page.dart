@@ -12,9 +12,7 @@ import 'package:quran/surah_details/bloc/tafseer/tafseer_bloc.dart';
 import 'package:quran/surah_details/bloc/tafseer/tafseer_event.dart';
 import 'package:quran/surah_details/bloc/tafseer/tafseer_state.dart';
 
-import '../data/local/readers_provider.dart';
 import '../data/model/surah_response.dart';
-import '../di.dart';
 import 'bloc/readers/readers_bloc.dart';
 
 class SurahDetailsPage extends StatefulWidget {
@@ -29,22 +27,10 @@ class SurahDetailsPage extends StatefulWidget {
 class _SurahDetailsPageState extends State<SurahDetailsPage>
     with TickerProviderStateMixin {
   var hideControls = false;
-  TafseerBloc _tafseerBloc;
-  ReadersBloc _readersBloc;
 
   @override
   void initState() {
     super.initState();
-    _tafseerBloc = TafseerBloc(DependencyProvider.provide());
-    _readersBloc =
-        ReadersBloc(DependencyProvider.provide(), DependencyProvider.provide());
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _tafseerBloc.close();
-    _readersBloc.close();
   }
 
   @override
@@ -54,25 +40,22 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
       appBar: hideControls
           ? PreferredSize(child: Container(), preferredSize: Size.zero)
           : IslamicAppBar(
-        context: context,
-        title: widget.surah.name,
-        height: 56,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              displayModalBottomSheet(context);
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: () {
-             _readersBloc.add(LoadReaders());
-             showReadersDialog();
-            },
-          ),
-        ],
-      ),
+              context: context,
+              title: widget.surah.name,
+              height: 56,
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    displayModalBottomSheet(context);
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.share),
+                  onPressed: () {},
+                ),
+              ],
+            ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Text.rich(
@@ -86,13 +69,9 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
                   fontSize: 23,
                   fontWeight: FontWeight.bold),
               children: widget.surah.ayahs
-                  .map((e) =>
-                  TextSpan(
+                  .map((e) => TextSpan(
                       text:
-                      "${widget.surah.number == 1 ? e.text : e.text
-                          .replaceFirst(
-                          "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", "")} ﴿${e
-                          .numberInSurah}﴾",
+                          "${widget.surah.number == 1 ? e.text : e.text.replaceFirst("بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
                       semanticsLabel: 'semanticsLabel',
                       recognizer: DoubleTapGestureRecognizer()
                         ..onDoubleTapDown = (tapDown) {
@@ -108,14 +87,6 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     );
   }
 
-  showReadersDialog() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return ReadersWidget(readersBloc: _readersBloc);
-        });
-  }
-
   void showContextMenuAt(TapDownDetails tapDown, BuildContext context, Ayah e) {
     var rect = Rect.fromCircle(center: tapDown.globalPosition, radius: 0);
     var popMenu = PopupMenu(context: context);
@@ -123,7 +94,7 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
         rect: rect,
         onPlayClick: () {},
         onTafseerCallback: () async {
-          _tafseerBloc.add(LoadTafseerForAyah(e.number));
+          context.bloc<TafseerBloc>().add(LoadTafseerForAyah(e.number));
           showTafseerDialog();
         });
   }
@@ -138,7 +109,7 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
                   borderRadius: BorderRadius.circular(16)),
               margin: const EdgeInsets.all(16),
               child: BlocBuilder(
-                cubit: _tafseerBloc,
+                cubit: context.bloc<TafseerBloc>(),
                 builder: (context, state) {
                   if (state is TafseerForAyahLoadedState) {
                     return SingleChildScrollView(
@@ -175,9 +146,7 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
                       child: Text(
                         'فشل ايجاد تفسير للاية',
                         style: TextStyle(
-                            color: Theme
-                                .of(context)
-                                .errorColor,
+                            color: Theme.of(context).errorColor,
                             fontSize: 18,
                             fontWeight: FontWeight.w700),
                       ),
@@ -200,28 +169,21 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
         barrierColor: Colors.transparent,
         context: context,
         builder: (BuildContext bc) {
-          return SuraInfoModalSheet();
+          return SuraInfoModalSheet(surah: widget.surah);
         });
   }
 }
 
 class ReadersWidget extends StatelessWidget {
-  const ReadersWidget({
-    Key key,
-    @required ReadersBloc readersBloc,
-  }) : _readersBloc = readersBloc, super(key: key);
-
-  final ReadersBloc _readersBloc;
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
       child: BlocBuilder(
-        cubit: _readersBloc,
+        cubit: context.bloc<ReadersBloc>(),
         builder: (BuildContext context, state) {
-          if(state is ReadersLoadedState){
+          if (state is ReadersLoadedState) {
             var list = state.list;
-           return ListView.builder(
+            return ListView.builder(
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 var reader = list[index];
@@ -230,8 +192,8 @@ class ReadersWidget extends StatelessWidget {
                   dense: false,
                   trailing: reader.isSelect ? Icon(Icons.check_box) : null,
                   onTap: () {
-                    _readersBloc.add(SetDefaultReader(reader));
-                    // Navigator.pop(context);
+                    context.bloc<ReadersBloc>().add(SetDefaultReader(reader));
+                    Navigator.pop(context);
                   },
                   title: Text(reader.name),
                   subtitle: Text(reader.englishName),
@@ -239,37 +201,35 @@ class ReadersWidget extends StatelessWidget {
               },
               itemCount: list.length,
             );
-          }
-          else if(state is ReadersErrorState){
+          } else if (state is ReadersErrorState) {
             return Padding(
               padding: const EdgeInsets.all(48.0),
               child: Text(
                 'فشل تحميل القارئين ',
                 style: TextStyle(
-                    color: Theme
-                        .of(context)
-                        .errorColor,
+                    color: Theme.of(context).errorColor,
                     fontSize: 18,
                     fontWeight: FontWeight.w700),
               ),
             );
-          }
-          else{
+          } else {
             return Padding(
               padding: const EdgeInsets.all(48.0),
               child: CircularProgressIndicator(),
             );
           }
         },
-
       ),
     );
   }
 }
 
 class SuraInfoModalSheet extends StatefulWidget {
+  final Surah surah;
+
   const SuraInfoModalSheet({
     Key key,
+    @required this.surah,
   }) : super(key: key);
 
   @override
@@ -332,14 +292,26 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
                       SuraOptions(
                         title: 'حفظ الصفحة',
                         image: 'assets/images/bookmark_sura.svg',
+                        onTap: () {},
                       ),
                       SuraOptions(
                         title: 'التفسير الميسر',
                         image: 'assets/images/tafseer.svg',
+                        onTap: () {
+                          var list = widget.surah.ayahs;
+                          context.bloc<TafseerBloc>().add(LoadTafseerForSurah(
+                              list.first.number, list.last.number));
+                        },
                       ),
                       SuraOptions(
                         title: 'إختيار القارئ',
                         image: 'assets/images/choose_reader.svg',
+                        onTap: () {
+                          context.read<ReadersBloc>().add(LoadReaders());
+                          showDialog(
+                              context: context,
+                              builder: (context) => ReadersWidget());
+                        },
                       ),
                     ],
                   )
@@ -360,22 +332,31 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
 class SuraOptions extends StatelessWidget {
   final String image;
   final String title;
+  final VoidCallback onTap;
 
-  const SuraOptions({Key key, this.image, this.title}) : super(key: key);
+  const SuraOptions({Key key, this.image, this.title, this.onTap})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        SvgPicture.asset(image),
-        Text(title,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              fontStyle: FontStyle.normal,
-            ))
-      ],
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(image),
+            Text(title,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  fontStyle: FontStyle.normal,
+                ))
+          ],
+        ),
+      ),
     );
   }
 }
@@ -402,7 +383,7 @@ class PlayButtonWidget extends StatelessWidget {
             color: Colors.white,
           ),
           decoration:
-          BoxDecoration(color: Color(0xff95B93E), shape: BoxShape.circle),
+              BoxDecoration(color: Color(0xff95B93E), shape: BoxShape.circle),
         ),
       ],
     );
@@ -468,19 +449,13 @@ class ToggleableFontOptions extends StatelessWidget {
   }
 
   Color _borderColor(BuildContext context) {
-    return isSelected ? Color(0xff9CBD17) : Theme
-        .of(context)
-        .dividerColor;
+    return isSelected ? Color(0xff9CBD17) : Theme.of(context).dividerColor;
   }
 
   Color _textColor(BuildContext context) {
     return isSelected
         ? Color(0xff9CBD17)
-        : Theme
-        .of(context)
-        .textTheme
-        .bodyText1
-        .color;
+        : Theme.of(context).textTheme.bodyText1.color;
   }
 
   @override

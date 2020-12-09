@@ -1,14 +1,14 @@
-abstract class TafseerEvent{}
+abstract class TafseerEvent {}
 
-class LoadTafseerForAyah extends TafseerEvent{
+class LoadTafseerForAyah extends TafseerEvent {
   final int ayahId;
 
   LoadTafseerForAyah(this.ayahId);
-
 }
-class LoadTafseerForSurah extends TafseerEvent{
-  final int surahId;
 
-  LoadTafseerForSurah(this.surahId);
+class LoadTafseerForSurah extends TafseerEvent {
+  final int start;
+  final int end;
 
+  LoadTafseerForSurah(this.start, this.end);
 }

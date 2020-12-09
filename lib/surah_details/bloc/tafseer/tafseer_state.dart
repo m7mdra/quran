@@ -16,4 +16,9 @@ class TafseerForSurahLoadedState extends TafseerState {
   final List<Tafseer> list;
 
   TafseerForSurahLoadedState(this.list);
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "TafseerForSurahLoadedState ${list.length}";
+  }
 }

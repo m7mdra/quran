@@ -1,13 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
-import 'package:quran/data/model/surah_response.dart';
-import 'package:quran/data/network/quran_api.dart';
 import 'package:quran/di.dart';
-import 'package:quran/home_page.dart';
 import 'package:quran/juz_surah/surahs_juzes_page.dart';
-import 'package:quran/splash_page.dart';
+import 'package:quran/surah_details/bloc/readers/readers_bloc.dart';
+import 'package:quran/surah_details/bloc/tafseer/tafseer_bloc.dart';
 
 class BlocTransitionObserver implements BlocObserver {
   @override
@@ -39,7 +38,6 @@ class BlocTransitionObserver implements BlocObserver {
   void onTransition(Bloc bloc, Transition<dynamic, dynamic> transition) {
     print("${bloc.runtimeType} Transition: $transition");
   }
-
 }
 
 main() async {
@@ -65,7 +63,7 @@ const MaterialColor _swatch = MaterialColor(_swatchPrimaryValue, <int, Color>{
 const int _swatchPrimaryValue = 0xFF9CBD17;
 
 const MaterialColor swatchAccent =
-MaterialColor(_swatchAccentValue, <int, Color>{
+    MaterialColor(_swatchAccentValue, <int, Color>{
   100: Color(0xFFECFFC5),
   200: Color(_swatchAccentValue),
   400: Color(0xFFCBFF5F),
@@ -79,7 +77,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       themeMode: ThemeMode.dark,
       builder: (context, widget) {
-        return Directionality(textDirection: TextDirection.rtl, child: widget);
+        return MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                  create: (context) => ReadersBloc(DependencyProvider.provide(),
+                      DependencyProvider.provide())),
+              BlocProvider(
+                  create: (context) =>
+                      TafseerBloc(DependencyProvider.provide()))
+            ],
+            child: Directionality(
+                textDirection: TextDirection.rtl, child: widget));
       },
       title: 'Flutter Demo',
       darkTheme: ThemeData(
@@ -121,17 +129,17 @@ class IslamicAppBar extends AppBar {
     PreferredSizeWidget bottom,
     List<Widget> actions,
   }) : super(
-      toolbarHeight: height,
-      actions: actions,
-      bottom: bottom,
-      title: Text(title,
-          style: const TextStyle(
-              color: const Color(0xffffffff),
-              fontWeight: FontWeight.w700,
-              fontFamily: "cairo",
-              fontSize: 18)),
-      flexibleSpace: Image.asset(
-        'assets/images/appbar_background.png',
-        fit: BoxFit.fitWidth,
-      ));
+            toolbarHeight: height,
+            actions: actions,
+            bottom: bottom,
+            title: Text(title,
+                style: const TextStyle(
+                    color: const Color(0xffffffff),
+                    fontWeight: FontWeight.w700,
+                    fontFamily: "cairo",
+                    fontSize: 18)),
+            flexibleSpace: Image.asset(
+              'assets/images/appbar_background.png',
+              fit: BoxFit.fitWidth,
+            ));
 }
