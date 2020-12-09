@@ -1,3 +1,4 @@
+import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
@@ -8,9 +9,42 @@ import 'package:quran/home_page.dart';
 import 'package:quran/juz_surah/surahs_juzes_page.dart';
 import 'package:quran/splash_page.dart';
 
+class BlocTransitionObserver implements BlocObserver {
+  @override
+  void onChange(Cubit<dynamic> cubit, Change<dynamic> change) {
+    print("onChange ${cubit.runtimeType} change: $change");
+  }
+
+  @override
+  void onClose(Cubit<dynamic> cubit) {
+    print("onCreate ${cubit.runtimeType}");
+  }
+
+  @override
+  void onCreate(Cubit<dynamic> cubit) {
+    print("onCreate ${cubit.runtimeType}");
+  }
+
+  @override
+  void onError(Cubit cubit, Object error, StackTrace stackTrace) {
+    print("${cubit.runtimeType} Error: $error $stackTrace");
+  }
+
+  @override
+  void onEvent(Bloc<dynamic, dynamic> bloc, Object event) {
+    print("${bloc.runtimeType} EVENT: $event");
+  }
+
+  @override
+  void onTransition(Bloc bloc, Transition<dynamic, dynamic> transition) {
+    print("${bloc.runtimeType} Transition: $transition");
+  }
+
+}
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = BlocTransitionObserver();
   await DependencyProvider.build();
   await DependencyProvider.provide<TafseerDataBaseClient>().initDatabase();
   runApp(MyApp());

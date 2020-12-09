@@ -1,37 +1,38 @@
 class Readers {
-  List<Data> data;
+  List<Reader> list;
 
-  Readers({this.data});
+  Readers({this.list});
 
   Readers.fromJson(dynamic json) {
     if (json["data"] != null) {
-      data = [];
+      list = [];
       json["data"].forEach((v) {
-        data.add(Data.fromJson(v));
+        list.add(Reader.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    if (data != null) {
-      map["data"] = data.map((v) => v.toJson()).toList();
+    if (list != null) {
+      map["data"] = list.map((v) => v.toJson()).toList();
     }
     return map;
   }
 }
 
-class Data {
+class Reader {
   String identifier;
   String language;
   String name;
   String englishName;
   String format;
   String type;
+  bool isSelect = false;
 
   bool isSelected(String id) => id == identifier;
 
-  Data(
+  Reader(
       {this.identifier,
       this.language,
       this.name,
@@ -39,7 +40,7 @@ class Data {
       this.format,
       this.type});
 
-  Data.fromJson(dynamic json) {
+  Reader.fromJson(dynamic json) {
     identifier = json["identifier"];
     language = json["language"];
     name = json["name"];

@@ -1,8 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:get_it/get_it.dart';
+import 'package:quran/data/local/preference.dart';
+import 'package:quran/data/local/readers_provider.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
 import 'package:quran/data/network/quran_api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/local/tafseer_repository.dart';
 
@@ -36,10 +39,17 @@ class DependencyProvider {
         responseBody: true,
         responseHeader: true,
       ));
+    SharedPreferences sharePreference = await SharedPreferences.getInstance();
+    var readersProvider = ReadersProvider();
     _registrar.registerSingleton(client);
     _registrar.registerSingleton(QuranApi(client));
     _registrar.registerSingleton<TafseerRepository>(TafseerDataBaseClient());
-    _registrar.registerSingleton<TafseerDataBaseClient>(TafseerDataBaseClient());
+    _registrar.registerSingleton<ReadersProvider>(readersProvider);
+    _registrar.registerSingleton<Preference>(
+        Preference(sharePreference, readersProvider));
+
+    _registrar
+        .registerSingleton<TafseerDataBaseClient>(TafseerDataBaseClient());
   }
 
   static T provide<T>() {
