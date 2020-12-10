@@ -1,9 +1,12 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:quran/data/local/preference.dart';
 import 'package:quran/data/model/juz_response.dart';
+import 'package:quran/di.dart';
 import 'package:quran/main.dart';
 import 'package:quran/popup_menu.dart';
 import 'package:quran/surah_details/bloc/readers/readers_event.dart';
@@ -27,16 +30,52 @@ class SurahDetailsPage extends StatefulWidget {
 class _SurahDetailsPageState extends State<SurahDetailsPage>
     with TickerProviderStateMixin {
   var hideControls = false;
+  AudioPlayer _audioPlayer = AudioPlayer();
 
   @override
   void initState() {
     super.initState();
+    _audioPlayer.onPlayerStateChanged.listen((event) {
+      print(event);
+    });
+    _audioPlayer.onPlayerError.listen((event) {
+      print(event);
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _audioPlayer.stop();
+  }
+
+  Future<void> playAyah(int ayahId, String reader) async {
+    _ensureNotPlaying();
+    var url = "https://cdn.alquran.cloud/media/audio/ayah/${reader}/$ayahId";
+
+    print("playing  $url...");
+    var playStatus = await _audioPlayer.play(url);
+  }
+
+  void _ensureNotPlaying() {
+    if (_audioPlayer.state == AudioPlayerState.PLAYING) {
+      _audioPlayer.stop();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     PopupMenu.context = context;
+
     return Scaffold(
+      bottomSheet: BottomSheet(
+        onDragStart: (details){
+
+        },
+          onClosing: () {},
+          builder: (context) {
+            return SuraInfoModalSheet(surah: widget.surah);
+          }),
       appBar: hideControls
           ? PreferredSize(child: Container(), preferredSize: Size.zero)
           : IslamicAppBar(
@@ -92,7 +131,11 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     var popMenu = PopupMenu(context: context);
     popMenu.show(
         rect: rect,
-        onPlayClick: () {},
+        onPlayClick: () async {
+          var reader = await DependencyProvider.provide<Preference>().reader();
+
+          playAyah(e.number, reader.identifier);
+        },
         onTafseerCallback: () async {
           context.bloc<TafseerBloc>().add(LoadTafseerForAyah(e.number));
           showTafseerDialog();
@@ -103,64 +146,7 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     return showDialog(
         context: context,
         builder: (context) {
-          return Center(
-            child: Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
-              margin: const EdgeInsets.all(16),
-              child: BlocBuilder(
-                cubit: context.bloc<TafseerBloc>(),
-                builder: (context, state) {
-                  if (state is TafseerForAyahLoadedState) {
-                    return SingleChildScrollView(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text("التفسير الميَّسر",
-                              style: TextStyle(
-                                  fontFamily: 'Cairo',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal)),
-                          Divider(),
-                          Text(state.tafseer.ayaInfo,
-                              style: TextStyle(
-                                fontFamily: 'Cairo',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                                fontStyle: FontStyle.normal,
-                              )),
-                          FlatButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text('اغلاق'),
-                          )
-                        ],
-                      ),
-                    );
-                  } else if (state is TafseerErrorState) {
-                    return Padding(
-                      padding: const EdgeInsets.all(48.0),
-                      child: Text(
-                        'فشل ايجاد تفسير للاية',
-                        style: TextStyle(
-                            color: Theme.of(context).errorColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    );
-                  } else {
-                    return Padding(
-                      padding: const EdgeInsets.all(48.0),
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
-            ),
-          );
+          return TafseerWidget();
         });
   }
 
@@ -174,6 +160,121 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
   }
 }
 
+class TafseerWidget extends StatelessWidget {
+  const TafseerWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        margin: const EdgeInsets.all(16),
+        child: BlocBuilder(
+          cubit: context.bloc<TafseerBloc>(),
+          builder: (context, state) {
+            if (state is TafseerForSurahLoadedState) {
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text("التفسير الميَّسر",
+                        style: TextStyle(
+                            fontFamily: 'Cairo',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal)),
+                  ),
+                  Expanded(
+                    child: ListView.separated(
+                      shrinkWrap: true,
+                      itemCount: state.list.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        var tafseer = state.list[index];
+                        return ListTile(
+                          dense: true,
+                          leading: Text(
+                            "﴿${tafseer.ayaId}﴾",
+                            style: TextStyle(
+                                fontFamily: 'Al-QuranAlKareem', fontSize: 20),
+                          ),
+                          title: Text(tafseer.ayaInfo,
+                              style: TextStyle(
+                                fontFamily: 'alquran',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.normal,
+                              )),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return Divider();
+                      },
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('اغلاق'),
+                  )
+                ],
+              );
+            }
+            if (state is TafseerForAyahLoadedState) {
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("التفسير الميَّسر",
+                        style: TextStyle(
+                            fontFamily: 'Cairo',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal)),
+                    Divider(),
+                    Text(state.tafseer.ayaInfo,
+                        style: TextStyle(
+                          fontFamily: 'Cairo',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.normal,
+                        )),
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('اغلاق'),
+                    )
+                  ],
+                ),
+              );
+            } else if (state is TafseerErrorState) {
+              return Padding(
+                padding: const EdgeInsets.all(48.0),
+                child: Text(
+                  'فشل ايجاد تفسير للاية',
+                  style: TextStyle(
+                      color: Theme.of(context).errorColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700),
+                ),
+              );
+            } else {
+              return Padding(
+                padding: const EdgeInsets.all(48.0),
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
+      ),
+    );
+  }
+}
+
 class ReadersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -183,7 +284,7 @@ class ReadersWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              onChanged: (query){
+              onChanged: (query) {
                 context.bloc<ReadersBloc>().add(FindReaderByKeyword(query));
               },
               decoration: InputDecoration(
@@ -247,15 +348,12 @@ class ReadersWidget extends StatelessWidget {
                   ),
                 );
               } else if (state is ReadersEmptyState) {
-                return  Padding(
+                return Padding(
                   padding: const EdgeInsets.all(48.0),
                   child: Text(
                     'لم يتم ايجاد قارئيين بمفتاح البحث',
                     textAlign: TextAlign.center,
-
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),
                 );
               } else {
@@ -308,7 +406,7 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text("سُورة البَقَرةْ",
+                      Text(widget.surah.name,
                           style: TextStyle(
                             fontFamily: 'alquran',
                             fontSize: 18,
@@ -349,6 +447,9 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
                           var list = widget.surah.ayahs;
                           context.bloc<TafseerBloc>().add(LoadTafseerForSurah(
                               list.first.number, list.last.number));
+                          showDialog(
+                              context: context,
+                              builder: (context) => TafseerWidget());
                         },
                       ),
                       SuraOptions(

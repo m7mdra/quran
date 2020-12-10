@@ -105,6 +105,7 @@ class _JuzWidgetState extends State<JuzWidget> with AutomaticKeepAliveClientMixi
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return BlocBuilder(
       cubit: _bloc,
       builder: (BuildContext context, state) {
