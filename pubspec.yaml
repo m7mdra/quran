@@ -55,8 +55,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/readers_images/
-    - assets/data/QuranData.sqlite
-    - assets/data/readers.json
+    - assets/data/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:quran/data/local/preference.dart';
 import 'package:quran/data/local/readers_provider.dart';
-import 'package:quran/surah_details/bloc/readers/readers_event.dart';
-import 'package:quran/surah_details/bloc/readers/readers_state.dart';
+
+import 'readers_event.dart';
+import 'readers_state.dart';
 class ReadersBloc extends Bloc<ReadersEvent, ReadersState> {
   final Preference _preference;
   final ReadersProvider _provider;

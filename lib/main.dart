@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
 import 'package:quran/di.dart';
-import 'package:quran/juz_surah/surahs_juzes_page.dart';
-import 'package:quran/surah_details/bloc/readers/readers_bloc.dart';
-import 'package:quran/surah_details/bloc/tafseer/tafseer_bloc.dart';
+import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
+import 'package:quran/page/surah_details/bloc/tafseer/tafseer_bloc.dart';
+import 'package:quran/splash_page.dart';
 
 class BlocTransitionObserver implements BlocObserver {
   @override
@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.dark,
       builder: (context, widget) {
         return MultiBlocProvider(
             providers: [
@@ -116,7 +116,7 @@ class MyApp extends StatelessWidget {
             iconTheme: IconThemeData().copyWith(color: Colors.white)),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SurahsJuzesPage(),
+      home: SplashPage(),
     );
   }
 }

@@ -3,9 +3,9 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/islamics_page.dart';
 import 'package:quran/notes_bookmarks_page.dart';
+import 'package:quran/page/juz_surah/surahs_juzes_page.dart';
 
 import 'common.dart';
-import 'juz_surah/surahs_juzes_page.dart';
 
 class HomePage extends StatefulWidget {
   @override

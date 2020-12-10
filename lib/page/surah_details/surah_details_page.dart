@@ -6,17 +6,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/data/local/preference.dart';
 import 'package:quran/data/model/juz_response.dart';
+import 'package:quran/data/model/surah_response.dart';
 import 'package:quran/di.dart';
 import 'package:quran/main.dart';
 import 'package:quran/popup_menu.dart';
-import 'package:quran/surah_details/bloc/readers/readers_event.dart';
-import 'package:quran/surah_details/bloc/readers/readers_state.dart';
-import 'package:quran/surah_details/bloc/tafseer/tafseer_bloc.dart';
-import 'package:quran/surah_details/bloc/tafseer/tafseer_event.dart';
-import 'package:quran/surah_details/bloc/tafseer/tafseer_state.dart';
 
-import '../data/model/surah_response.dart';
 import 'bloc/readers/readers_bloc.dart';
+import 'bloc/readers/readers_event.dart';
+import 'bloc/readers/readers_state.dart';
+import 'bloc/tafseer/tafseer_bloc.dart';
+import 'bloc/tafseer/tafseer_event.dart';
+import 'bloc/tafseer/tafseer_state.dart';
 
 class SurahDetailsPage extends StatefulWidget {
   final Surah surah;

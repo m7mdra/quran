@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:quran/data/local/tafseer_repository.dart';
-import 'package:quran/surah_details/bloc/tafseer/tafseer_event.dart';
-import 'package:quran/surah_details/bloc/tafseer/tafseer_state.dart';
+import 'package:quran/page/surah_details/bloc/tafseer/tafseer_event.dart';
+import 'package:quran/page/surah_details/bloc/tafseer/tafseer_state.dart';
 
 class TafseerBloc extends Bloc<TafseerEvent, TafseerState> {
   final TafseerRepository _repository;

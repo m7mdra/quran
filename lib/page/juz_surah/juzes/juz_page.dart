@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/di.dart';
-import 'package:quran/juz_surah/juzes/bloc/bloc.dart';
+
+import 'bloc/bloc.dart';
+import 'bloc/juz_bloc.dart';
 
 
 

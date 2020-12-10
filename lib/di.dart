@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:quran/data/local/preference.dart';
 import 'package:quran/data/local/readers_provider.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
+import 'package:quran/data/local/zerk_provider.dart';
 import 'package:quran/data/network/quran_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,6 +46,7 @@ class DependencyProvider {
     _registrar.registerSingleton(QuranApi(client));
     _registrar.registerSingleton<TafseerRepository>(TafseerDataBaseClient());
     _registrar.registerSingleton<ReadersProvider>(readersProvider);
+    _registrar.registerSingleton<ZekrProvider>(ZekrProvider());
     _registrar.registerSingleton<Preference>(
         Preference(sharePreference, readersProvider));
 
