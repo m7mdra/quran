@@ -30,13 +30,24 @@ class SurahDetailsPage extends StatefulWidget {
 class _SurahDetailsPageState extends State<SurahDetailsPage>
     with TickerProviderStateMixin {
   var hideControls = false;
-  AudioPlayer _audioPlayer = AudioPlayer();
+  AudioPlayer _audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
+
+  int _playingAyahId = 0;
 
   @override
   void initState() {
     super.initState();
     _audioPlayer.onPlayerStateChanged.listen((event) {
-      print(event);
+      if (event == AudioPlayerState.COMPLETED) {
+        if (_playingAyahId != widget.surah.ayahs.last.number) {
+          _playingAyahId += 1;
+          playAyah(_playingAyahId);
+        } else {
+          setState(() {
+            _playingAyahId = 0;
+          });
+        }
+      }
     });
     _audioPlayer.onPlayerError.listen((event) {
       print(event);
@@ -49,12 +60,21 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     _audioPlayer.stop();
   }
 
-  Future<void> playAyah(int ayahId, String reader) async {
+  Future<void> playAyah(int ayahId) async {
+    var reader = await DependencyProvider.provide<Preference>().reader();
+
     _ensureNotPlaying();
-    var url = "https://cdn.alquran.cloud/media/audio/ayah/${reader}/$ayahId";
+    var url =
+        "https://cdn.alquran.cloud/media/audio/ayah/${reader.identifier}/$ayahId";
 
     print("playing  $url...");
+
     var playStatus = await _audioPlayer.play(url);
+    if (playStatus == 1) {
+      setState(() {
+        _playingAyahId = ayahId;
+      });
+    }
   }
 
   void _ensureNotPlaying() {
@@ -68,14 +88,6 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     PopupMenu.context = context;
 
     return Scaffold(
-      bottomSheet: BottomSheet(
-        onDragStart: (details){
-
-        },
-          onClosing: () {},
-          builder: (context) {
-            return SuraInfoModalSheet(surah: widget.surah);
-          }),
       appBar: hideControls
           ? PreferredSize(child: Container(), preferredSize: Size.zero)
           : IslamicAppBar(
@@ -109,6 +121,9 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
                   fontWeight: FontWeight.bold),
               children: widget.surah.ayahs
                   .map((e) => TextSpan(
+                      style: _playingAyahId == e.number
+                          ? TextStyle(backgroundColor: Colors.black26)
+                          : null,
                       text:
                           "${widget.surah.number == 1 ? e.text : e.text.replaceFirst("بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
                       semanticsLabel: 'semanticsLabel',
@@ -132,9 +147,7 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     popMenu.show(
         rect: rect,
         onPlayClick: () async {
-          var reader = await DependencyProvider.provide<Preference>().reader();
-
-          playAyah(e.number, reader.identifier);
+          playAyah(e.number);
         },
         onTafseerCallback: () async {
           context.bloc<TafseerBloc>().add(LoadTafseerForAyah(e.number));
