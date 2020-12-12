@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:get_it/get_it.dart';
+import 'package:quran/data/local/husn_proivder.dart';
 import 'package:quran/data/local/preference.dart';
 import 'package:quran/data/local/readers_provider.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
@@ -8,6 +9,7 @@ import 'package:quran/data/local/zerk_provider.dart';
 import 'package:quran/data/network/quran_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'data/local/husn_chapter_provider.dart';
 import 'data/local/tafseer_repository.dart';
 
 var _registrar = GetIt.instance;
@@ -47,6 +49,8 @@ class DependencyProvider {
     _registrar.registerSingleton<TafseerRepository>(TafseerDataBaseClient());
     _registrar.registerSingleton<ReadersProvider>(readersProvider);
     _registrar.registerSingleton<ZekrProvider>(ZekrProvider());
+    _registrar.registerSingleton<HusnProvider>(HusnProvider());
+    _registrar.registerSingleton<HusnChapterProvider>(HusnChapterProvider());
     _registrar.registerSingleton<Preference>(
         Preference(sharePreference, readersProvider));
 
