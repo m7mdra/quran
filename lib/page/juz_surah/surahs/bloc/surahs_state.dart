@@ -1,4 +1,3 @@
-import 'package:quran/data/model/juz_response.dart';
 import 'package:quran/data/model/surah_response.dart';
 
 abstract class SurahsState {}

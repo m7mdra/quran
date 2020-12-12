@@ -9,9 +9,6 @@ class Chapters {
     data: json["data"] == null ? null : List<Chapter>.from(json["data"].map((x) => Chapter.fromJson(x))),
   );
 
-  Map<String, dynamic> toJson() => {
-    "data": data == null ? null : List<dynamic>.from(data.map((x) => x.toJson())),
-  };
 }
 
 class Chapter {
@@ -28,8 +25,5 @@ class Chapter {
     title: json["title"] == null ? null : json["title"],
   );
 
-  Map<String, dynamic> toJson() => {
-    "id": id == null ? null : id,
-    "id": title == null ? null : title,
-  };
+
 }

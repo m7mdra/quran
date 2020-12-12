@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/main.dart';
 import 'package:quran/page/husn_muslim/husn_muslim_page.dart';
 import 'package:quran/page/morning_zekr/morning_zekr_page.dart';
+import 'package:quran/page/musbaha/musbaha_page.dart';
 import 'package:quran/page/night_zekr/night_zekr_page.dart';
 import 'package:quran/page/post_prayer_zekr/post_prayer_zekr_page.dart';
 
@@ -62,6 +63,10 @@ class _IslamicsPageState extends State<IslamicsPage> {
                 if(index==4){
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => HusnMuslimPage()));
+                }
+                if(index==5){
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MusbahaPage()));
                 }
               },
               child: Column(

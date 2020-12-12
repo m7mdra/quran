@@ -47,6 +47,7 @@ class DependencyProvider {
     _registrar.registerSingleton(client);
     _registrar.registerSingleton(QuranApi(client));
     _registrar.registerSingleton<TafseerRepository>(TafseerDataBaseClient());
+    _registrar.registerSingletonAsync(() => SharedPreferences.getInstance());
     _registrar.registerSingleton<ReadersProvider>(readersProvider);
     _registrar.registerSingleton<ZekrProvider>(ZekrProvider());
     _registrar.registerSingleton<HusnProvider>(HusnProvider());

@@ -50,7 +50,6 @@ class PopupMenu {
   static var itemHeight = 65.0;
   static var arrowHeight = 10.0;
   OverlayEntry _entry;
-  OverlayEntry _barrierEntry;
 
   /// The left top point of this menu.
   Offset _offset;
@@ -70,8 +69,6 @@ class PopupMenu {
   /// Cannot be null
   static BuildContext context;
 
-  /// style
-  Color _backgroundColor;
 
   /// It's showing or not.
   bool _isShow = false;
@@ -88,7 +85,6 @@ class PopupMenu {
     this.onClickMenu = onClickMenu;
     this.dismissCallback = onDismiss;
     this.stateChanged = stateChanged;
-    this._backgroundColor = backgroundColor ?? Color(0xff232323);
     if (context != null) {
       PopupMenu.context = context;
     }

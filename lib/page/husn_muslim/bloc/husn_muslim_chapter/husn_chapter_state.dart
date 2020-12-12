@@ -1,6 +1,4 @@
-import 'package:quran/data/model/husn.dart';
 import 'package:quran/data/model/husn_chapter.dart';
-import 'package:quran/data/model/zekr.dart';
 
 abstract class HusnChapterState {}
 
