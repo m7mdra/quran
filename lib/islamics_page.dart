@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/main.dart';
 import 'package:quran/page/husn_muslim/husn_muslim_page.dart';
+import 'package:quran/page/khatm_quran/khatm_quran_page.dart';
 import 'package:quran/page/morning_zekr/morning_zekr_page.dart';
 import 'package:quran/page/musbaha/musbaha_page.dart';
 import 'package:quran/page/night_zekr/night_zekr_page.dart';
@@ -49,24 +50,35 @@ class _IslamicsPageState extends State<IslamicsPage> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => NightZekrPage()));
                 }
-                if(index==1){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MorningZekrPage()));
+                if (index == 1) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MorningZekrPage()));
                 }
-                if(index==2){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PostPrayerZekrPage()));
+                if (index == 2) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PostPrayerZekrPage()));
                 }
-                if(index ==3){
-
+                if (index == 3) {}
+                if (index == 4) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HusnMuslimPage()));
                 }
-                if(index==4){
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => HusnMuslimPage()));
-                }
-                if(index==5){
+                if (index == 5) {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MusbahaPage()));
+                }
+                if (index == 6) {}
+                if (index == 7) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => KhatmQuranPage()));
                 }
               },
               child: Column(
