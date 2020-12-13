@@ -9,6 +9,7 @@ import 'package:quran/data/local/zerk_provider.dart';
 import 'package:quran/data/network/quran_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'data/local/dua_mathor_provider.dart';
 import 'data/local/husn_chapter_provider.dart';
 import 'data/local/tafseer_repository.dart';
 
@@ -50,6 +51,7 @@ class DependencyProvider {
     _registrar.registerSingletonAsync(() => SharedPreferences.getInstance());
     _registrar.registerSingleton<ReadersProvider>(readersProvider);
     _registrar.registerSingleton<ZekrProvider>(ZekrProvider());
+    _registrar.registerSingleton<DuaMathorProvider>(DuaMathorProvider());
     _registrar.registerSingleton<HusnProvider>(HusnProvider());
     _registrar.registerSingleton<HusnChapterProvider>(HusnChapterProvider());
     _registrar.registerSingleton<Preference>(
