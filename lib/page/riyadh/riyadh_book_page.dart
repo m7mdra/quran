@@ -14,7 +14,6 @@ class RiyadhBookPage extends StatefulWidget {
 class _RiyadhBookPageState extends State<RiyadhBookPage> {
   RiyadhBookBloc _bookBloc;
   ProgressCubit _progressCubit;
-  bool _bookDownloaded = false;
 
   @override
   void initState() {

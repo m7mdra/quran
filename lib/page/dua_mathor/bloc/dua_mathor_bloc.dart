@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:quran/data/local/dua_mathor_provider.dart';
-import 'package:quran/data/model/husn.dart';
 
 import 'dua_mathor_event.dart';
 import 'dua_mathor_state.dart';

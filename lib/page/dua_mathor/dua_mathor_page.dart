@@ -19,6 +19,11 @@ class _DuaMathorPageState extends State<DuaMathorPage> {
     _bloc = DuaMathorBloc(DependencyProvider.provide());
     _bloc.add(LoadDuaMathorData());
   }
+  @override
+  void dispose() {
+    _bloc.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
