@@ -8,6 +8,7 @@ import 'package:quran/page/morning_zekr/morning_zekr_page.dart';
 import 'package:quran/page/musbaha/musbaha_page.dart';
 import 'package:quran/page/night_zekr/night_zekr_page.dart';
 import 'package:quran/page/post_prayer_zekr/post_prayer_zekr_page.dart';
+import 'package:quran/page/riyadh/riyadh_book_page.dart';
 
 class IslamicsPage extends StatefulWidget {
   @override
@@ -83,6 +84,12 @@ class _IslamicsPageState extends State<IslamicsPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => KhatmQuranPage()));
+                }
+                if (index == 8) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RiyadhBookPage()));
                 }
               },
               child: Column(

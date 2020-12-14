@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:quran/data/local/husn_proivder.dart';
 import 'package:quran/data/local/preference.dart';
 import 'package:quran/data/local/readers_provider.dart';
+import 'package:quran/data/local/riyadh_file.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
 import 'package:quran/data/local/zerk_provider.dart';
 import 'package:quran/data/network/quran_api.dart';
@@ -47,6 +48,7 @@ class DependencyProvider {
     var readersProvider = ReadersProvider();
     _registrar.registerSingleton(client);
     _registrar.registerSingleton(QuranApi(client));
+    _registrar.registerSingleton(RiyadhFile());
     _registrar.registerSingleton<TafseerRepository>(TafseerDataBaseClient());
     _registrar.registerSingletonAsync(() => SharedPreferences.getInstance());
     _registrar.registerSingleton<ReadersProvider>(readersProvider);

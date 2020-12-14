@@ -17,6 +17,14 @@ class Preference {
     return Future.value();
   }
 
+  Future<void> riyadhBookDownloaded() async {
+    await _sharedPreferences.setBool("bookDownloaded", true);
+  }
+
+  bool didFileDownloadSuccess() {
+    return _sharedPreferences.getBool("bookDownloaded") ?? false;
+  }
+
   Future<Reader> reader() async {
     await _sharedPreferences.reload();
     var json = _sharedPreferences.getString("defaultReader");
