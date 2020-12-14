@@ -98,7 +98,9 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
                 IconButton(
                   icon: Icon(Icons.search),
                   onPressed: () {
-                    displayModalBottomSheet(context);
+                    showSearch<Ayah>(
+                        context: context,
+                        delegate: AyahSearchDelegate(widget.surah));
                   },
                 ),
                 IconButton(
@@ -638,5 +640,68 @@ class ToggleableFontOptions extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class AyahSearchDelegate extends SearchDelegate<Ayah> {
+  final Surah surah;
+
+  AyahSearchDelegate(this.surah)
+      : super(
+            searchFieldStyle: TextStyle(color: Colors.grey),
+            searchFieldLabel: 'ابحث عن ايات');
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return null;
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Container();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    var result = findResult(query);
+    return ListView.separated(
+      itemBuilder: (context, index) {
+        return ListTile(
+            leading: Text('﴿${result[index].numberInSurah}﴾',
+                style: TextStyle(fontFamily: 'Al-QuranAlKareem')),
+            title: Text(result[index].text,
+                style: TextStyle(fontFamily: 'alquran',fontSize: 21)));
+      },
+      itemCount: result.length,
+      separatorBuilder: (BuildContext context, int index) {
+        return Divider();
+      },
+    );
+  }
+
+  var tashkeel = ['ِ', 'ُ', 'ٓ', 'ٰ', 'ْ', 'ٌ', 'ٍ', 'ً', 'ّ', 'َ'];
+
+  List<Ayah> findResult(String query) {
+    if (query.isEmpty) return [];
+    return surah.ayahs
+        .where((element) => element.text
+            .replaceAll('\u064b', '')
+            .replaceAll('\u064f', '')
+            .replaceAll('\u064c', '')
+            .replaceAll('\u064d', '')
+            .replaceAll('\u0650', '')
+            .replaceAll('\u0651', '')
+            .replaceAll('\u0652', '')
+            .replaceAll('\u0653', '')
+            .replaceAll('\u0654', '')
+            .replaceAll('\u0655', '')
+            .replaceAll('\u064e', '')
+            .contains(query))
+        .toList();
   }
 }
