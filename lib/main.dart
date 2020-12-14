@@ -16,7 +16,7 @@ class BlocTransitionObserver implements BlocObserver {
 
   @override
   void onClose(Cubit<dynamic> cubit) {
-    print("onCreate ${cubit.runtimeType}");
+    print("onClose ${cubit.runtimeType}");
   }
 
   @override

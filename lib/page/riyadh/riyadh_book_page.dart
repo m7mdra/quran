@@ -53,14 +53,17 @@ class _RiyadhBookPageState extends State<RiyadhBookPage> {
                 child: BookNotFoundWidget(),
               );
             }
+            if (state is RiyadhBookSuccessState) {
+              return _buildPdfView(state.filePath);
+            }
             if (state is RiyadhBookErrorState) {
               return Center(
                 child: Column(
                   children: [
                     Text(
                       'فشل تحميل الملف, حاول مجددا',
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(
                       height: 8,
@@ -76,9 +79,7 @@ class _RiyadhBookPageState extends State<RiyadhBookPage> {
                 ),
               );
             }
-            if (state is RiyadhBookFoundState) {
-              return _buildPdfView(state.filePath);
-            }
+
             if (state is RiyadhBookFoundState) {
               return _buildPdfView(state.filePath);
             }
