@@ -43,5 +43,9 @@
 	<false/>
 	<key>io.flutter.embedded_views_preview</key>
     <true/>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    	<string>This allows us to get your geographical location and find the precise qiblah direction</string>
+    	<key>NSLocationWhenInUseUsageDescription</key>
+    	<string>This allows us to get your geographical location and find the precise qiblah direction</string>
 </dict>
 </plist>

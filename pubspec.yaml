@@ -36,6 +36,8 @@ dependencies:
   shared_preferences: ^0.5.12+4
   audioplayers: ^0.17.0
   flutter_pdfview: ^1.0.4
+  flutter_qiblah: ^1.0.3+2
+  geolocator: ^6.1.13
 
 dev_dependencies:
   flutter_test:

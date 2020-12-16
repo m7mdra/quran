@@ -8,6 +8,7 @@ import 'package:quran/page/morning_zekr/morning_zekr_page.dart';
 import 'package:quran/page/musbaha/musbaha_page.dart';
 import 'package:quran/page/night_zekr/night_zekr_page.dart';
 import 'package:quran/page/post_prayer_zekr/post_prayer_zekr_page.dart';
+import 'package:quran/page/qiblaa/qiblaa_page.dart';
 import 'package:quran/page/riyadh/riyadh_book_page.dart';
 
 class IslamicsPage extends StatefulWidget {
@@ -78,7 +79,10 @@ class _IslamicsPageState extends State<IslamicsPage> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MusbahaPage()));
                 }
-                if (index == 6) {}
+                if (index == 6) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => QiblaaPage()));
+                }
                 if (index == 7) {
                   Navigator.push(
                       context,

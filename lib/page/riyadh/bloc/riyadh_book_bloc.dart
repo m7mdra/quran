@@ -24,7 +24,7 @@ class RiyadhBookBloc extends Bloc<RiyadhBookEvent, RiyadhBookState> {
     }
     if (event is CheckBookExistence) {
       if (await _riyadhFile.doseFileExists() &&
-          !_preference.didFileDownloadSuccess()) {
+          _preference.didFileDownloadSuccess()) {
         var path = await _riyadhFile.filePath();
         yield RiyadhBookFoundState(path);
       } else {
