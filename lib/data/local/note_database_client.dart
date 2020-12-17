@@ -4,9 +4,9 @@ import 'package:path/path.dart';
 import 'package:quran/data/model/note.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DatabaseHelper {
+import 'note_repository.dart';
 
-
+class NoteDatabaseClient implements NoteRepository {
   final String tableNote = 'noteTable';
   final String columnId = 'id';
   final String columnTitle = 'title';
@@ -14,7 +14,6 @@ class DatabaseHelper {
   final String columnDate = 'date';
 
   Database _db;
-
 
   Future<Database> get db async {
     if (_db != null) {
@@ -40,42 +39,25 @@ class DatabaseHelper {
         'CREATE TABLE $tableNote($columnId INTEGER PRIMARY KEY, $columnTitle TEXT, $columnContent TEXT, $columnDate INTEGER)');
   }
 
-  Future<int> saveNote(Note note) async {
+  @override
+  Future<int> add(Note note) async {
     var dbClient = await db;
     var result = await dbClient.insert(tableNote, note.toMap());
 
     return result;
   }
 
-  Future<List<Note>> getAllNotes() async {
+  @override
+  Future<List<Note>> getAll() async {
     var dbClient = await db;
-    var result = await dbClient
-        .query(tableNote, columns: [columnId, columnTitle, columnContent]);
+    var result = await dbClient.query(tableNote,
+        columns: [columnId, columnTitle, columnContent, columnDate]);
 
     return result.map((e) => Note.fromMap(e)).toList();
   }
 
-  Future<int> getCount() async {
-    var dbClient = await db;
-    return Sqflite.firstIntValue(
-        await dbClient.rawQuery('SELECT COUNT(*) FROM $tableNote'));
-  }
-
-  Future<Note> getNote(int id) async {
-    var dbClient = await db;
-    List<Map> result = await dbClient.query(tableNote,
-        columns: [columnId, columnTitle, columnContent],
-        where: '$columnId = ?',
-        whereArgs: [id]);
-
-    if (result.length > 0) {
-      return Note.fromMap(result.first);
-    }
-
-    return null;
-  }
-
-  Future<int> deleteNote(int id) async {
+  @override
+  Future<int> delete(int id) async {
     var dbClient = await db;
     return await dbClient
         .delete(tableNote, where: '$columnId = ?', whereArgs: [id]);

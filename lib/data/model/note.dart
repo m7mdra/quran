@@ -1,10 +1,12 @@
+import 'dart:math';
+
 class Note {
   String title;
   String content;
-  String id;
-  DateTime dateTime;
+  int id = Random().nextInt(10000000);
+  DateTime dateTime = DateTime.now();
 
-  Note(this.title, this.content, this.id, this.dateTime);
+  Note(this.title, this.content);
 
   Map<String, dynamic> toMap() {
     return {

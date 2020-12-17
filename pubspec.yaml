@@ -38,6 +38,7 @@ dependencies:
   flutter_pdfview: ^1.0.4
   flutter_qiblah: ^1.0.3+2
   geolocator: ^6.1.13
+  timeago: ^2.0.29
 
 dev_dependencies:
   flutter_test:
