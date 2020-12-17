@@ -30,7 +30,7 @@ class SurahDetailsPage extends StatefulWidget {
 class _SurahDetailsPageState extends State<SurahDetailsPage>
     with TickerProviderStateMixin {
   var hideControls = false;
-  AudioPlayer _audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
+  AudioPlayer _audioPlayer = AudioPlayer();
 
   int _playingAyahId = 0;
 
@@ -50,7 +50,15 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
       }
     });
     _audioPlayer.onPlayerError.listen((event) {
-      print(event);
+      setState(() {
+        _playingAyahId = 0;
+      });
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text('Error'),
+                content: Text(event),
+              ));
     });
   }
 
@@ -97,8 +105,8 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
               actions: [
                 IconButton(
                   icon: Icon(Icons.search),
-                  onPressed: () {
-                    showSearch<Ayah>(
+                  onPressed: () async {
+                    var ayah = await showSearch<Ayah>(
                         context: context,
                         delegate: AyahSearchDelegate(widget.surah));
                   },
@@ -663,19 +671,24 @@ class AyahSearchDelegate extends SearchDelegate<Ayah> {
 
   @override
   Widget buildResults(BuildContext context) {
+
     return Container();
   }
-
+  @override
+  ThemeData appBarTheme(BuildContext context) => Theme.of(context);
   @override
   Widget buildSuggestions(BuildContext context) {
     var result = findResult(query);
     return ListView.separated(
       itemBuilder: (context, index) {
         return ListTile(
+            onTap: () {
+              Navigator.pop(context, result[index]);
+            },
             leading: Text('﴿${result[index].numberInSurah}﴾',
                 style: TextStyle(fontFamily: 'Al-QuranAlKareem')),
             title: Text(result[index].text,
-                style: TextStyle(fontFamily: 'alquran',fontSize: 21)));
+                style: TextStyle(fontFamily: 'alquran', fontSize: 21)));
       },
       itemCount: result.length,
       separatorBuilder: (BuildContext context, int index) {

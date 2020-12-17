@@ -23,7 +23,6 @@ class _QiblaaPageState extends State<QiblaaPage> {
   @override
   void initState() {
     _checkLocationStatus();
-
     super.initState();
   }
 
@@ -157,9 +156,9 @@ class LocationEnabledWidget extends StatelessWidget {
 }
 
 class QiblahCompassWidget extends StatelessWidget {
-  final _compassSvg = SvgPicture.asset('assets/compass.svg');
+  final _compassSvg = SvgPicture.asset('assets/images/compass.svg',fit: BoxFit.fitWidth,);
   final _needleSvg = SvgPicture.asset(
-    'assets/needle.svg',
+    'assets/images/needle.svg',
     fit: BoxFit.contain,
     height: 300,
     alignment: Alignment.center,
@@ -176,23 +175,26 @@ class QiblahCompassWidget extends StatelessWidget {
 
         final qiblahDirection = snapshot.data;
 
-        return Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            Transform.rotate(
-              angle: ((qiblahDirection.direction ?? 0) * (pi / 180) * -1),
-              child: _compassSvg,
-            ),
-            Transform.rotate(
-              angle: ((qiblahDirection.qiblah ?? 0) * (pi / 180) * -1),
-              alignment: Alignment.center,
-              child: _needleSvg,
-            ),
-            Positioned(
-              bottom: 8,
-              child: Text("${qiblahDirection.offset.toStringAsFixed(3)}°"),
-            )
-          ],
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              Transform.rotate(
+                angle: ((qiblahDirection.direction ?? 0) * (pi / 180) * -1),
+                child: _compassSvg,
+              ),
+              Transform.rotate(
+                angle: ((qiblahDirection.qiblah ?? 0) * (pi / 180) * -1),
+                alignment: Alignment.center,
+                child: _needleSvg,
+              ),
+              Positioned(
+                bottom: 8,
+                child: Text("${qiblahDirection.offset.toStringAsFixed(3)}°"),
+              )
+            ],
+          ),
         );
       },
     );

@@ -75,7 +75,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.system,
+
       builder: (context, widget) {
         return MultiBlocProvider(
             providers: [
@@ -92,6 +93,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
 
       darkTheme: ThemeData(
+
         fontFamily: 'Cairo',
         primarySwatch: _swatch,
         accentColor: Color(_swatchAccentValue),
