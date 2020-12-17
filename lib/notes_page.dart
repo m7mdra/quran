@@ -58,11 +58,34 @@ class _NotesPageState extends State<NotesPage>
               itemBuilder: (context, index) {
                 var note = list[index];
                 return ListTile(
-                  onTap: (){
-
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
+                              child: ListView(
+                                padding: const EdgeInsets.all(16),
+                                shrinkWrap: true,
+                                children: [
+                                  Text(
+                                    note.title,
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  ),
+                                  Text(
+                                    timeago.format(note.dateTime,
+                                        clock: DateTime.now()),
+                                    style: Theme.of(context).textTheme.caption,
+                                  ),
+                                  Text(note.content)
+                                ],
+                              ),
+                            ));
                   },
                   title: Text(note.title),
-                  subtitle: Text(note.content,maxLines: 3,),
+                  subtitle: Text(
+                    note.content,
+                    maxLines: 3,
+                  ),
                   trailing: Text(
                     timeago.format(note.dateTime, clock: DateTime.now()),
                     style: Theme.of(context).textTheme.caption,
@@ -86,7 +109,13 @@ class _NotesPageState extends State<NotesPage>
   bool get wantKeepAlive => true;
 }
 
+enum OpenMode { add, update }
+
 class AddNoteWidget extends StatefulWidget {
+  final OpenMode mode;
+
+  const AddNoteWidget({Key key, this.mode = OpenMode.add}) : super(key: key);
+
   @override
   _AddNoteWidgetState createState() => _AddNoteWidgetState();
 }
