@@ -61,25 +61,7 @@ class _NotesPageState extends State<NotesPage>
                   onTap: () {
                     showDialog(
                         context: context,
-                        builder: (context) => Dialog(
-                              child: ListView(
-                                padding: const EdgeInsets.all(16),
-                                shrinkWrap: true,
-                                children: [
-                                  Text(
-                                    note.title,
-                                    style:
-                                        Theme.of(context).textTheme.headline6,
-                                  ),
-                                  Text(
-                                    timeago.format(note.dateTime,
-                                        clock: DateTime.now()),
-                                    style: Theme.of(context).textTheme.caption,
-                                  ),
-                                  Text(note.content)
-                                ],
-                              ),
-                            ));
+                        builder: (context) => _detailsDialog(note, context));
                   },
                   title: Text(note.title),
                   subtitle: Text(
@@ -101,6 +83,26 @@ class _NotesPageState extends State<NotesPage>
           }
           return Container();
         },
+      ),
+    );
+  }
+
+  Dialog _detailsDialog(Note note, BuildContext context) {
+    return Dialog(
+      child: ListView(
+        padding: const EdgeInsets.all(16),
+        shrinkWrap: true,
+        children: [
+          Text(
+            note.title,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          Text(
+            timeago.format(note.dateTime, clock: DateTime.now()),
+            style: Theme.of(context).textTheme.caption,
+          ),
+          Text(note.content)
+        ],
       ),
     );
   }

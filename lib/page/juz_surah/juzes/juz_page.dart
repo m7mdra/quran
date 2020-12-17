@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/data/model/juz_response.dart';
 import 'package:quran/di.dart';
-
+import 'package:collection/collection.dart';
 import 'bloc/bloc.dart';
 import 'bloc/juz_bloc.dart';
-
-
 
 class JuzPage extends StatefulWidget {
   @override
@@ -17,11 +16,18 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);
     return Scaffold(
-      body: ListView.builder(
+      body: ListView.separated(
         itemBuilder: (context, index) {
-          return JuzWidget(index: index + 1);
+          return JuzWidget(
+            index: index + 1,
+            onTap: (juz) {
+            },
+          );
         },
         itemCount: 30,
+        separatorBuilder: (BuildContext context, int index) {
+          return Divider();
+        },
       ),
     );
   }
@@ -32,17 +38,20 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
 
 class JuzWidget extends StatefulWidget {
   final int index;
+  final Function(Juz) onTap;
 
   const JuzWidget({
     Key key,
     @required this.index,
+    this.onTap,
   }) : super(key: key);
 
   @override
   _JuzWidgetState createState() => _JuzWidgetState();
 }
 
-class _JuzWidgetState extends State<JuzWidget> with AutomaticKeepAliveClientMixin{
+class _JuzWidgetState extends State<JuzWidget>
+    with AutomaticKeepAliveClientMixin {
   JuzBloc _bloc;
 
   @override
@@ -100,7 +109,10 @@ class _JuzWidgetState extends State<JuzWidget> with AutomaticKeepAliveClientMixi
           ));
     }
     if (state is JuzErrorState) {
-      return Text('فشل تحميل البيانات',style: TextStyle(inherit: true,color: Theme.of(context).errorColor),);
+      return Text(
+        'فشل تحميل البيانات',
+        style: TextStyle(inherit: true, color: Theme.of(context).errorColor),
+      );
     }
     return null;
   }
@@ -113,7 +125,11 @@ class _JuzWidgetState extends State<JuzWidget> with AutomaticKeepAliveClientMixi
       builder: (BuildContext context, state) {
         return ListTile(
           dense: true,
-          onTap: state is JuzSuccessState ? () {} : null,
+          onTap: state is JuzSuccessState
+              ? () {
+                  widget?.onTap(state.juz);
+                }
+              : null,
           trailing: _trailingWidgetForState(state),
           leading: _juzIndexWidget,
           title: Text("الجزء ${widget.index}",

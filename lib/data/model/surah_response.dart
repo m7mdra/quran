@@ -13,15 +13,7 @@ class SurahResponse {
     surah = json["data"] != null ? Surah.fromJson(json["data"]) : null;
   }
 
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["code"] = code;
-    map["status"] = status;
-    if (surah != null) {
-      map["data"] = surah.toJson();
-    }
-    return map;
-  }
+
 }
 
 class Surah {
@@ -32,7 +24,6 @@ class Surah {
   String revelationType;
   int numberOfAyahs;
   List<Ayah> ayahs;
-  Edition edition;
 
   Surah(
       {this.number,
@@ -41,8 +32,7 @@ class Surah {
       this.englishNameTranslation,
       this.revelationType,
       this.numberOfAyahs,
-      this.ayahs,
-      this.edition});
+      this.ayahs});
 
   Surah.fromJson(dynamic json) {
     number = json["number"];
@@ -57,24 +47,7 @@ class Surah {
         ayahs.add(Ayah.fromJson(v));
       });
     }
-    edition =
-        json["edition"] != null ? Edition.fromJson(json["edition"]) : null;
   }
 
-  Map<String, dynamic> toJson() {
-    var map = <String, dynamic>{};
-    map["number"] = number;
-    map["name"] = name;
-    map["englishName"] = englishName;
-    map["englishNameTranslation"] = englishNameTranslation;
-    map["revelationType"] = revelationType;
-    map["numberOfAyahs"] = numberOfAyahs;
-    if (ayahs != null) {
-      map["ayahs"] = ayahs.map((v) => v.toJson()).toList();
-    }
-    if (edition != null) {
-      map["edition"] = edition.toJson();
-    }
-    return map;
-  }
+
 }
