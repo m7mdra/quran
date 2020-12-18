@@ -14,9 +14,6 @@ class JuzResponse {
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map["code"] = code;
-    if (juz != null) {
-      map["data"] = juz.toJson();
-    }
     map["status"] = status;
     return map;
   }

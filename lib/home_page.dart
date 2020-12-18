@@ -147,7 +147,9 @@ class _HomePageState extends State<HomePage> {
             icon: SvgPicture.asset(isDarkMode(context)
                 ? 'assets/images/ic_lang_dark.svg'
                 : 'assets/images/ic_lang.svg'),
-            onPressed: () {},
+            onPressed: () {
+
+            },
             splashRadius: 20,
             iconSize: 40),
         IconButton(
