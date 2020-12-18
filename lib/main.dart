@@ -90,7 +90,8 @@ class MyApp extends StatelessWidget {
                   create: (context) =>
                       TafseerBloc(DependencyProvider.provide()))
             ],
-            child: widget);
+            child: Directionality(textDirection: TextDirection.rtl,
+            child: widget));
       },
       title: 'Flutter Demo',
       darkTheme: ThemeData(
