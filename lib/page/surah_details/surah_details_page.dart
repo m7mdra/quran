@@ -49,7 +49,15 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
         }
       }
     });
+    _audioPlayer.onPlayerCommand.listen((event) {
+      print(event);
+    });
+
+    _audioPlayer.onPlayerCommand.listen((event) {
+      print(event);
+    });
     _audioPlayer.onPlayerError.listen((event) {
+      print(event);
       setState(() {
         _playingAyahId = 0;
       });
