@@ -18,22 +18,15 @@ class Quran {
 class Juz {
   int number;
   List<Ayah> ayahs;
-  Map<String, Surah> surahs;
+  List <Surah> surahs;
 
   Juz({this.number, this.ayahs, this.surahs});
 
-  Juz.fromJson(dynamic json) {
-    number = json["number"];
-    if (json["ayahs"] != null) {
-      ayahs = [];
-      json["ayahs"].forEach((v) {
-        ayahs.add(Ayah.fromJson(v));
-      });
-    }
-    surahs = (json['surahs'] as Map)
-        .map((key, value) => MapEntry(key, Surah.fromJson(value)));
-  }
 
+@override
+  String toString() {
+    return "Juz $number: ${surahs.map((e) => e.name)}";
+  }
 }
 class Data {
   Data({
