@@ -1,13 +1,14 @@
-import 'package:quran/data/model/surah_response.dart';
+
+import 'package:quran/data/model/quran.dart';
 
 abstract class SurahsState {}
 
-class SurahLoadingState extends SurahsState {}
+class SurahsLoadingState extends SurahsState {}
 
-class SurahErrorState extends SurahsState {}
+class SurahsErrorState extends SurahsState {}
 
-class SurahSuccessState extends SurahsState {
-  final Surah surah;
+class SurahsLoadedSuccessState extends SurahsState {
+  final List<Surah> surah;
 
-  SurahSuccessState(this.surah);
+  SurahsLoadedSuccessState(this.surah);
 }

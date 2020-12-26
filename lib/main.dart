@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/local/note_database_client.dart';
+import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
 import 'package:quran/di.dart';
 import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
@@ -44,8 +45,12 @@ class BlocTransitionObserver implements BlocObserver {
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = BlocTransitionObserver();
+
   await DependencyProvider.build();
   await DependencyProvider.provide<TafseerDataBaseClient>().initDatabase();
+  DependencyProvider.provide<QuranProvider>()
+      .load()
+      .then((value) => print(value.data.surahs.length));
   var noteDatabase = DependencyProvider.provide<NoteDatabaseClient>();
   await noteDatabase.initDb();
 
@@ -90,8 +95,8 @@ class MyApp extends StatelessWidget {
                   create: (context) =>
                       TafseerBloc(DependencyProvider.provide()))
             ],
-            child: Directionality(textDirection: TextDirection.rtl,
-            child: widget));
+            child: Directionality(
+                textDirection: TextDirection.rtl, child: widget));
       },
       title: 'Flutter Demo',
       darkTheme: ThemeData(

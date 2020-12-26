@@ -18,11 +18,13 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
     return Scaffold(
       body: ListView.separated(
         itemBuilder: (context, index) {
-          return JuzWidget(
+/*          return JuzWidget(
             index: index + 1,
             onTap: (juz) {
+
             },
-          );
+          );*/
+        return Container();
         },
         itemCount: 30,
         separatorBuilder: (BuildContext context, int index) {
@@ -58,7 +60,7 @@ class _JuzWidgetState extends State<JuzWidget>
   void initState() {
     super.initState();
     _bloc = JuzBloc(DependencyProvider.provide());
-    _bloc.add(LoadJuzByIndex(widget.index));
+    _bloc.add(LoadJuzListEvent(widget.index));
   }
 
   @override
@@ -76,7 +78,7 @@ class _JuzWidgetState extends State<JuzWidget>
       ));
 
   Widget _trailingWidgetForState(JuzState state) {
-    if (state is JuzLoadingState) {
+    if (state is JuzsLoadingState) {
       return SizedBox(
         child: CircularProgressIndicator(strokeWidth: 2),
         width: 20,
@@ -84,10 +86,10 @@ class _JuzWidgetState extends State<JuzWidget>
       );
     }
 
-    if (state is JuzErrorState) {
+    if (state is JuzsErrorState) {
       return FlatButton(
           onPressed: () {
-            _bloc.add(LoadJuzByIndex(widget.index));
+            _bloc.add(LoadJuzListEvent(widget.index));
           },
           child: Text('اعادة المحاولة'));
     }
@@ -95,10 +97,10 @@ class _JuzWidgetState extends State<JuzWidget>
   }
 
   Widget _subtitleWidgetForState(JuzState state) {
-    if (state is JuzLoadingState) {
+    if (state is JuzsLoadingState) {
       return Text('جاري التحميل');
     }
-    if (state is JuzSuccessState) {
+    if (state is JuzsSuccessState) {
       return Text("عدد السور : ${state.juz.surahs.values.length} ",
           style: TextStyle(
             fontFamily: 'Cairo',
@@ -108,7 +110,7 @@ class _JuzWidgetState extends State<JuzWidget>
             fontStyle: FontStyle.normal,
           ));
     }
-    if (state is JuzErrorState) {
+    if (state is JuzsErrorState) {
       return Text(
         'فشل تحميل البيانات',
         style: TextStyle(inherit: true, color: Theme.of(context).errorColor),
@@ -125,7 +127,7 @@ class _JuzWidgetState extends State<JuzWidget>
       builder: (BuildContext context, state) {
         return ListTile(
           dense: true,
-          onTap: state is JuzSuccessState
+          onTap: state is JuzsSuccessState
               ? () {
                   widget?.onTap(state.juz);
                 }

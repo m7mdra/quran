@@ -1,8 +1,6 @@
 abstract class SurahsEvent {}
 
-class LoadSurahByIndex extends SurahsEvent {
-  final int index;
+class LoadSurahListEvent extends SurahsEvent {
 
-  LoadSurahByIndex(this.index);
 }
 

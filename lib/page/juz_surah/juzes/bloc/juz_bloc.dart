@@ -1,23 +1,24 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/network/quran_api.dart';
 
 import 'juz_event.dart';
 import 'juz_state.dart';
 
 class JuzBloc extends Bloc<JuzEvent, JuzState> {
-  final QuranApi _quranApi;
+  final QuranProvider _quranProvider;
 
-  JuzBloc(this._quranApi) : super(JuzLoadingState());
+  JuzBloc(this._quranProvider) : super(JuzsLoadingState());
 
   @override
   Stream<JuzState> mapEventToState(JuzEvent event) async* {
-    if (event is LoadJuzByIndex) {
+    if (event is LoadJuzListEvent) {
       try {
-        yield JuzLoadingState();
-        var data = await _quranApi.juzByIndex(event.index);
-        yield JuzSuccessState(data.juz);
+        yield JuzsLoadingState();
+        var data = await _quranProvider.load();
+
       } catch (error){
-        yield JuzErrorState();
+        yield JuzsErrorState();
       }
     }
   }

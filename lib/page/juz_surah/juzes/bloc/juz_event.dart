@@ -1,8 +1,8 @@
 abstract class JuzEvent {}
 
-class LoadJuzByIndex extends JuzEvent {
+class LoadJuzListEvent extends JuzEvent {
   final int index;
 
-  LoadJuzByIndex(this.index);
+  LoadJuzListEvent(this.index);
 }
 
