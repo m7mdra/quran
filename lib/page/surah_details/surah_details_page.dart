@@ -61,7 +61,7 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
           context: context,
           builder: (context) => AlertDialog(
                 title: Text('Error'),
-                content: Text(event),
+                content: Text('فشل تشغيل المقطع, حاول مرة اخرى'),
               ));
     });
   }
@@ -443,12 +443,6 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
   AudioPlayer player;
   var _ayahs = <String>[];
 
-  void _ensureNotPlaying() {
-    if (player.state == AudioPlayerState.PLAYING) {
-      player.stop();
-    }
-  }
-
   Future<void> prepareAyahs() async {
     var reader = await DependencyProvider.provide<Preference>().reader();
 
@@ -464,24 +458,20 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
     player = widget.player;
 
     context.bloc<ReadersBloc>().add(LoadSelectedReader());
-    player.onPlayerStateChanged.listen((event) async {
+    player.onPlayerCompletion.listen((event) async {
       print("ayahs.length ${_ayahs.length}");
-      if (event == AudioPlayerState.COMPLETED) {
-        if (_ayahs.isNotEmpty) {
-          await playAyah(_ayahs.first);
-        } else {
-          await player.stop();
-        }
+      if (_ayahs.isNotEmpty) {
+        await playAyah(_ayahs.first);
+      } else {
+        await player.stop();
       }
     });
   }
 
   Future<void> playAyah(String url) async {
-
-    _ensureNotPlaying();
-
-    var playStatus = await player.play(url);
+    var playStatus = await player.setUrl(url);
     if (playStatus == 1) {
+      await player.resume();
       _ayahs.removeAt(0);
     }
   }
@@ -537,7 +527,6 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
                       stream: player.onPlayerStateChanged,
                       builder: (context, snapshot) {
                         var state = snapshot.data;
-                        print(state);
                         return IconButton(
                           icon: state == AudioPlayerState.PLAYING
                               ? Icon(Icons.pause)
@@ -548,7 +537,6 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
                             } else {
                               await prepareAyahs();
                               await playAyah(_ayahs.first);
-
                             }
                           },
                         );
