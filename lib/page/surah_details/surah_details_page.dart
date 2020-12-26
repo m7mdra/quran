@@ -31,6 +31,7 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     with TickerProviderStateMixin {
   var hideControls = false;
   AudioPlayer _audioPlayer = AudioPlayer();
+  ScrollController _controller = ScrollController();
 
   int _playingAyahId = 0;
 
@@ -39,14 +40,9 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     super.initState();
     _audioPlayer.onPlayerStateChanged.listen((event) {
       if (event == AudioPlayerState.COMPLETED) {
-        if (_playingAyahId != widget.surah.ayahs.last.number) {
-          _playingAyahId += 1;
-          playAyah(_playingAyahId);
-        } else {
-          setState(() {
-            _playingAyahId = 0;
-          });
-        }
+        setState(() {
+          _playingAyahId = 0;
+        });
       }
     });
     _audioPlayer.onPlayerCommand.listen((event) {
@@ -86,6 +82,7 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     print("playing  $url...");
 
     var playStatus = await _audioPlayer.play(url);
+    print(playStatus);
     if (playStatus == 1) {
       setState(() {
         _playingAyahId = ayahId;
@@ -104,6 +101,10 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     PopupMenu.context = context;
 
     return Scaffold(
+      bottomSheet: SuraInfoModalSheet(
+        surah: widget.surah,
+        player: _audioPlayer,
+      ),
       appBar: hideControls
           ? PreferredSize(child: Container(), preferredSize: Size.zero)
           : IslamicAppBar(
@@ -121,40 +122,63 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
                 ),
                 IconButton(
                   icon: Icon(Icons.share),
-                  onPressed: () {},
+                  onPressed: () {
+                    _controller.animateTo(10000,
+                        duration: Duration(seconds: 1), curve: Curves.easeIn);
+                  },
                 ),
               ],
             ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Text.rich(
-          TextSpan(
-              text: widget.surah.number == 1
-                  ? ''
-                  : "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيم \n",
-              semanticsLabel: 'semanticsLabel',
-              style: TextStyle(
-                  fontFamily: 'alquran',
-                  fontSize: 23,
-                  fontWeight: FontWeight.bold),
-              children: widget.surah.ayahs
-                  .map((e) => TextSpan(
-                      style: _playingAyahId == e.number
-                          ? TextStyle(backgroundColor: Colors.black26)
-                          : null,
-                      text:
-                          "${widget.surah.number == 1 ? e.text : e.text.replaceFirst("بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
-                      semanticsLabel: 'semanticsLabel',
-                      recognizer: DoubleTapGestureRecognizer()
-                        ..onDoubleTapDown = (tapDown) {
-                          showContextMenuAt(tapDown, context, e);
-                        }))
-                  .toList()),
-          semanticsLabel: 'semanticsLabel',
-          textAlign: TextAlign.center,
-          softWrap: true,
-          textDirection: TextDirection.rtl,
-        ),
+      body: ListView(
+        controller: _controller,
+        padding:
+            const EdgeInsets.only(left: 16, right: 16, bottom: 200, top: 16),
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              SvgPicture.asset('assets/images/surah_name_title.svg'),
+              Text(
+                widget.surah.name,
+                style: TextStyle(
+                    color: Color(0xffFD9434),
+                    fontSize: 22,
+                    fontFamily: 'Al-QuranAlKareem'),
+              )
+            ],
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          Text.rich(
+            TextSpan(
+                text: widget.surah.number == 1
+                    ? ''
+                    : "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيم \n",
+                semanticsLabel: 'semanticsLabel',
+                style: TextStyle(
+                    fontFamily: 'alquran',
+                    fontSize: 23,
+                    fontWeight: FontWeight.bold),
+                children: widget.surah.ayahs
+                    .map((e) => TextSpan(
+                        style: _playingAyahId == e.number
+                            ? TextStyle(backgroundColor: Colors.black26)
+                            : null,
+                        text:
+                            "${widget.surah.number == 1 ? e.text : e.text.replaceFirst("بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
+                        semanticsLabel: 'semanticsLabel',
+                        recognizer: DoubleTapGestureRecognizer()
+                          ..onDoubleTapDown = (tapDown) {
+                            showContextMenuAt(tapDown, context, e);
+                          }))
+                    .toList()),
+            semanticsLabel: 'semanticsLabel',
+            textAlign: TextAlign.center,
+            softWrap: true,
+            textDirection: TextDirection.rtl,
+          ),
+        ],
       ),
     );
   }
@@ -403,10 +427,12 @@ class ReadersWidget extends StatelessWidget {
 
 class SuraInfoModalSheet extends StatefulWidget {
   final Surah surah;
+  final AudioPlayer player;
 
   const SuraInfoModalSheet({
     Key key,
     @required this.surah,
+    this.player,
   }) : super(key: key);
 
   @override
@@ -414,97 +440,134 @@ class SuraInfoModalSheet extends StatefulWidget {
 }
 
 class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
+  AudioPlayer player;
+  int _playingAyahId = 0;
+
+  void _ensureNotPlaying() {
+    if (player.state == AudioPlayerState.PLAYING) {
+      player.stop();
+    }
+  }
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    player = widget.player;
+
+    context.bloc<ReadersBloc>().add(LoadSelectedReader());
+    player.onPlayerStateChanged.listen((event) async {
+      if (event == AudioPlayerState.COMPLETED) {
+        if (_playingAyahId != widget.surah.ayahs.last.number) {
+          _playingAyahId += 1;
+         await playAyah(_playingAyahId);
+        } else {
+         await player.stop();
+          setState(() {
+            _playingAyahId = 0;
+          });
+        }
+      }
+    });
+  }
+  Future<void> playAyah(int ayahId) async {
+    var reader = await DependencyProvider.provide<Preference>().reader();
+
+    _ensureNotPlaying();
+    var url =
+        "https://cdn.alquran.cloud/media/audio/ayah/${reader.identifier}/$ayahId";
+
+    print("playing  $url...");
+
+    var playStatus = await player.play(url);
+    print(playStatus);
+    if (playStatus == 1) {
+      setState(() {
+        _playingAyahId = ayahId;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
-      child: Card(
-        child: Stack(
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Align(
-              child: PlayButtonWidget(),
-              alignment: AlignmentDirectional(0.0, -1.65),
+            BlocBuilder(
+              cubit: context.bloc<ReadersBloc>(),
+              builder: (BuildContext context, state) {
+                return SuraOptions(
+                  title: 'القارئ',
+                  image: state is DefaultReaderLoadedState ||
+                          state is ReadersLoadedState
+                      ? 'assets/images/readers_images/${state.reader.identifier}.jpg'
+                      : 'assets/images/choose_reader.svg',
+                  onTap: () {
+                    context.read<ReadersBloc>().add(LoadReaders());
+                    showDialog(
+                        context: context,
+                        builder: (context) => ReadersWidget());
+                  },
+                );
+              },
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(widget.surah.name,
-                          style: TextStyle(
-                            fontFamily: 'alquran',
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                          )),
-                      Text("بدء الإستماع",
-                          style: TextStyle(
-                            fontFamily: 'Cairo',
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                          )),
-                      Text("الجزْءُ الأَّوَلْ",
-                          style: TextStyle(
-                            fontFamily: 'alquran',
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.normal,
-                          ))
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SuraOptions(
-                        title: 'حفظ الصفحة',
-                        image: 'assets/images/bookmark_sura.svg',
-                        onTap: () {},
-                      ),
-                      SuraOptions(
-                        title: 'التفسير الميسر',
-                        image: 'assets/images/tafseer.svg',
-                        onTap: () {
-                          var list = widget.surah.ayahs;
-                          context.bloc<TafseerBloc>().add(LoadTafseerForSurah(
-                              list.first.number, list.last.number));
-                          showDialog(
-                              context: context,
-                              builder: (context) => TafseerWidget());
-                        },
-                      ),
-                      SuraOptions(
-                        title: 'إختيار القارئ',
-                        image: 'assets/images/choose_reader.svg',
-                        onTap: () {
-                          context.read<ReadersBloc>().add(LoadReaders());
-                          showDialog(
-                              context: context,
-                              builder: (context) => ReadersWidget());
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              ),
+            SuraOptions(
+              title: 'التفسير',
+              image: 'assets/images/tafseer.svg',
+              onTap: () {
+                var list = widget.surah.ayahs;
+                context.bloc<TafseerBloc>().add(
+                    LoadTafseerForSurah(list.first.number, list.last.number));
+                showDialog(
+                    context: context, builder: (context) => TafseerWidget());
+              },
             ),
+            SuraOptions(
+              title: 'حفظ',
+              image: 'assets/images/bookmark_sura.svg',
+              onTap: () {},
+            ),
+            Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      color: Color(0xff95B93E), shape: BoxShape.circle),
+                  child: StreamBuilder<AudioPlayerState>(
+                      stream: player.onPlayerStateChanged,
+                      builder: (context, snapshot) {
+                        var state = snapshot.data;
+                        print(state);
+                        return IconButton(
+                          icon: state == AudioPlayerState.PLAYING
+                              ? Icon(Icons.pause)
+                              : Icon(Icons.play_arrow),
+                          onPressed: () async {
+                            if (player.state == AudioPlayerState.PLAYING) {
+                              await player.pause();
+                            } else {
+                              playAyah(widget.surah.ayahs.first.number);
+                            }
+                          },
+                        );
+                      }),
+                ),
+                Text('تشغيل',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      fontStyle: FontStyle.normal,
+                    ))
+              ],
+              mainAxisSize: MainAxisSize.min,
+            )
           ],
         ),
-        margin: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16), topRight: Radius.circular(16))),
       ),
+      margin: EdgeInsets.zero,
     );
   }
 }
@@ -527,7 +590,16 @@ class SuraOptions extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SvgPicture.asset(image),
+            if (image.contains("svg"))
+              SvgPicture.asset(image)
+            else
+              ClipOval(
+                  child: Image.asset(
+                image,
+                width: 44,
+                height: 44,
+                fit: BoxFit.cover,
+              )),
             Text(title,
                 style: TextStyle(
                   fontSize: 14,
@@ -548,15 +620,15 @@ class PlayButtonWidget extends StatelessWidget {
       alignment: Alignment.center,
       children: [
         Container(
-          width: 75,
-          height: 75,
+          width: 40,
+          height: 40,
           decoration: BoxDecoration(
               color: Color(0xff95B93E).withAlpha((255 / 0.16).round()),
               shape: BoxShape.circle),
         ),
         Container(
-          width: 55,
-          height: 55,
+          width: 38,
+          height: 38,
           child: IconButton(
             icon: Icon(Icons.play_arrow),
             onPressed: () {},
@@ -679,11 +751,12 @@ class AyahSearchDelegate extends SearchDelegate<Ayah> {
 
   @override
   Widget buildResults(BuildContext context) {
-
     return Container();
   }
+
   @override
   ThemeData appBarTheme(BuildContext context) => Theme.of(context);
+
   @override
   Widget buildSuggestions(BuildContext context) {
     var result = findResult(query);

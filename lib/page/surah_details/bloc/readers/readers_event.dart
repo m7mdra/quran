@@ -9,6 +9,9 @@ class SetDefaultReader extends ReadersEvent {
 
   SetDefaultReader(this.reader);
 }
+class LoadSelectedReader extends ReadersEvent{
+
+}
 
 class FindReaderByKeyword extends ReadersEvent {
   final String query;

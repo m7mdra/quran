@@ -4,6 +4,7 @@ import 'package:quran/data/local/readers_provider.dart';
 
 import 'readers_event.dart';
 import 'readers_state.dart';
+
 class ReadersBloc extends Bloc<ReadersEvent, ReadersState> {
   final Preference _preference;
   final ReadersProvider _provider;
@@ -12,6 +13,10 @@ class ReadersBloc extends Bloc<ReadersEvent, ReadersState> {
 
   @override
   Stream<ReadersState> mapEventToState(ReadersEvent event) async* {
+    if (event is LoadSelectedReader) {
+      var reader = await _preference.reader();
+      yield DefaultReaderLoadedState(reader);
+    }
     if (event is FindReaderByKeyword) {
       try {
         var readers = await _provider.load();
@@ -24,15 +29,16 @@ class ReadersBloc extends Bloc<ReadersEvent, ReadersState> {
             return element;
         }).toList();
         if (event.query.isEmpty) {
-          yield ReadersLoadedState(list);
+          yield ReadersLoadedState(list, savedReader);
           return;
         } else {
-          var search =
-              list.where((element) => element.name.contains(event.query)).toList();
+          var search = list
+              .where((element) => element.name.contains(event.query))
+              .toList();
           if (search.isEmpty) {
             yield ReadersEmptyState();
           } else {
-            yield ReadersLoadedState(search);
+            yield ReadersLoadedState(search, savedReader);
           }
         }
       } catch (error) {
@@ -43,7 +49,7 @@ class ReadersBloc extends Bloc<ReadersEvent, ReadersState> {
     if (event is SetDefaultReader) {
       try {
         await _preference.saveReader(event.reader);
-        add(LoadReaders());
+        yield DefaultReaderLoadedState(event.reader);
       } catch (error) {
         print(error);
       }
@@ -59,7 +65,7 @@ class ReadersBloc extends Bloc<ReadersEvent, ReadersState> {
           } else
             return element;
         }).toList();
-        yield ReadersLoadedState(list);
+        yield ReadersLoadedState(list, savedReader);
       } catch (error) {
         print(error);
         yield ReadersErrorState();
