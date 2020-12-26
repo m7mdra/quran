@@ -28,7 +28,6 @@ class Preference {
   Future<Reader> reader() async {
     await _sharedPreferences.reload();
     var json = _sharedPreferences.getString("defaultReader");
-    print(json);
     if (json == null) {
       var defaultReader = await _readersProvider.defaultReader();
       await saveReader(defaultReader);

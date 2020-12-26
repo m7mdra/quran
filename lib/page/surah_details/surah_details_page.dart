@@ -441,7 +441,7 @@ class SuraInfoModalSheet extends StatefulWidget {
 
 class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
   AudioPlayer player;
-  int _playingAyahId = 0;
+  var _ayahs = <String>[];
 
   void _ensureNotPlaying() {
     if (player.state == AudioPlayerState.PLAYING) {
@@ -449,7 +449,14 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
     }
   }
 
+  Future<void> prepareAyahs() async {
+    var reader = await DependencyProvider.provide<Preference>().reader();
 
+    _ayahs = widget.surah.ayahs
+        .map((e) =>
+            "https://cdn.alquran.cloud/media/audio/ayah/${reader.identifier}/${e.number}")
+        .toList();
+  }
 
   @override
   void initState() {
@@ -458,35 +465,24 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
 
     context.bloc<ReadersBloc>().add(LoadSelectedReader());
     player.onPlayerStateChanged.listen((event) async {
-
+      print("ayahs.length ${_ayahs.length}");
       if (event == AudioPlayerState.COMPLETED) {
-        if (_playingAyahId != widget.surah.ayahs.last.number) {
-          _playingAyahId += 1;
-         await playAyah(_playingAyahId);
+        if (_ayahs.isNotEmpty) {
+          await playAyah(_ayahs.first);
         } else {
-         await player.stop();
-          setState(() {
-            _playingAyahId = 0;
-          });
+          await player.stop();
         }
       }
     });
   }
-  Future<void> playAyah(int ayahId) async {
-    var reader = await DependencyProvider.provide<Preference>().reader();
+
+  Future<void> playAyah(String url) async {
 
     _ensureNotPlaying();
-    var url =
-        "https://cdn.alquran.cloud/media/audio/ayah/${reader.identifier}/$ayahId";
-
-    print("playing  $url...");
 
     var playStatus = await player.play(url);
-    print(playStatus);
     if (playStatus == 1) {
-      setState(() {
-        _playingAyahId = ayahId;
-      });
+      _ayahs.removeAt(0);
     }
   }
 
@@ -548,9 +544,11 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
                               : Icon(Icons.play_arrow),
                           onPressed: () async {
                             if (player.state == AudioPlayerState.PLAYING) {
-                              await player.pause();
+                              await player.stop();
                             } else {
-                              playAyah(widget.surah.ayahs.first.number);
+                              await prepareAyahs();
+                              await playAyah(_ayahs.first);
+
                             }
                           },
                         );
