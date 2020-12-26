@@ -458,6 +458,7 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
 
     context.bloc<ReadersBloc>().add(LoadSelectedReader());
     player.onPlayerStateChanged.listen((event) async {
+
       if (event == AudioPlayerState.COMPLETED) {
         if (_playingAyahId != widget.surah.ayahs.last.number) {
           _playingAyahId += 1;
