@@ -10,31 +10,6 @@ class QuranApi {
 
   QuranApi(this._client);
 
-  /// Fetches Surah from api and cache it forever or al teast
-  /// return a [SurahResponse] by index starting from 1 to 114
-  /// [index] index of the [SurahResponse]
-  Future<SurahResponse> surahByIndex(int index) async {
-    try {
-      var response = await _client.get('surah/$index',
-          options: buildCacheOptions(Duration(days: 356), forceRefresh: false));
-      return SurahResponse.fromJson(response.data);
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  /// return a [JuzResponse] by index starting from 1 to 30
-  /// [index] index of the [JuzResponse]
-  Future<JuzResponse> juzByIndex(int index) async {
-    try {
-      var response = await _client.get('juz/$index',
-          options: buildCacheOptions(Duration(days: 356), forceRefresh: false));
-      return JuzResponse.fromJson(response.data);
-    } catch (error) {
-      throw error;
-    }
-  }
-
   Future<bool> downloadRiyadhBook(
       String path, ProgressCallback progressCallback) async {
     try {

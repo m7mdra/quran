@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -5,11 +7,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/data/local/preference.dart';
-import 'package:quran/data/model/juz_response.dart';
-import 'package:quran/data/model/surah_response.dart';
+import 'package:quran/data/model/quran.dart';
 import 'package:quran/di.dart';
 import 'package:quran/main.dart';
 import 'package:quran/popup_menu.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'bloc/readers/readers_bloc.dart';
 import 'bloc/readers/readers_event.dart';
@@ -19,9 +21,10 @@ import 'bloc/tafseer/tafseer_event.dart';
 import 'bloc/tafseer/tafseer_state.dart';
 
 class SurahDetailsPage extends StatefulWidget {
-  final Surah surah;
+  final List<Surah> surahs;
+  final int index;
 
-  const SurahDetailsPage({Key key, this.surah}) : super(key: key);
+  const SurahDetailsPage({Key key, this.surahs, this.index}) : super(key: key);
 
   @override
   _SurahDetailsPageState createState() => _SurahDetailsPageState();
@@ -29,15 +32,31 @@ class SurahDetailsPage extends StatefulWidget {
 
 class _SurahDetailsPageState extends State<SurahDetailsPage>
     with TickerProviderStateMixin {
-  var hideControls = false;
   AudioPlayer _audioPlayer = AudioPlayer();
-  ScrollController _controller = ScrollController();
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
 
   int _playingAyahId = 0;
+  List<GlobalKey> keys;
+  StreamController<Iterable<ItemPosition>> _scrollingPositions =
+      StreamController();
 
   @override
   void initState() {
     super.initState();
+    keys = widget.surahs
+        .map((e) => GlobalKey(debugLabel: "surah:${e.number}"))
+        .toList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      itemScrollController.jumpTo(index: widget.index, alignment: 0);
+    });
+    _scrollingPositions.stream.timeout(Duration(seconds: 1)).listen((event) {
+      print(event.first.index);
+    });
+    itemPositionsListener.itemPositions.addListener(() {
+      _scrollingPositions.sink.add(itemPositionsListener.itemPositions.value);
+    });
     _audioPlayer.onPlayerStateChanged.listen((event) {
       if (event == AudioPlayerState.COMPLETED) {
         setState(() {
@@ -100,85 +119,40 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
   Widget build(BuildContext context) {
     PopupMenu.context = context;
 
+    var surahs = widget.surahs;
     return Scaffold(
-      bottomSheet: SuraInfoModalSheet(
+      /* bottomSheet: SuraInfoModalSheet(
         surah: widget.surah,
         player: _audioPlayer,
-      ),
-      appBar: hideControls
-          ? PreferredSize(child: Container(), preferredSize: Size.zero)
-          : IslamicAppBar(
-              context: context,
-              title: widget.surah.name,
-              height: 56,
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () async {
-                    var ayah = await showSearch<Ayah>(
+      ),*/
+      appBar: IslamicAppBar(
+        context: context,
+        title: 'القران',
+        height: 56,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () async {
+              /*   var ayah = await showSearch<Ayah>(
                         context: context,
-                        delegate: AyahSearchDelegate(widget.surah));
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.share),
-                  onPressed: () {
-                    _controller.animateTo(10000,
-                        duration: Duration(seconds: 1), curve: Curves.easeIn);
-                  },
-                ),
-              ],
-            ),
-      body: ListView(
-        controller: _controller,
-        padding:
-            const EdgeInsets.only(left: 16, right: 16, bottom: 200, top: 16),
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              SvgPicture.asset('assets/images/surah_name_title.svg'),
-              Text(
-                widget.surah.name,
-                style: TextStyle(
-                    color: Color(0xffFD9434),
-                    fontSize: 22,
-                    fontFamily: 'Al-QuranAlKareem'),
-              )
-            ],
+                        delegate: AyahSearchDelegate(widget.surah));*/
+            },
           ),
-          SizedBox(
-            height: 16,
-          ),
-          Text.rich(
-            TextSpan(
-                text: widget.surah.number == 1
-                    ? ''
-                    : "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيم \n",
-                semanticsLabel: 'semanticsLabel',
-                style: TextStyle(
-                    fontFamily: 'alquran',
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold),
-                children: widget.surah.ayahs
-                    .map((e) => TextSpan(
-                        style: _playingAyahId == e.number
-                            ? TextStyle(backgroundColor: Colors.black26)
-                            : null,
-                        text:
-                            "${widget.surah.number == 1 ? e.text : e.text.replaceFirst("بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
-                        semanticsLabel: 'semanticsLabel',
-                        recognizer: DoubleTapGestureRecognizer()
-                          ..onDoubleTapDown = (tapDown) {
-                            showContextMenuAt(tapDown, context, e);
-                          }))
-                    .toList()),
-            semanticsLabel: 'semanticsLabel',
-            textAlign: TextAlign.center,
-            softWrap: true,
-            textDirection: TextDirection.rtl,
+          IconButton(
+            icon: Icon(Icons.share),
+            onPressed: () {},
           ),
         ],
+      ),
+      body: ScrollablePositionedList.builder(
+        itemScrollController: itemScrollController,
+        itemPositionsListener: itemPositionsListener,
+        itemBuilder: (context, index) {
+          return SurahWidget(
+            surah: surahs[index],
+          );
+        },
+        itemCount: surahs.length,
       ),
     );
   }
@@ -204,14 +178,73 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
           return TafseerWidget();
         });
   }
+}
 
-  void displayModalBottomSheet(context) {
-    showModalBottomSheet(
-        barrierColor: Colors.transparent,
-        context: context,
-        builder: (BuildContext bc) {
-          return SuraInfoModalSheet(surah: widget.surah);
-        });
+class SurahWidget extends StatefulWidget {
+  final Surah surah;
+  final int playingAyahId;
+
+  const SurahWidget({Key key, this.surah, this.playingAyahId})
+      : super(key: key);
+
+  @override
+  _SurahWidgetState createState() => _SurahWidgetState();
+}
+
+class _SurahWidgetState extends State<SurahWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      primary: false,
+      shrinkWrap: true,
+      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 16),
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            SvgPicture.asset('assets/images/surah_name_title.svg'),
+            Text(
+              widget.surah.name,
+              style: TextStyle(
+                  color: Color(0xffFD9434),
+                  fontSize: 22,
+                  fontFamily: 'Al-QuranAlKareem'),
+            )
+          ],
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        Text.rich(
+          TextSpan(
+              text: widget.surah.number == 1
+                  ? ''
+                  : "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيم \n",
+              semanticsLabel: 'semanticsLabel',
+              style: TextStyle(
+                  fontFamily: 'alquran',
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold),
+              children: widget.surah.ayahs
+                  .map((e) => TextSpan(
+                      style: widget.playingAyahId == e.number
+                          ? TextStyle(backgroundColor: Colors.black26)
+                          : null,
+                      text:
+                          "${widget.surah.number == 1 ? e.text : e.text.replaceFirst("بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
+                      semanticsLabel: 'semanticsLabel',
+                      recognizer: DoubleTapGestureRecognizer()
+                        ..onDoubleTapDown = (tapDown) {
+                          // showContextMenuAt(tapDown, context, e);
+                        }))
+                  .toList()),
+          semanticsLabel: 'semanticsLabel',
+          textAlign: TextAlign.center,
+          softWrap: true,
+          textDirection: TextDirection.rtl,
+        ),
+      ],
+    );
   }
 }
 

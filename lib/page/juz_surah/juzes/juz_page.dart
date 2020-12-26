@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/di.dart';
+import 'package:quran/page/surah_details/surah_details_page.dart';
 import 'bloc/bloc.dart';
 import 'bloc/juz_bloc.dart';
 
@@ -31,19 +32,26 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
     return Scaffold(
       body: BlocBuilder(
         cubit: _bloc,
-
         builder: (BuildContext context, state) {
-          if(state is JuzsLoadingState){
-            return Center(child: CircularProgressIndicator(),);
+          if (state is JuzsLoadingState) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
-          if(state is JuzsSuccessState){
+          if (state is JuzsSuccessState) {
             return ListView.separated(
               itemBuilder: (context, index) {
                 var juz = state.juz[index];
-               return  ListTile(
+                return ListTile(
                   dense: true,
-                  onTap:  () {
-
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SurahDetailsPage(
+                                  index: 0 ,
+                                  surahs: juz.surahs,
+                                )));
                   },
                   leading: Text("﴿${juz.number}﴾",
                       style: TextStyle(
@@ -75,9 +83,10 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
               },
             );
           }
-          return Center(child: Text('Failed to load juz data'),);
+          return Center(
+            child: Text('Failed to load juz data'),
+          );
         },
-
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/di.dart';
+import 'package:quran/page/surah_details/surah_details_page.dart';
 
 import 'bloc/bloc.dart';
 
@@ -44,7 +45,13 @@ class _SurahsPageState extends State<SurahsPage>
                 var surah = state.surah[index];
                 return ListTile(
                   dense: true,
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SurahDetailsPage(
+                                surahs: state.surah, index: index)));
+                  },
                   leading: Text("﴿${surah.number}﴾",
                       style: TextStyle(
                         fontFamily: 'Al-QuranAlKareem',
