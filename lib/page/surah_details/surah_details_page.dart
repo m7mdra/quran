@@ -36,11 +36,10 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
       ItemPositionsListener.create();
+  Surah _currentSurah;
 
   int _playingAyahId = 0;
   List<GlobalKey> keys;
-  StreamController<Iterable<ItemPosition>> _scrollingPositions =
-      StreamController();
 
   @override
   void initState() {
@@ -51,21 +50,24 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       itemScrollController.jumpTo(index: widget.index, alignment: 0);
     });
-    _scrollingPositions.stream.timeout(Duration(seconds: 1)).listen((event) {
-      print(event.first.index);
-    });
+
     itemPositionsListener.itemPositions.addListener(() {
-      _scrollingPositions.sink.add(itemPositionsListener.itemPositions.value);
+      var index = itemPositionsListener.itemPositions.value.first.index;
+      var surah = widget.surahs[index];
+      if (_currentSurah != surah) {
+        setState(() {
+          this._currentSurah = surah;
+        });
+      }
+      print(surah);
     });
+
     _audioPlayer.onPlayerStateChanged.listen((event) {
       if (event == AudioPlayerState.COMPLETED) {
         setState(() {
           _playingAyahId = 0;
         });
       }
-    });
-    _audioPlayer.onPlayerCommand.listen((event) {
-      print(event);
     });
 
     _audioPlayer.onPlayerCommand.listen((event) {
@@ -118,16 +120,16 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
   @override
   Widget build(BuildContext context) {
     PopupMenu.context = context;
-
+    print("_currentSurah $_currentSurah");
     var surahs = widget.surahs;
     return Scaffold(
-      /* bottomSheet: SuraInfoModalSheet(
-        surah: widget.surah,
+      bottomSheet: SuraInfoModalSheet(
+        surah: _currentSurah != null ? _currentSurah : surahs[widget.index],
         player: _audioPlayer,
-      ),*/
+      ),
       appBar: IslamicAppBar(
         context: context,
-        title: 'القران',
+        title: _currentSurah?.name ?? ' ',
         height: 56,
         actions: [
           IconButton(
@@ -147,9 +149,14 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
       body: ScrollablePositionedList.builder(
         itemScrollController: itemScrollController,
         itemPositionsListener: itemPositionsListener,
+        initialScrollIndex: widget.index,
         itemBuilder: (context, index) {
-          return SurahWidget(
-            surah: surahs[index],
+          //TODO fix last time not visible
+          return Padding(
+            padding:  EdgeInsets.only(bottom: index == 113 ? 400 : 0),
+            child: SurahWidget(
+              surah: surahs[index],
+            ),
           );
         },
         itemCount: surahs.length,
@@ -478,7 +485,7 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
 
   Future<void> prepareAyahs() async {
     var reader = await DependencyProvider.provide<Preference>().reader();
-
+//TODO: handle reader changes
     _ayahs = widget.surah.ayahs
         .map((e) =>
             "https://cdn.alquran.cloud/media/audio/ayah/${reader.identifier}/${e.number}")
