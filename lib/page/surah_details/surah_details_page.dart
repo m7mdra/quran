@@ -38,7 +38,6 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
       ItemPositionsListener.create();
   Surah _currentSurah;
 
-  int _playingAyahId = 0;
   List<GlobalKey> keys;
 
   @override
@@ -55,35 +54,14 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
       var index = itemPositionsListener.itemPositions.value.first.index;
       var surah = widget.surahs[index];
       if (_currentSurah != surah) {
+        if (_audioPlayer.state == AudioPlayerState.PLAYING) {
+          _audioPlayer.stop();
+        }
         setState(() {
           this._currentSurah = surah;
         });
       }
       print(surah);
-    });
-
-    _audioPlayer.onPlayerStateChanged.listen((event) {
-      if (event == AudioPlayerState.COMPLETED) {
-        setState(() {
-          _playingAyahId = 0;
-        });
-      }
-    });
-
-    _audioPlayer.onPlayerCommand.listen((event) {
-      print(event);
-    });
-    _audioPlayer.onPlayerError.listen((event) {
-      print(event);
-      setState(() {
-        _playingAyahId = 0;
-      });
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: Text('Error'),
-                content: Text('فشل تشغيل المقطع, حاول مرة اخرى'),
-              ));
     });
   }
 
@@ -91,30 +69,6 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
   void dispose() {
     super.dispose();
     _audioPlayer.stop();
-  }
-
-  Future<void> playAyah(int ayahId) async {
-    var reader = await DependencyProvider.provide<Preference>().reader();
-
-    _ensureNotPlaying();
-    var url =
-        "https://cdn.alquran.cloud/media/audio/ayah/${reader.identifier}/$ayahId";
-
-    print("playing  $url...");
-
-    var playStatus = await _audioPlayer.play(url);
-    print(playStatus);
-    if (playStatus == 1) {
-      setState(() {
-        _playingAyahId = ayahId;
-      });
-    }
-  }
-
-  void _ensureNotPlaying() {
-    if (_audioPlayer.state == AudioPlayerState.PLAYING) {
-      _audioPlayer.stop();
-    }
   }
 
   @override
@@ -151,10 +105,10 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
         itemPositionsListener: itemPositionsListener,
         initialScrollIndex: widget.index,
         itemBuilder: (context, index) {
-          //TODO fix last time not visible
           return Padding(
-            padding:  EdgeInsets.only(bottom: index == 113 ? 400 : 0),
+            padding: EdgeInsets.only(bottom: index == 113 ? 400 : 0),
             child: SurahWidget(
+              audioPlayer: _audioPlayer,
               surah: surahs[index],
             ),
           );
@@ -162,6 +116,55 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
         itemCount: surahs.length,
       ),
     );
+  }
+}
+
+class SurahWidget extends StatefulWidget {
+  final Surah surah;
+  final int playingAyahId;
+  final AudioPlayer audioPlayer;
+
+  const SurahWidget({Key key, this.surah, this.playingAyahId, this.audioPlayer})
+      : super(key: key);
+
+  @override
+  _SurahWidgetState createState() => _SurahWidgetState();
+}
+
+class _SurahWidgetState extends State<SurahWidget> {
+  int _playingAyahId = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.audioPlayer.onPlayerStateChanged.listen((event) {
+      if (event == AudioPlayerState.COMPLETED) {
+        setState(() {
+          _playingAyahId = 0;
+        });
+      }
+    });
+
+    widget.audioPlayer.onPlayerError.listen((event) {
+      print(event);
+      setState(() {
+        _playingAyahId = 0;
+      });
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text('Error'),
+                content: Text('فشل تشغيل المقطع, حاول مرة اخرى'),
+              ));
+    });
+  }
+
+  showTafseerDialog() {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return TafseerWidget();
+        });
   }
 
   void showContextMenuAt(TapDownDetails tapDown, BuildContext context, Ayah e) {
@@ -178,27 +181,30 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
         });
   }
 
-  showTafseerDialog() {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return TafseerWidget();
-        });
+  void _ensureNotPlaying() {
+    if (widget.audioPlayer.state == AudioPlayerState.PLAYING) {
+      widget.audioPlayer.stop();
+    }
   }
-}
 
-class SurahWidget extends StatefulWidget {
-  final Surah surah;
-  final int playingAyahId;
+  Future<void> playAyah(int ayahId) async {
+    var reader = await DependencyProvider.provide<Preference>().reader();
 
-  const SurahWidget({Key key, this.surah, this.playingAyahId})
-      : super(key: key);
+    _ensureNotPlaying();
+    var url =
+        "https://cdn.alquran.cloud/media/audio/ayah/${reader.identifier}/$ayahId";
 
-  @override
-  _SurahWidgetState createState() => _SurahWidgetState();
-}
+    print("playing  $url...");
 
-class _SurahWidgetState extends State<SurahWidget> {
+    var playStatus = await widget.audioPlayer.play(url);
+    print(playStatus);
+    if (playStatus == 1) {
+      setState(() {
+        _playingAyahId = ayahId;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -234,7 +240,7 @@ class _SurahWidgetState extends State<SurahWidget> {
                   fontWeight: FontWeight.bold),
               children: widget.surah.ayahs
                   .map((e) => TextSpan(
-                      style: widget.playingAyahId == e.number
+                      style: _playingAyahId == e.number
                           ? TextStyle(backgroundColor: Colors.black26)
                           : null,
                       text:
@@ -242,7 +248,7 @@ class _SurahWidgetState extends State<SurahWidget> {
                       semanticsLabel: 'semanticsLabel',
                       recognizer: DoubleTapGestureRecognizer()
                         ..onDoubleTapDown = (tapDown) {
-                          // showContextMenuAt(tapDown, context, e);
+                          showContextMenuAt(tapDown, context, e);
                         }))
                   .toList()),
           semanticsLabel: 'semanticsLabel',
@@ -483,13 +489,19 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
   AudioPlayer player;
   var _ayahs = <String>[];
 
+
   Future<void> prepareAyahs() async {
     var reader = await DependencyProvider.provide<Preference>().reader();
+
 //TODO: handle reader changes
-    _ayahs = widget.surah.ayahs
-        .map((e) =>
-            "https://cdn.alquran.cloud/media/audio/ayah/${reader.identifier}/${e.number}")
-        .toList();
+    _ayahs.clear();
+
+
+      _ayahs = widget.surah.ayahs
+          .map((e) =>
+      "https://cdn.alquran.cloud/media/audio/ayah/${reader.identifier}/${e.number}")
+          .toList();
+
   }
 
   @override
