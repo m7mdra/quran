@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,9 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/local/note_database_client.dart';
 import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
+import 'package:quran/data/model/quran.dart';
 import 'package:quran/di.dart';
+import 'package:quran/home_page.dart';
 import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
 import 'package:quran/page/surah_details/bloc/tafseer/tafseer_bloc.dart';
+import 'package:quran/page/surah_details/surah_player.dart';
 import 'package:quran/splash_page.dart';
 
 class BlocTransitionObserver implements BlocObserver {
@@ -45,7 +49,7 @@ class BlocTransitionObserver implements BlocObserver {
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = BlocTransitionObserver();
-
+  AudioPlayer.logEnabled = true;
   await DependencyProvider.build();
   await DependencyProvider.provide<TafseerDataBaseClient>().initDatabase();
   DependencyProvider.provide<QuranProvider>()
@@ -125,7 +129,41 @@ class MyApp extends StatelessWidget {
             iconTheme: IconThemeData().copyWith(color: Colors.white)),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SplashPage(),
+      home: HomePage(),
+    );
+  }
+}
+
+class MehWidget extends StatefulWidget {
+  @override
+  _MehWidgetState createState() => _MehWidgetState();
+}
+
+class _MehWidgetState extends State<MehWidget> {
+  SurahPlayer _player = SurahPlayer(null);
+  QuranProvider _quranProvider = QuranProvider();
+  List<Surah> list;
+
+  @override
+  void initState() {
+
+    super.initState();
+    _player.currentPlayingIndex.listen((event) {
+      print(event);
+    });
+    _quranProvider.loadSurahList().then((value) {
+      setState(() {
+        list = value;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(child: RaisedButton(onPressed: () {
+        _player.playSurah(list[113]);
+      })),
     );
   }
 }

@@ -49,7 +49,9 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       itemScrollController.jumpTo(index: widget.index, alignment: 0);
     });
-
+    _audioPlayer.onPlayerError.listen((event) {
+      print("onPlayerError: $event");
+    });
     itemPositionsListener.itemPositions.addListener(() {
       var index = itemPositionsListener.itemPositions.value.first.index;
       var surah = widget.surahs[index];
@@ -230,9 +232,7 @@ class _SurahWidgetState extends State<SurahWidget> {
         ),
         Text.rich(
           TextSpan(
-              text: widget.surah.number == 1
-                  ? ''
-                  : "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيم \n",
+              text: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيم \n",
               semanticsLabel: 'semanticsLabel',
               style: TextStyle(
                   fontFamily: 'alquran',
@@ -244,10 +244,11 @@ class _SurahWidgetState extends State<SurahWidget> {
                           ? TextStyle(backgroundColor: Colors.black26)
                           : null,
                       text:
-                          "${widget.surah.number == 1 ? e.text : e.text.replaceFirst("بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
+                          "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
                       semanticsLabel: 'semanticsLabel',
                       recognizer: DoubleTapGestureRecognizer()
                         ..onDoubleTapDown = (tapDown) {
+                          print(e.toJson());
                           showContextMenuAt(tapDown, context, e);
                         }))
                   .toList()),
@@ -489,19 +490,15 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
   AudioPlayer player;
   var _ayahs = <String>[];
 
-
   Future<void> prepareAyahs() async {
     var reader = await DependencyProvider.provide<Preference>().reader();
 
 //TODO: handle reader changes
     _ayahs.clear();
-
-
-      _ayahs = widget.surah.ayahs
-          .map((e) =>
-      "https://cdn.alquran.cloud/media/audio/ayah/${reader.identifier}/${e.number}")
-          .toList();
-
+    _ayahs = widget.surah.ayahs
+        .map((e) =>
+            "https://cdn.alquran.cloud/media/audio/ayah/${reader.identifier}/${e.number}")
+        .toList();
   }
 
   @override
@@ -510,6 +507,7 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
     player = widget.player;
 
     context.bloc<ReadersBloc>().add(LoadSelectedReader());
+
     player.onPlayerCompletion.listen((event) async {
       print("ayahs.length ${_ayahs.length}");
       if (_ayahs.isNotEmpty) {
