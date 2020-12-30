@@ -10,6 +10,9 @@ import 'package:quran/data/local/preference.dart';
 import 'package:quran/data/model/quran.dart';
 import 'package:quran/di.dart';
 import 'package:quran/main.dart';
+import 'package:quran/page/surah_details/search_delegate.dart';
+import 'package:quran/page/surah_details/surah_player.dart';
+import 'package:quran/page/surah_details/surah_widget.dart';
 import 'package:quran/popup_menu.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -32,33 +35,39 @@ class SurahDetailsPage extends StatefulWidget {
 
 class _SurahDetailsPageState extends State<SurahDetailsPage>
     with TickerProviderStateMixin {
-  AudioPlayer _audioPlayer = AudioPlayer();
+  SurahPlayer _surahPlayer;
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
       ItemPositionsListener.create();
   Surah _currentSurah;
-
+  MapEntry<Surah, Ayah> query;
   List<GlobalKey> keys;
 
   @override
   void initState() {
     super.initState();
+    _surahPlayer =
+        SurahPlayer(context.bloc<ReadersBloc>(), DependencyProvider.provide());
+    _surahPlayer.errorStream.listen((event) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: Text('حصل خطا'),
+                content: Text('فشل تشغيل المقطع, حاول مرة اخرى'),
+              ));
+    });
     keys = widget.surahs
         .map((e) => GlobalKey(debugLabel: "surah:${e.number}"))
         .toList();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       itemScrollController.jumpTo(index: widget.index, alignment: 0);
     });
-    _audioPlayer.onPlayerError.listen((event) {
-      print("onPlayerError: $event");
-    });
+
     itemPositionsListener.itemPositions.addListener(() {
       var index = itemPositionsListener.itemPositions.value.first.index;
       var surah = widget.surahs[index];
       if (_currentSurah != surah) {
-        if (_audioPlayer.state == AudioPlayerState.PLAYING) {
-          _audioPlayer.stop();
-        }
+        _surahPlayer.stop();
         setState(() {
           this._currentSurah = surah;
         });
@@ -69,8 +78,8 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
 
   @override
   void dispose() {
+    _surahPlayer.dispose();
     super.dispose();
-    _audioPlayer.stop();
   }
 
   @override
@@ -81,7 +90,7 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     return Scaffold(
       bottomSheet: SuraInfoModalSheet(
         surah: _currentSurah != null ? _currentSurah : surahs[widget.index],
-        player: _audioPlayer,
+        player: _surahPlayer,
       ),
       appBar: IslamicAppBar(
         context: context,
@@ -91,9 +100,16 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () async {
-              /*   var ayah = await showSearch<Ayah>(
-                        context: context,
-                        delegate: AyahSearchDelegate(widget.surah));*/
+              var ayah = await showSearch<MapEntry<Surah, Ayah>>(
+                  context: context,
+                  delegate: AyahSearchDelegate(widget.surahs));
+              if (ayah != null) {
+                setState(() {
+                  query = ayah;
+                });
+                itemScrollController.jumpTo(
+                    index: widget.surahs.indexOf(ayah.key), alignment: 0);
+              }
             },
           ),
           IconButton(
@@ -110,154 +126,14 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
           return Padding(
             padding: EdgeInsets.only(bottom: index == 113 ? 400 : 0),
             child: SurahWidget(
-              audioPlayer: _audioPlayer,
+              selectedAyahId: query?.value?.number ?? -1,
+              player: _surahPlayer,
               surah: surahs[index],
             ),
           );
         },
         itemCount: surahs.length,
       ),
-    );
-  }
-}
-
-class SurahWidget extends StatefulWidget {
-  final Surah surah;
-  final int playingAyahId;
-  final AudioPlayer audioPlayer;
-
-  const SurahWidget({Key key, this.surah, this.playingAyahId, this.audioPlayer})
-      : super(key: key);
-
-  @override
-  _SurahWidgetState createState() => _SurahWidgetState();
-}
-
-class _SurahWidgetState extends State<SurahWidget> {
-  int _playingAyahId = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    widget.audioPlayer.onPlayerStateChanged.listen((event) {
-      if (event == AudioPlayerState.COMPLETED) {
-        setState(() {
-          _playingAyahId = 0;
-        });
-      }
-    });
-
-    widget.audioPlayer.onPlayerError.listen((event) {
-      print(event);
-      setState(() {
-        _playingAyahId = 0;
-      });
-      showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-                title: Text('Error'),
-                content: Text('فشل تشغيل المقطع, حاول مرة اخرى'),
-              ));
-    });
-  }
-
-  showTafseerDialog() {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return TafseerWidget();
-        });
-  }
-
-  void showContextMenuAt(TapDownDetails tapDown, BuildContext context, Ayah e) {
-    var rect = Rect.fromCircle(center: tapDown.globalPosition, radius: 0);
-    var popMenu = PopupMenu(context: context);
-    popMenu.show(
-        rect: rect,
-        onPlayClick: () async {
-          playAyah(e.number);
-        },
-        onTafseerCallback: () async {
-          context.bloc<TafseerBloc>().add(LoadTafseerForAyah(e.number));
-          showTafseerDialog();
-        });
-  }
-
-  void _ensureNotPlaying() {
-    if (widget.audioPlayer.state == AudioPlayerState.PLAYING) {
-      widget.audioPlayer.stop();
-    }
-  }
-
-  Future<void> playAyah(int ayahId) async {
-    var reader = await DependencyProvider.provide<Preference>().reader();
-
-    _ensureNotPlaying();
-    var url =
-        "https://cdn.alquran.cloud/media/audio/ayah/${reader.identifier}/$ayahId";
-
-    print("playing  $url...");
-
-    var playStatus = await widget.audioPlayer.play(url);
-    print(playStatus);
-    if (playStatus == 1) {
-      setState(() {
-        _playingAyahId = ayahId;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      primary: false,
-      shrinkWrap: true,
-      padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 16),
-      children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            SvgPicture.asset('assets/images/surah_name_title.svg'),
-            Text(
-              widget.surah.name,
-              style: TextStyle(
-                  color: Color(0xffFD9434),
-                  fontSize: 22,
-                  fontFamily: 'Al-QuranAlKareem'),
-            )
-          ],
-        ),
-        SizedBox(
-          height: 16,
-        ),
-        Text.rich(
-          TextSpan(
-              text: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيم \n",
-              semanticsLabel: 'semanticsLabel',
-              style: TextStyle(
-                  fontFamily: 'alquran',
-                  fontSize: 23,
-                  fontWeight: FontWeight.bold),
-              children: widget.surah.ayahs
-                  .map((e) => TextSpan(
-                      style: _playingAyahId == e.number
-                          ? TextStyle(backgroundColor: Colors.black26)
-                          : null,
-                      text:
-                          "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
-                      semanticsLabel: 'semanticsLabel',
-                      recognizer: DoubleTapGestureRecognizer()
-                        ..onDoubleTapDown = (tapDown) {
-                          print(e.toJson());
-                          showContextMenuAt(tapDown, context, e);
-                        }))
-                  .toList()),
-          semanticsLabel: 'semanticsLabel',
-          textAlign: TextAlign.center,
-          softWrap: true,
-          textDirection: TextDirection.rtl,
-        ),
-      ],
     );
   }
 }
@@ -474,7 +350,7 @@ class ReadersWidget extends StatelessWidget {
 
 class SuraInfoModalSheet extends StatefulWidget {
   final Surah surah;
-  final AudioPlayer player;
+  final SurahPlayer player;
 
   const SuraInfoModalSheet({
     Key key,
@@ -487,19 +363,7 @@ class SuraInfoModalSheet extends StatefulWidget {
 }
 
 class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
-  AudioPlayer player;
-  var _ayahs = <String>[];
-
-  Future<void> prepareAyahs() async {
-    var reader = await DependencyProvider.provide<Preference>().reader();
-
-//TODO: handle reader changes
-    _ayahs.clear();
-    _ayahs = widget.surah.ayahs
-        .map((e) =>
-            "https://cdn.alquran.cloud/media/audio/ayah/${reader.identifier}/${e.number}")
-        .toList();
-  }
+  SurahPlayer player;
 
   @override
   void initState() {
@@ -507,23 +371,6 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
     player = widget.player;
 
     context.bloc<ReadersBloc>().add(LoadSelectedReader());
-
-    player.onPlayerCompletion.listen((event) async {
-      print("ayahs.length ${_ayahs.length}");
-      if (_ayahs.isNotEmpty) {
-        await playAyah(_ayahs.first);
-      } else {
-        await player.stop();
-      }
-    });
-  }
-
-  Future<void> playAyah(String url) async {
-    var playStatus = await player.setUrl(url);
-    if (playStatus == 1) {
-      await player.resume();
-      _ayahs.removeAt(0);
-    }
   }
 
   @override
@@ -582,12 +429,7 @@ class _SuraInfoModalSheetState extends State<SuraInfoModalSheet> {
                               ? Icon(Icons.pause)
                               : Icon(Icons.play_arrow),
                           onPressed: () async {
-                            if (player.state == AudioPlayerState.PLAYING) {
-                              await player.stop();
-                            } else {
-                              await prepareAyahs();
-                              await playAyah(_ayahs.first);
-                            }
+                            player.playSurah(widget.surah);
                           },
                         );
                       }),
@@ -646,35 +488,6 @@ class SuraOptions extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class PlayButtonWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-              color: Color(0xff95B93E).withAlpha((255 / 0.16).round()),
-              shape: BoxShape.circle),
-        ),
-        Container(
-          width: 38,
-          height: 38,
-          child: IconButton(
-            icon: Icon(Icons.play_arrow),
-            onPressed: () {},
-            color: Colors.white,
-          ),
-          decoration:
-              BoxDecoration(color: Color(0xff95B93E), shape: BoxShape.circle),
-        ),
-      ],
     );
   }
 }
@@ -765,74 +578,5 @@ class ToggleableFontOptions extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class AyahSearchDelegate extends SearchDelegate<Ayah> {
-  final Surah surah;
-
-  AyahSearchDelegate(this.surah)
-      : super(
-            searchFieldStyle: TextStyle(color: Colors.grey),
-            searchFieldLabel: 'ابحث عن ايات');
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return null;
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return Container();
-  }
-
-  @override
-  ThemeData appBarTheme(BuildContext context) => Theme.of(context);
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    var result = findResult(query);
-    return ListView.separated(
-      itemBuilder: (context, index) {
-        return ListTile(
-            onTap: () {
-              Navigator.pop(context, result[index]);
-            },
-            leading: Text('﴿${result[index].numberInSurah}﴾',
-                style: TextStyle(fontFamily: 'Al-QuranAlKareem')),
-            title: Text(result[index].text,
-                style: TextStyle(fontFamily: 'alquran', fontSize: 21)));
-      },
-      itemCount: result.length,
-      separatorBuilder: (BuildContext context, int index) {
-        return Divider();
-      },
-    );
-  }
-
-  var tashkeel = ['ِ', 'ُ', 'ٓ', 'ٰ', 'ْ', 'ٌ', 'ٍ', 'ً', 'ّ', 'َ'];
-
-  List<Ayah> findResult(String query) {
-    if (query.isEmpty) return [];
-    return surah.ayahs
-        .where((element) => element.text
-            .replaceAll('\u064b', '')
-            .replaceAll('\u064f', '')
-            .replaceAll('\u064c', '')
-            .replaceAll('\u064d', '')
-            .replaceAll('\u0650', '')
-            .replaceAll('\u0651', '')
-            .replaceAll('\u0652', '')
-            .replaceAll('\u0653', '')
-            .replaceAll('\u0654', '')
-            .replaceAll('\u0655', '')
-            .replaceAll('\u064e', '')
-            .contains(query))
-        .toList();
   }
 }

@@ -134,40 +134,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MehWidget extends StatefulWidget {
-  @override
-  _MehWidgetState createState() => _MehWidgetState();
-}
-
-class _MehWidgetState extends State<MehWidget> {
-  SurahPlayer _player = SurahPlayer(null);
-  QuranProvider _quranProvider = QuranProvider();
-  List<Surah> list;
-
-  @override
-  void initState() {
-
-    super.initState();
-    _player.currentPlayingIndex.listen((event) {
-      print(event);
-    });
-    _quranProvider.loadSurahList().then((value) {
-      setState(() {
-        list = value;
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: RaisedButton(onPressed: () {
-        _player.playSurah(list[113]);
-      })),
-    );
-  }
-}
-
 class IslamicAppBar extends AppBar {
   IslamicAppBar({
     @required String title,

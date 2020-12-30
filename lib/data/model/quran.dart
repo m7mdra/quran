@@ -84,7 +84,7 @@ class Surah {
       };
   @override
   String toString() {
-    return "$name";
+    return "$name\n";
   }
 }
 
