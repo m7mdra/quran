@@ -11,7 +11,6 @@ class QuranProvider {
     var jsonData = jsonDecode(data);
     return Quran.fromJson(jsonData);
   }
-
   Future<List<Surah>> loadSurahList() async {
     var quran = await load();
     return quran.data.surahs;

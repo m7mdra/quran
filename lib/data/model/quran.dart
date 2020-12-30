@@ -56,6 +56,16 @@ class Surah {
     this.ayahs,
   });
 
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Surah &&
+          runtimeType == other.runtimeType &&
+          number == other.number;
+
+  @override
+  int get hashCode => number.hashCode;
   int number;
   String name;
   String englishName;
@@ -99,6 +109,16 @@ class Ayah {
     this.ruku,
     this.hizbQuarter,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Ayah &&
+          runtimeType == other.runtimeType &&
+          number == other.number;
+
+  @override
+  int get hashCode => number.hashCode;
 
   int number;
   String text;

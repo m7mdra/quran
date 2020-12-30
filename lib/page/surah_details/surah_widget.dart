@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:quran/data/model/quran.dart';
 import 'package:quran/page/surah_details/surah_details_page.dart';
 import 'package:quran/page/surah_details/surah_player.dart';
+import 'package:quran/page/surah_details/tafseer_widget.dart';
 import 'package:quran/popup_menu.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/tafseer/tafseer_bloc.dart';
