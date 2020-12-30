@@ -16,7 +16,7 @@ class QuranApi {
       var fileResponse = await _client.download(bookUrl, path,
           onReceiveProgress: progressCallback);
 
-      return fileResponse.statusCode==200;
+      return fileResponse.statusCode == 200;
     } catch (error) {
       throw error;
     }

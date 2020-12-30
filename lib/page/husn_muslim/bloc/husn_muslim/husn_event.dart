@@ -1,2 +1,3 @@
-abstract class HusnEvent{}
-class LoadHusnData extends HusnEvent{}
+abstract class HusnEvent {}
+
+class LoadHusnData extends HusnEvent {}

@@ -71,7 +71,6 @@ class _QiblaaPageState extends State<QiblaaPage> {
                   message: 'اضفط على الزر بالاسفل لمنح الصلاحية وعرض القبلة',
                   callback: () async {
                     await Geolocator.openLocationSettings();
-
                   },
                 );
               case LocationPermission.deniedForever:
@@ -79,8 +78,7 @@ class _QiblaaPageState extends State<QiblaaPage> {
                   title: 'لقد تم رفض صلاحية الوصول للموقع للابد',
                   message: 'قم بالذهاب الى الاعدادات لاعادة منح الصلاحية',
                   callback: () async {
-                   await Geolocator.openLocationSettings();
-
+                    await Geolocator.openLocationSettings();
                   },
                 );
               default:
@@ -92,7 +90,6 @@ class _QiblaaPageState extends State<QiblaaPage> {
               message: 'اضفط على الزر بالاسفل لمنح الصلاحية وعرض القبلة',
               callback: () async {
                 await Geolocator.openLocationSettings();
-
               },
             );
           }
@@ -156,7 +153,10 @@ class LocationEnabledWidget extends StatelessWidget {
 }
 
 class QiblahCompassWidget extends StatelessWidget {
-  final _compassSvg = SvgPicture.asset('assets/images/compass.svg',fit: BoxFit.fitWidth,);
+  final _compassSvg = SvgPicture.asset(
+    'assets/images/compass.svg',
+    fit: BoxFit.fitWidth,
+  );
   final _needleSvg = SvgPicture.asset(
     'assets/images/needle.svg',
     fit: BoxFit.contain,

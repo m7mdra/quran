@@ -4,13 +4,13 @@ import 'package:quran/page/juz_surah/surahs/surahs_page.dart';
 
 import 'juzes/juz_page.dart';
 
-
 class SurahsJuzesPage extends StatefulWidget {
   @override
   _SurahsJuzesPageState createState() => _SurahsJuzesPageState();
 }
 
-class _SurahsJuzesPageState extends State<SurahsJuzesPage> with TickerProviderStateMixin {
+class _SurahsJuzesPageState extends State<SurahsJuzesPage>
+    with TickerProviderStateMixin {
   PageController _pageController;
   TabController _tabController;
   var currentPage = 0;
@@ -21,13 +21,15 @@ class _SurahsJuzesPageState extends State<SurahsJuzesPage> with TickerProviderSt
     _tabController = TabController(length: 2, vsync: this);
     _pageController = PageController(keepPage: true);
   }
-@override
+
+  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     _tabController.dispose();
     _pageController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,10 +39,7 @@ class _SurahsJuzesPageState extends State<SurahsJuzesPage> with TickerProviderSt
           _tabController.animateTo(index,
               duration: Duration(milliseconds: 200), curve: Curves.linear);
         },
-        children: [
-          SurahsPage(),
-          JuzPage()
-        ],
+        children: [SurahsPage(), JuzPage()],
       ),
       appBar: IslamicAppBar(
         context: context,

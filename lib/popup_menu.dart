@@ -69,7 +69,6 @@ class PopupMenu {
   /// Cannot be null
   static BuildContext context;
 
-
   /// It's showing or not.
   bool _isShow = false;
 

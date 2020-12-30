@@ -38,10 +38,7 @@ class _NotesBookMarksPageState extends State<NotesBookMarksPage>
           _tabController.animateTo(index,
               duration: Duration(milliseconds: 200), curve: Curves.linear);
         },
-        children: [
-          BookmarksPage(),
-          NotesPage()
-        ],
+        children: [BookmarksPage(), NotesPage()],
       ),
       appBar: IslamicAppBar(
         title: 'العلامات والملاحظات',
@@ -74,7 +71,8 @@ class _NotesBookMarksPageState extends State<NotesBookMarksPage>
             )
           ],
           controller: _tabController,
-        ), context: context,
+        ),
+        context: context,
       ),
     );
   }

@@ -109,13 +109,13 @@ class _HomePageState extends State<HomePage> {
                               MaterialPageRoute(
                                   builder: (context) => SurahsJuzesPage()));
                         }
-                        if(index ==1){
+                        if (index == 1) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => NotesBookMarksPage()));
                         }
-                        if(index==3){
+                        if (index == 3) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -136,7 +136,9 @@ class _HomePageState extends State<HomePage> {
   AppBar buildAppBar() {
     return AppBar(
       leading: IconButton(
-          icon: SvgPicture.asset(isDarkMode(context)?'assets/images/ic_menu_dark.svg':'assets/images/ic_menu.svg'),
+          icon: SvgPicture.asset(isDarkMode(context)
+              ? 'assets/images/ic_menu_dark.svg'
+              : 'assets/images/ic_menu.svg'),
           onPressed: () {},
           splashRadius: 20,
           iconSize: 40),
@@ -147,9 +149,7 @@ class _HomePageState extends State<HomePage> {
             icon: SvgPicture.asset(isDarkMode(context)
                 ? 'assets/images/ic_lang_dark.svg'
                 : 'assets/images/ic_lang.svg'),
-            onPressed: () {
-
-            },
+            onPressed: () {},
             splashRadius: 20,
             iconSize: 40),
         IconButton(
@@ -169,9 +169,7 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-
 }
-
 
 class HomeMenuItem extends StatelessWidget {
   final VoidCallback onTap;

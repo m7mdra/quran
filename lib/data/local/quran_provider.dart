@@ -11,6 +11,7 @@ class QuranProvider {
     var jsonData = jsonDecode(data);
     return Quran.fromJson(jsonData);
   }
+
   Future<List<Surah>> loadSurahList() async {
     var quran = await load();
     return quran.data.surahs;
@@ -33,5 +34,6 @@ class QuranProvider {
     return juzList;
   }
 }
+
 List<T> flatten<T>(Iterable<Iterable<T>> list) =>
     [for (var sublist in list) ...sublist];

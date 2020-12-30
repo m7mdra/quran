@@ -64,14 +64,14 @@ class Ayah {
   int page;
   SurahReference surahReference;
 
-
-  Ayah(
-      {this.number,
-      this.text,
-      this.numberInSurah,
-      this.juz,
-      this.surahReference,
-      this.page,});
+  Ayah({
+    this.number,
+    this.text,
+    this.numberInSurah,
+    this.juz,
+    this.surahReference,
+    this.page,
+  });
 
   Ayah.fromJson(dynamic json) {
     number = json["number"];
@@ -81,10 +81,7 @@ class Ayah {
     if (json['surah'] != null)
       surahReference = SurahReference.fromJson(json['surah']);
     page = json["page"];
-
   }
-
-
 }
 
 class Juz {
@@ -105,5 +102,4 @@ class Juz {
     surahs = (json['surahs'] as Map)
         .map((key, value) => MapEntry(key, SurahReference.fromJson(value)));
   }
-
 }

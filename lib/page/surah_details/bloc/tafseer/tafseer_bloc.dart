@@ -16,7 +16,6 @@ class TafseerBloc extends Bloc<TafseerEvent, TafseerState> {
         var surahTafseer =
             await _repository.getSurahTafseer(event.start, event.end);
         yield TafseerForSurahLoadedState(surahTafseer);
-
       } catch (error) {
         yield TafseerErrorState();
       }

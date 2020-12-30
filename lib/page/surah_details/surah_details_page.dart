@@ -5,8 +5,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:quran/data/local/preference.dart';
 import 'package:quran/data/model/quran.dart';
 import 'package:quran/di.dart';
 import 'package:quran/main.dart';
@@ -18,11 +16,6 @@ import 'package:quran/popup_menu.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'bloc/readers/readers_bloc.dart';
-import 'bloc/readers/readers_event.dart';
-import 'bloc/readers/readers_state.dart';
-import 'bloc/tafseer/tafseer_bloc.dart';
-import 'bloc/tafseer/tafseer_event.dart';
-import 'bloc/tafseer/tafseer_state.dart';
 
 class SurahDetailsPage extends StatefulWidget {
   final List<Surah> surahs;
@@ -70,7 +63,6 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
           this._currentSurah = surah;
         });
       }
-      print(surah);
     });
   }
 
@@ -138,9 +130,6 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
     );
   }
 }
-
-
-
 
 enum FontOptions { normal, bold, large }
 

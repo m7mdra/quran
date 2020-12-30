@@ -1,2 +1,3 @@
-abstract class DuaMathorEvent{}
-class LoadDuaMathorData extends DuaMathorEvent{}
+abstract class DuaMathorEvent {}
+
+class LoadDuaMathorData extends DuaMathorEvent {}

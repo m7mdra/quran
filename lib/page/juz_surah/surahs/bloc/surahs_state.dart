@@ -1,4 +1,3 @@
-
 import 'package:quran/data/model/quran.dart';
 
 abstract class SurahsState {}

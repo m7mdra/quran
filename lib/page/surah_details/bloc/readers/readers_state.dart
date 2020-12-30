@@ -7,7 +7,8 @@ class ReadersLoadingState extends ReadersState {}
 class ReadersErrorState extends ReadersState {}
 
 class ReadersEmptyState extends ReadersState {}
-class DefaultReaderLoadedState extends ReadersState{
+
+class DefaultReaderLoadedState extends ReadersState {
   final Reader reader;
 
   DefaultReaderLoadedState(this.reader);

@@ -1,4 +1,3 @@
-
 class HusnChapter {
   HusnChapter({
     this.list,
@@ -34,5 +33,3 @@ class Data {
         repeat: json["REPEAT"] == null ? null : json["REPEAT"],
       );
 }
-
-

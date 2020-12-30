@@ -10,7 +10,7 @@ class TafseerDataBaseClient implements TafseerRepository {
   var _databaseName = "QuranData.sqlite";
 
   // only have a single app-wide reference to the database
-   Database _database;
+  Database _database;
 
   Future<Database> get database async {
     if (_database != null) return _database;

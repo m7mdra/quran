@@ -12,8 +12,6 @@ class SurahResponse {
     status = json["status"];
     surah = json["data"] != null ? Surah.fromJson(json["data"]) : null;
   }
-
-
 }
 
 class Surah {
@@ -48,6 +46,4 @@ class Surah {
       });
     }
   }
-
-
 }

@@ -5,29 +5,28 @@ class Quran {
 
   Data data;
 
-  factory Quran.fromJson(Map<String, dynamic> json) =>
-      Quran(
+  factory Quran.fromJson(Map<String, dynamic> json) => Quran(
         data: Data.fromJson(json["data"]),
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "data": data.toJson(),
       };
 }
+
 class Juz {
   int number;
   List<Ayah> ayahs;
-  List <Surah> surahs;
+  List<Surah> surahs;
 
   Juz({this.number, this.ayahs, this.surahs});
 
-
-@override
+  @override
   String toString() {
     return "Juz $number: ${surahs.map((e) => e.name)}";
   }
 }
+
 class Data {
   Data({
     this.surahs,
@@ -35,13 +34,11 @@ class Data {
 
   List<Surah> surahs;
 
-  factory Data.fromJson(Map<String, dynamic> json) =>
-      Data(
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
         surahs: List<Surah>.from(json["surahs"].map((x) => Surah.fromJson(x))),
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "surahs": List<dynamic>.from(surahs.map((x) => x.toJson())),
       };
 }
@@ -55,7 +52,6 @@ class Surah {
     this.revelationType,
     this.ayahs,
   });
-
 
   @override
   bool operator ==(Object other) =>
@@ -73,8 +69,7 @@ class Surah {
   String revelationType;
   List<Ayah> ayahs;
 
-  factory Surah.fromJson(Map<String, dynamic> json) =>
-      Surah(
+  factory Surah.fromJson(Map<String, dynamic> json) => Surah(
         number: json["number"],
         name: json["name"],
         englishName: json["englishName"],
@@ -83,8 +78,7 @@ class Surah {
         ayahs: List<Ayah>.from(json["ayahs"].map((x) => Ayah.fromJson(x))),
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "number": number,
         "name": name,
         "englishName": englishName,
@@ -129,8 +123,7 @@ class Ayah {
   int ruku;
   int hizbQuarter;
 
-  factory Ayah.fromJson(Map<String, dynamic> json) =>
-      Ayah(
+  factory Ayah.fromJson(Map<String, dynamic> json) => Ayah(
         number: json["number"],
         text: json["text"],
         numberInSurah: json["numberInSurah"],
@@ -141,8 +134,7 @@ class Ayah {
         hizbQuarter: json["hizbQuarter"],
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "number": number,
         "text": text,
         "numberInSurah": numberInSurah,

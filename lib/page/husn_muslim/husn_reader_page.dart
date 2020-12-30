@@ -123,7 +123,7 @@ class _HusnChapterWidgetState extends State<HusnChapterWidget> {
   void initState() {
     super.initState();
     _bloc = HusnChapterBloc(DependencyProvider.provide());
-    _bloc.add(LoadHusnChapterData(widget.index+1));
+    _bloc.add(LoadHusnChapterData(widget.index + 1));
   }
 
   @override

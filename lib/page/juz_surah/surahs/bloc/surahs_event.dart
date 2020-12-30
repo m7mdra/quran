@@ -1,6 +1,3 @@
 abstract class SurahsEvent {}
 
-class LoadSurahListEvent extends SurahsEvent {
-
-}
-
+class LoadSurahListEvent extends SurahsEvent {}

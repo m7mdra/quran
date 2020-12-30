@@ -38,11 +38,6 @@ class TafseerWidget extends StatelessWidget {
                         var tafseer = state.list[index];
                         return ListTile(
                           dense: true,
-                          leading: Text(
-                            "﴿${tafseer.ayaId}﴾",
-                            style: TextStyle(
-                                fontFamily: 'Al-QuranAlKareem', fontSize: 20),
-                          ),
                           title: Text(tafseer.ayaInfo,
                               style: TextStyle(
                                 fontFamily: 'alquran',

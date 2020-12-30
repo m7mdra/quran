@@ -8,10 +8,10 @@ class Tafseer {
     ayaId = map["AyaID"];
     ayaInfo = map["AyaInfo"];
   }
-  Map<String,dynamic> toMap(){
+  Map<String, dynamic> toMap() {
     return {
-      "AyaID" : ayaId,
-      "AyaInfo" : ayaInfo,
+      "AyaID": ayaId,
+      "AyaInfo": ayaInfo,
     };
   }
 }

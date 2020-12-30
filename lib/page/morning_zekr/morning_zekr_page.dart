@@ -59,5 +59,3 @@ class _MorningZekrPageState extends State<MorningZekrPage> {
     );
   }
 }
-
-

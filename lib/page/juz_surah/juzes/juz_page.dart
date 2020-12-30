@@ -49,7 +49,7 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
                         context,
                         MaterialPageRoute(
                             builder: (context) => SurahDetailsPage(
-                                  index: 0 ,
+                                  index: 0,
                                   surahs: juz.surahs,
                                 )));
                   },

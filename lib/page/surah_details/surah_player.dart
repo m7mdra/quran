@@ -76,7 +76,6 @@ class SurahPlayer {
     if (!_isStopped) {
       _currentPlayingIndexController.sink.add(0);
       await _player.stop();
-
     }
   }
 

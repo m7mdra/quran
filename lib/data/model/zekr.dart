@@ -2,9 +2,7 @@ class Zekr {
   String title;
   List<Content> content;
 
-  Zekr({
-      this.title, 
-      this.content});
+  Zekr({this.title, this.content});
 
   Zekr.fromJson(dynamic json) {
     title = json["title"];
@@ -24,7 +22,6 @@ class Zekr {
     }
     return map;
   }
-
 }
 
 class Content {
@@ -32,10 +29,7 @@ class Content {
   int repeat;
   String bless;
 
-  Content({
-      this.zekr, 
-      this.repeat, 
-      this.bless});
+  Content({this.zekr, this.repeat, this.bless});
 
   Content.fromJson(dynamic json) {
     zekr = json["zekr"];
@@ -50,5 +44,4 @@ class Content {
     map["bless"] = bless;
     return map;
   }
-
 }

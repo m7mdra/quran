@@ -13,4 +13,3 @@ class DuaMathor {
     return map;
   }
 }
-

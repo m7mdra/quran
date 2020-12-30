@@ -84,4 +84,3 @@ class _KhatmQuranPageState extends State<KhatmQuranPage> {
         text: "\n* ", style: TextStyle(fontSize: 30, fontFamily: 'alquran'));
   }
 }
-

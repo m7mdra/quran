@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quran/data/model/quran.dart';
-import 'package:quran/page/surah_details/surah_details_page.dart';
 import 'package:quran/page/surah_details/surah_player.dart';
 import 'package:quran/page/surah_details/tafseer_widget.dart';
 import 'package:quran/popup_menu.dart';
@@ -25,11 +24,11 @@ class SurahWidget extends StatefulWidget {
 
 class _SurahWidgetState extends State<SurahWidget> {
   int _playingAyahId = 0;
-  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+
     widget.player.currentPlayingIndex.listen((event) {
       if (mounted)
         setState(() {
@@ -64,9 +63,8 @@ class _SurahWidgetState extends State<SurahWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      primary: false,
       shrinkWrap: true,
-      controller: _scrollController,
+      primary: false,
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 16),
       children: [
         Stack(
@@ -104,8 +102,8 @@ class _SurahWidgetState extends State<SurahWidget> {
                       text:
                           "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
                       semanticsLabel: 'semanticsLabel',
-                      recognizer: DoubleTapGestureRecognizer()
-                        ..onDoubleTapDown = (tapDown) {
+                      recognizer: TapGestureRecognizer()
+                        ..onTapDown = (tapDown) {
                           print(e.toJson());
                           showContextMenuAt(tapDown, context, e);
                         }))
