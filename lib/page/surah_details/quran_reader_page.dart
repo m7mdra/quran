@@ -1,7 +1,3 @@
-import 'dart:async';
-
-import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,17 +13,23 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'bloc/readers/readers_bloc.dart';
 
-class SurahDetailsPage extends StatefulWidget {
+enum ReadingMode { full, juz }
+
+class QuranReaderPage extends StatefulWidget {
   final List<Surah> surahs;
   final int index;
 
-  const SurahDetailsPage({Key key, this.surahs, this.index}) : super(key: key);
+
+  QuranReaderPage({Key key, this.surahs, this.index})
+      : super(key: key);
+
+
 
   @override
-  _SurahDetailsPageState createState() => _SurahDetailsPageState();
+  _QuranReaderPageState createState() => _QuranReaderPageState();
 }
 
-class _SurahDetailsPageState extends State<SurahDetailsPage>
+class _QuranReaderPageState extends State<QuranReaderPage>
     with TickerProviderStateMixin {
   SurahPlayer _surahPlayer;
   final ItemScrollController itemScrollController = ItemScrollController();
@@ -39,6 +41,7 @@ class _SurahDetailsPageState extends State<SurahDetailsPage>
   @override
   void initState() {
     super.initState();
+    print("SURAH INDEX ${widget.index}");
     _surahPlayer =
         SurahPlayer(context.bloc<ReadersBloc>(), DependencyProvider.provide());
     _surahPlayer.errorStream.listen((event) {

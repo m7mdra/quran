@@ -36,4 +36,4 @@ class QuranProvider {
 }
 
 List<T> flatten<T>(Iterable<Iterable<T>> list) =>
-    [for (var sublist in list) ...sublist];
+    [for (var sublist in list) ...sublist].toList();

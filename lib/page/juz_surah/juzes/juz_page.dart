@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/di.dart';
-import 'package:quran/page/surah_details/surah_details_page.dart';
+import 'package:quran/page/surah_details/quran_reader_page.dart';
+
 import 'bloc/bloc.dart';
 import 'bloc/juz_bloc.dart';
 
@@ -48,9 +50,14 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SurahDetailsPage(
-                                  index: 0,
-                                  surahs: juz.surahs,
+                            builder: (context) => QuranReaderPage(
+                                  index: juz.surahs.first.number - 1,
+                                  surahs:
+                                      flatten(state.juz.map((e) => e.surahs))
+                                          .toList()
+                                            ..forEach((element) {
+                                              print("juz ${element.number}");
+                                            }),
                                 )));
                   },
                   leading: Text("﴿${juz.number}﴾",

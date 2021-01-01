@@ -2,7 +2,7 @@ import 'dart:core';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:quran/page/surah_details/surah_details_page.dart';
+import 'package:quran/page/surah_details/quran_reader_page.dart';
 
 import 'triangle_painter.dart';
 

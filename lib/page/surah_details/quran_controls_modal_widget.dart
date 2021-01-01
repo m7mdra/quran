@@ -2,7 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quran/data/model/quran.dart';
-import 'package:quran/page/surah_details/surah_details_page.dart';
+import 'package:quran/page/surah_details/quran_reader_page.dart';
 import 'package:quran/page/surah_details/surah_player.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/page/surah_details/tafseer_widget.dart';
