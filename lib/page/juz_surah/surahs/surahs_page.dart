@@ -45,7 +45,6 @@ class _SurahsPageState extends State<SurahsPage>
                 var surah = state.surah[index];
                 return ListTile(
                   dense: true,
-
                   onTap: () {
                     Navigator.push(
                         context,

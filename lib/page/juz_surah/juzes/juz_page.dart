@@ -46,9 +46,7 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
                 var juz = state.juz[index];
                 return ListTile(
                   dense: true,
-                  onTap: () {
-
-                  },
+                  onTap: () {},
                   leading: Text("﴿${juz.number}﴾",
                       style: TextStyle(
                         fontFamily: 'Al-QuranAlKareem',

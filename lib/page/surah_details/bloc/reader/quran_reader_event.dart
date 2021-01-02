@@ -12,6 +12,5 @@ class SaveReadingSurah extends QuranReaderEvent {
     return "${surah} $position";
   }
 }
-class LoadLastReadingSurah extends QuranReaderEvent{
 
-}
+class LoadLastReadingSurah extends QuranReaderEvent {}

@@ -32,7 +32,7 @@ class _SurahWidgetState extends State<SurahWidget> {
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(() {
-    print(_scrollController.offset);
+      print(_scrollController.offset);
     });
     widget.player.currentPlayingIndex.listen((event) {
       if (mounted)
@@ -50,8 +50,8 @@ class _SurahWidgetState extends State<SurahWidget> {
         });
   }
 
-  void showContextMenuAt(TapDownDetails tapDown, BuildContext context,
-      Ayah ayah) {
+  void showContextMenuAt(
+      TapDownDetails tapDown, BuildContext context, Ayah ayah) {
     var rect = Rect.fromCircle(center: tapDown.globalPosition, radius: 0);
     var popMenu = PopupMenu(context: context);
     popMenu.show(
@@ -71,7 +71,7 @@ class _SurahWidgetState extends State<SurahWidget> {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-         children: [
+        children: [
           Stack(
             alignment: Alignment.center,
             children: [
@@ -101,8 +101,9 @@ class _SurahWidgetState extends State<SurahWidget> {
                         style: _playingAyahId == e.number ||
                                 widget.selectedAyahId == e.number
                             ? TextStyle(
-                                backgroundColor:
-                                    Theme.of(context).primaryColor.withAlpha(100))
+                                backgroundColor: Theme.of(context)
+                                    .primaryColor
+                                    .withAlpha(100))
                             : null,
                         text:
                             "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",

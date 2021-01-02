@@ -10,6 +10,5 @@ class SurahsLoadedSuccessState extends SurahsState {
   final List<Surah> surah;
   final int index;
 
-  SurahsLoadedSuccessState(this.surah, [this.index=0]);
+  SurahsLoadedSuccessState(this.surah, [this.index = 0]);
 }
-
