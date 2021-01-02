@@ -5,7 +5,8 @@ import 'package:quran/data/model/husn.dart';
 import 'package:quran/di.dart';
 import 'package:quran/page/husn_muslim/bloc/husn_muslim_chapter/bloc.dart';
 
-import '../../main.dart';
+import '../../islamic_app_bar.dart';
+import '../../main/main.dart';
 
 class HusnReaderPage extends StatefulWidget {
   final List<Chapter> chapters;

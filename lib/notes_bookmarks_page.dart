@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:quran/bookmarks_page.dart';
 import 'package:quran/notes_page.dart';
 
-import 'main.dart';
+import 'islamic_app_bar.dart';
+import 'main/main.dart';
 
 class NotesBookMarksPage extends StatefulWidget {
   @override

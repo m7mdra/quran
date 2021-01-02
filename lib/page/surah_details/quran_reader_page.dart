@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/model/quran.dart';
 import 'package:quran/di.dart';
-import 'package:quran/main.dart';
+import 'package:quran/main/main.dart';
 import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
 import 'package:quran/page/surah_details/quran_controls_modal_widget.dart';
 import 'package:quran/page/surah_details/search_delegate.dart';
@@ -13,6 +13,7 @@ import 'package:quran/popup_menu.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../islamic_app_bar.dart';
 import 'bloc/readers/readers_bloc.dart';
 
 enum ReadingMode { full, juz }

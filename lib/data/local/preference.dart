@@ -34,6 +34,18 @@ class Preference {
     }
   }
 
+  Future<bool> setDarkTheme() async {
+    var saved = await _sharedPreferences.setInt("theme", 2);
+    return saved;
+  }
+
+  Future<bool> setLightTheme() async {
+    var saved = await _sharedPreferences.setInt("theme", 1);
+    return saved;
+  }
+
+  int theme() => _sharedPreferences.getInt("theme") ?? 0;
+
   Future<void> riyadhBookDownloaded() async {
     await _sharedPreferences.setBool("bookDownloaded", true);
   }

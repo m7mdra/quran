@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quran/main.dart';
+import 'package:quran/main/main.dart';
 import 'package:quran/page/juz_surah/surahs/surahs_page.dart';
+
+import '../../islamic_app_bar.dart';
 
 class SurahsJuzesPage extends StatefulWidget {
   @override

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quran/main.dart';
+import 'package:quran/main/main.dart';
 import 'package:quran/page/night_zekr/bloc/bloc.dart';
 import 'package:quran/page/night_zekr/night_zekr_page.dart';
 
 import '../../di.dart';
+import '../../islamic_app_bar.dart';
 
 class PostPrayerZekrPage extends StatefulWidget {
   @override

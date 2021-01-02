@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:quran/main.dart';
+import 'package:quran/main/main.dart';
+
+import '../../islamic_app_bar.dart';
 
 class KhatmQuranPage extends StatefulWidget {
   @override

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/islamics_page.dart';
+import 'package:quran/main/bloc/theme/theme_cubit.dart';
 import 'package:quran/notes_bookmarks_page.dart';
 import 'package:quran/page/juz_surah/surahs_juzes_page.dart';
 import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
@@ -199,7 +200,6 @@ class _HomePageState extends State<HomePage> {
 
   AppBar buildAppBar() {
     return AppBar(
-
       backgroundColor: Colors.transparent,
       elevation: 0,
       actions: [
@@ -214,7 +214,14 @@ class _HomePageState extends State<HomePage> {
             icon: SvgPicture.asset(isDarkMode(context)
                 ? 'assets/images/ic_settings_dark.svg'
                 : 'assets/images/ic_settings.svg'),
-            onPressed: () {},
+            onPressed: () {
+              var themeCubit = context.bloc<ThemeCubit>();
+              if (isDarkMode(context)) {
+                themeCubit.light();
+              } else {
+                themeCubit.dark();
+              }
+            },
             splashRadius: 20,
             iconSize: 40),
         IconButton(

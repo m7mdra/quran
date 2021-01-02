@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/model/zekr.dart';
-import 'package:quran/main.dart';
+import 'package:quran/main/main.dart';
 import 'package:quran/page/night_zekr/bloc/bloc.dart';
 
 import '../../di.dart';
+import '../../islamic_app_bar.dart';
 import 'bloc/zekr_event.dart';
 
 class NightZekrPage extends StatefulWidget {
