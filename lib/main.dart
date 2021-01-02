@@ -8,6 +8,7 @@ import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
 import 'package:quran/di.dart';
 import 'package:quran/home_page.dart';
+import 'package:quran/page/juz_surah/surahs/bloc/surahs_bloc.dart';
 import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
 import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
 import 'package:quran/page/surah_details/bloc/tafseer/tafseer_bloc.dart';
@@ -90,6 +91,9 @@ class MyApp extends StatelessWidget {
       builder: (context, widget) {
         return MultiBlocProvider(
             providers: [
+              BlocProvider(
+                  create: (context) =>
+                      SurahsBloc(DependencyProvider.provide())),
               BlocProvider(
                   create: (context) =>
                       QuranReaderBloc(DependencyProvider.provide())),

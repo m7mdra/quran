@@ -6,8 +6,10 @@ import 'package:quran/islamics_page.dart';
 import 'package:quran/notes_bookmarks_page.dart';
 import 'package:quran/page/juz_surah/surahs_juzes_page.dart';
 import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
+import 'package:quran/page/surah_details/quran_reader_page.dart';
 
 import 'common.dart';
+import 'page/juz_surah/surahs/bloc/bloc.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -17,17 +19,52 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   QuranReaderBloc _quranReaderBloc;
 
+  SurahsBloc _surahsBloc;
+
   @override
   void initState() {
     super.initState();
     _quranReaderBloc = context.bloc<QuranReaderBloc>();
+    _surahsBloc = context.bloc<SurahsBloc>();
     _quranReaderBloc.add(LoadLastReadingSurah());
+  }
+
+  @override
+  void dispose() {
+    _surahsBloc.close();
+
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: buildBody(context),
+      body: BlocListener(
+          listener: (BuildContext context, state) {
+            if (state is SurahsLoadingState) {
+              showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) => AlertDialog(
+                        content: CircularProgressIndicator(),
+                      ));
+            }
+            if (state is SurahsLoadedSuccessState) {
+              Navigator.of(context, rootNavigator: true).pop("dialog");
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => QuranReaderPage(
+                            index: state.index,
+                            surahs: state.surah,
+                          )));
+            }
+            if (state is SurahsErrorState) {
+              Navigator.of(context, rootNavigator: true).pop("dialog");
+            }
+          },
+          cubit: _surahsBloc,
+          child: buildBody(context)),
       appBar: buildAppBar(),
     );
   }
@@ -67,46 +104,54 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.width * 0.35,
-                child: Card(
-                  elevation: 6,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      BlocBuilder(
-                        builder: (BuildContext context, state) {
-                          if (state is QuranReaderLoaded) {
-                            return Column(
-                              children: [
-                                Text("أخر قراءة",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                    )),
-                                Text(state.surah.name,
-                                    style: TextStyle(
-                                      fontFamily: 'Al-QuranAlKareem',
-                                      fontSize: 20,
-                                    )),
-                                Text("اضغط للذهاب للسورة",
-                                    style: TextStyle(
-                                      fontFamily: 'Cairo',
-                                      fontSize: 12,
-                                    )),
-                              ],
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                            );
-                          }
-                          return Container();
-                        },
-                        cubit: _quranReaderBloc,
-                      ),
-                      SvgPicture.asset('assets/images/last_reading.svg'),
-                    ],
-                  ),
+                child: BlocBuilder(
+                  cubit: _quranReaderBloc,
+                  builder: (BuildContext context, state) {
+                    if (state is QuranReaderLoaded) {
+                      return Card(
+                        elevation: 6,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16)),
+                        child: InkWell(
+                          onTap: () {
+                            _surahsBloc
+                                .add(LoadSurahListIndexed(state.position));
+                          },
+                          borderRadius: BorderRadius.circular(16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Column(
+                                children: [
+                                  Text("أخر قراءة",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                      )),
+                                  Text(state.surah.name,
+                                      style: TextStyle(
+                                        fontFamily: 'Al-QuranAlKareem',
+                                        fontSize: 20,
+                                      )),
+                                  Text("اضغط للذهاب للسورة",
+                                      style: TextStyle(
+                                        fontFamily: 'Cairo',
+                                        fontSize: 12,
+                                      )),
+                                ],
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                              ),
+                              SvgPicture.asset(
+                                  'assets/images/last_reading.svg'),
+                            ],
+                          ),
+                        ),
+                      );
+                    } else
+                      return Container();
+                  },
                 ),
               ),
               StaggeredGridView.countBuilder(
@@ -154,13 +199,7 @@ class _HomePageState extends State<HomePage> {
 
   AppBar buildAppBar() {
     return AppBar(
-      leading: IconButton(
-          icon: SvgPicture.asset(isDarkMode(context)
-              ? 'assets/images/ic_menu_dark.svg'
-              : 'assets/images/ic_menu.svg'),
-          onPressed: () {},
-          splashRadius: 20,
-          iconSize: 40),
+
       backgroundColor: Colors.transparent,
       elevation: 0,
       actions: [
