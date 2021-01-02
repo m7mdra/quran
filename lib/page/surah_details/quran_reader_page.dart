@@ -4,12 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/model/quran.dart';
 import 'package:quran/di.dart';
 import 'package:quran/main.dart';
+import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
 import 'package:quran/page/surah_details/quran_controls_modal_widget.dart';
 import 'package:quran/page/surah_details/search_delegate.dart';
 import 'package:quran/page/surah_details/surah_player.dart';
 import 'package:quran/page/surah_details/surah_widget.dart';
 import 'package:quran/popup_menu.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bloc/readers/readers_bloc.dart';
 
@@ -19,11 +21,7 @@ class QuranReaderPage extends StatefulWidget {
   final List<Surah> surahs;
   final int index;
 
-
-  QuranReaderPage({Key key, this.surahs, this.index})
-      : super(key: key);
-
-
+  QuranReaderPage({Key key, this.surahs, this.index}) : super(key: key);
 
   @override
   _QuranReaderPageState createState() => _QuranReaderPageState();
@@ -32,6 +30,7 @@ class QuranReaderPage extends StatefulWidget {
 class _QuranReaderPageState extends State<QuranReaderPage>
     with TickerProviderStateMixin {
   SurahPlayer _surahPlayer;
+  QuranReaderBloc _quranReaderBloc;
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
       ItemPositionsListener.create();
@@ -41,7 +40,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
   @override
   void initState() {
     super.initState();
-    print("SURAH INDEX ${widget.index}");
+    _quranReaderBloc = context.bloc<QuranReaderBloc>();
     _surahPlayer =
         SurahPlayer(context.bloc<ReadersBloc>(), DependencyProvider.provide());
     _surahPlayer.errorStream.listen((event) {
@@ -61,6 +60,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
       var index = itemPositionsListener.itemPositions.value.first.index;
       var surah = widget.surahs[index];
       if (_currentSurah != surah) {
+        _quranReaderBloc.add(SaveReadingSurah(surah, index));
         _surahPlayer.stop();
         setState(() {
           this._currentSurah = surah;
@@ -85,35 +85,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
         surah: _currentSurah != null ? _currentSurah : surahs[widget.index],
         player: _surahPlayer,
       ),
-      appBar: IslamicAppBar(
-        context: context,
-        title: _currentSurah?.name ?? ' ',
-        height: 56,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () async {
-              var result = await showSearch<AyahSearchResult>(
-                  context: context,
-                  delegate: AyahSearchDelegate(
-                      SearchBloc(DependencyProvider.provide())));
-              if (result != null) {
-                setState(() {
-                  query = result;
-                });
-                var indexOfSurah = widget.surahs.indexOf(query.surah);
-                if (indexOfSurah != -1)
-                  itemScrollController.jumpTo(
-                      index: indexOfSurah, alignment: 0);
-              }
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.share),
-            onPressed: () {},
-          ),
-        ],
-      ),
+      appBar: _buildIslamicAppBar(context),
       body: ScrollablePositionedList.builder(
         itemScrollController: itemScrollController,
         itemPositionsListener: itemPositionsListener,
@@ -130,6 +102,41 @@ class _QuranReaderPageState extends State<QuranReaderPage>
         },
         itemCount: surahs.length,
       ),
+    );
+  }
+
+  IslamicAppBar _buildIslamicAppBar(BuildContext context) {
+    return IslamicAppBar(
+      context: context,
+      title: _currentSurah?.name ?? ' ',
+      height: 56,
+      actions: [
+        IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () async {
+            var result = await showSearch<AyahSearchResult>(
+                context: context,
+                delegate: AyahSearchDelegate(
+                    SearchBloc(DependencyProvider.provide())));
+            if (result != null) {
+              setState(() {
+                query = result;
+              });
+              var indexOfSurah = widget.surahs.indexOf(query.surah);
+              if (indexOfSurah != -1)
+                itemScrollController.jumpTo(index: indexOfSurah, alignment: 0);
+            }
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.share),
+          onPressed: () {
+            SharedPreferences.getInstance().then((value) {
+              print(value.getDouble("key"));
+            });
+          },
+        ),
+      ],
     );
   }
 }

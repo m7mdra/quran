@@ -60,6 +60,7 @@ class AyahSearchDelegate extends SearchDelegate<AyahSearchResult> {
               var ayah = result[index].ayah;
               return ListTile(
                   onTap: () {
+                    print(result[index]);
                     Navigator.pop(context, result[index]);
                   },
                   subtitle: Text(surah.name),

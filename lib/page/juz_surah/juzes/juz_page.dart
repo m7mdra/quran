@@ -47,18 +47,7 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
                 return ListTile(
                   dense: true,
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => QuranReaderPage(
-                                  index: juz.surahs.first.number - 1,
-                                  surahs:
-                                      flatten(state.juz.map((e) => e.surahs))
-                                          .toList()
-                                            ..forEach((element) {
-                                              print("juz ${element.number}");
-                                            }),
-                                )));
+
                   },
                   leading: Text("﴿${juz.number}﴾",
                       style: TextStyle(

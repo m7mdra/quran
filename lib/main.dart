@@ -6,13 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/local/note_database_client.dart';
 import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
-import 'package:quran/data/model/quran.dart';
 import 'package:quran/di.dart';
 import 'package:quran/home_page.dart';
+import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
 import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
 import 'package:quran/page/surah_details/bloc/tafseer/tafseer_bloc.dart';
-import 'package:quran/page/surah_details/surah_player.dart';
-import 'package:quran/splash_page.dart';
 
 class BlocTransitionObserver implements BlocObserver {
   @override
@@ -93,11 +91,14 @@ class MyApp extends StatelessWidget {
         return MultiBlocProvider(
             providers: [
               BlocProvider(
+                  create: (context) =>
+                      QuranReaderBloc(DependencyProvider.provide())),
+              BlocProvider(
                   create: (context) => ReadersBloc(DependencyProvider.provide(),
                       DependencyProvider.provide())),
               BlocProvider(
                   create: (context) =>
-                      TafseerBloc(DependencyProvider.provide()))
+                      TafseerBloc(DependencyProvider.provide())),
             ],
             child: Directionality(
                 textDirection: TextDirection.rtl, child: widget));

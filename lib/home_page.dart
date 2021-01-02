@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/islamics_page.dart';
 import 'package:quran/notes_bookmarks_page.dart';
 import 'package:quran/page/juz_surah/surahs_juzes_page.dart';
+import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
 
 import 'common.dart';
 
@@ -13,6 +15,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  QuranReaderBloc _quranReaderBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _quranReaderBloc = context.bloc<QuranReaderBloc>();
+    _quranReaderBloc.add(LoadLastReadingSurah());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,26 +75,34 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Column(
-                        children: [
-                          Text("أخر صفحة",
-                              style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w700,
-                              )),
-                          Text("الجزء الثاني - صفحة رقم 112",
-                              style: TextStyle(
-                                fontFamily: 'Cairo',
-                                fontSize: 12,
-                              )),
-                          Text("اَل عِمران",
-                              style: TextStyle(
-                                fontFamily: 'Al-QuranAlKareem',
-                                fontSize: 20,
-                              ))
-                        ],
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      BlocBuilder(
+                        builder: (BuildContext context, state) {
+                          if (state is QuranReaderLoaded) {
+                            return Column(
+                              children: [
+                                Text("أخر قراءة",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                    )),
+                                Text(state.surah.name,
+                                    style: TextStyle(
+                                      fontFamily: 'Al-QuranAlKareem',
+                                      fontSize: 20,
+                                    )),
+                                Text("اضغط للذهاب للسورة",
+                                    style: TextStyle(
+                                      fontFamily: 'Cairo',
+                                      fontSize: 12,
+                                    )),
+                              ],
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                            );
+                          }
+                          return Container();
+                        },
+                        cubit: _quranReaderBloc,
                       ),
                       SvgPicture.asset('assets/images/last_reading.svg'),
                     ],
