@@ -4,10 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quran/data/model/quran.dart';
 import 'package:quran/di.dart';
-import 'package:quran/page/surah_details/bloc/bookmark/bookmark_cubit.dart';
 import 'package:quran/page/surah_details/surah_player.dart';
 import 'package:quran/page/surah_details/tafseer_widget.dart';
 
+import 'bloc/bookmark/add_bookmark_cubit.dart';
+import 'bloc/bookmark/add_bookmark_state.dart';
 import 'bloc/readers/readers_bloc.dart';
 import 'bloc/readers/readers_event.dart';
 import 'bloc/readers/readers_state.dart';
@@ -46,33 +47,41 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
       child: BlocListener(
         cubit: _bookmarkCubit,
         listener: (context, state) {
-          if (state is BookmarkSavedFailed) {
+          if (state is AddBookmarkSavedFailed) {
             Navigator.of(context, rootNavigator: true).pop("dialog");
             showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  shape: _roundedRectangleBorder,
-                  actions: [FlatButton(onPressed: (){
-                    Navigator.pop(context);
-                  }, child: Text('حسنا'))],
-                  title: Text('حفظ علامة قراءة'),
-                  content: Text('فشل حفظ علامة القراءة'),
-                ));
+                      shape: _roundedRectangleBorder,
+                      actions: [
+                        FlatButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('حسنا'))
+                      ],
+                      title: Text('حفظ علامة قراءة'),
+                      content: Text('فشل حفظ علامة القراءة'),
+                    ));
           }
-          if (state is BookmarkSavedSuccess) {
+          if (state is AddBookmarkSavedSuccess) {
             Navigator.of(context, rootNavigator: true).pop("dialog");
             showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  shape: _roundedRectangleBorder,
-                      actions: [FlatButton(onPressed: (){
-                        Navigator.pop(context);
-                      }, child: Text('حسنا'))],
+                      shape: _roundedRectangleBorder,
+                      actions: [
+                        FlatButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('حسنا'))
+                      ],
                       title: Text('حفظ علامة قراءة'),
                       content: Text('تم حفظ علامة القراءة بنجاح'),
                     ));
           }
-          if (state is BookmarkSavedLoading) {
+          if (state is AddBookmarkSavedLoading) {
             showDialog(
                 context: context,
                 barrierDismissible: false,
@@ -223,7 +232,8 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
     );
   }
 
-  RoundedRectangleBorder get _roundedRectangleBorder => RoundedRectangleBorder(borderRadius: BorderRadius.circular(16));
+  RoundedRectangleBorder get _roundedRectangleBorder =>
+      RoundedRectangleBorder(borderRadius: BorderRadius.circular(16));
 }
 
 class SuraOptions extends StatelessWidget {

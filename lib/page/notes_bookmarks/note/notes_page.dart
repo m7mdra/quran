@@ -1,11 +1,12 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:quran/data/local/note_repository.dart';
 import 'package:quran/data/model/note.dart';
 import 'package:quran/di.dart';
 import 'package:timeago/timeago.dart' as timeago;
+
+import '../../../common.dart';
+import 'bloc/bloc.dart';
 
 class NotesPage extends StatefulWidget {
   @override
@@ -35,6 +36,7 @@ class _NotesPageState extends State<NotesPage>
     super.build(context);
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add_rounded),
         onPressed: () {
           showBottomSheet(
               context: context,
@@ -53,16 +55,22 @@ class _NotesPageState extends State<NotesPage>
           }
           if (state is NoteLoadedState) {
             var list = state.list;
-            return ListView.separated(
-              padding: const EdgeInsets.all(16),
+            return ListView.builder(
+              padding: const EdgeInsets.only(top: 16),
               itemBuilder: (context, index) {
                 var note = list[index];
                 return ListTile(
+
                   onTap: () {
                     showDialog(
                         context: context,
                         builder: (context) => _detailsDialog(note, context));
                   },
+                  tileColor: index % 2 == 0
+                      ? isDarkMode(context)
+                      ? Colors.black12
+                      : Color(0xfffcfcfc)
+                      : Colors.transparent,
                   title: Text(note.title),
                   subtitle: Text(
                     note.content,
@@ -70,15 +78,18 @@ class _NotesPageState extends State<NotesPage>
                   ),
                   trailing: Text(
                     timeago.format(note.dateTime, clock: DateTime.now()),
-                    style: Theme.of(context).textTheme.caption,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .caption,
                   ),
-                  isThreeLine: true,
+                  isThreeLine:
+                  true
+                  ,
                 );
               },
               itemCount: list.length,
-              separatorBuilder: (BuildContext context, int index) {
-                return Divider();
-              },
+
             );
           }
           return Container();
@@ -95,11 +106,17 @@ class _NotesPageState extends State<NotesPage>
         children: [
           Text(
             note.title,
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme
+                .of(context)
+                .textTheme
+                .headline6,
           ),
           Text(
             timeago.format(note.dateTime, clock: DateTime.now()),
-            style: Theme.of(context).textTheme.caption,
+            style: Theme
+                .of(context)
+                .textTheme
+                .caption,
           ),
           Text(note.content)
         ],
@@ -140,7 +157,9 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(16), topRight: Radius.circular(16))),
-      color: Theme.of(context).dialogBackgroundColor,
+      color: Theme
+          .of(context)
+          .dialogBackgroundColor,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -189,7 +208,9 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
                           highlightElevation: 0,
                           focusElevation: 0,
                           disabledElevation: 0,
-                          color: Theme.of(context).primaryColor,
+                          color: Theme
+                              .of(context)
+                              .primaryColor,
                           textColor: Colors.white,
                           onPressed: () {
                             if (_formKey.currentState.validate()) {
@@ -262,64 +283,5 @@ class EmptyNotesWidget extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class NoteState {}
-
-class NoteEvent {}
-
-class LoadNotes extends NoteEvent {}
-
-class AddNewNote extends NoteEvent {
-  final Note note;
-
-  AddNewNote(this.note);
-}
-
-class NoteLoadingState extends NoteState {}
-
-class NoteLoadedState extends NoteState {
-  final List<Note> list;
-
-  NoteLoadedState(this.list);
-}
-
-class NoteErrorState extends NoteState {}
-
-class NoteEmptyState extends NoteState {}
-
-class NoteBloc extends Bloc<NoteEvent, NoteState> {
-  final NoteRepository _repository;
-
-  NoteBloc(this._repository) : super(NoteLoadingState());
-
-  @override
-  Stream<NoteState> mapEventToState(NoteEvent event) async* {
-    if (event is LoadNotes) {
-      try {
-        yield NoteLoadingState();
-        var notes = await _repository.getAll();
-        if (notes.isNotEmpty) {
-          yield NoteLoadedState(notes
-            ..sort((first, second) {
-              return second.dateTime.compareTo(first.dateTime);
-            }));
-        } else {
-          yield NoteEmptyState();
-        }
-      } catch (error) {
-        yield NoteErrorState();
-      }
-    }
-    if (event is AddNewNote) {
-      try {
-        var notes = await _repository.add(event.note);
-        add(LoadNotes());
-      } catch (error) {
-        print(error);
-        yield NoteErrorState();
-      }
-    }
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:quran/bookmarks_page.dart';
-import 'package:quran/notes_page.dart';
+import 'package:quran/page/notes_bookmarks/bookmark/bookmarks_page.dart';
+import 'package:quran/page/notes_bookmarks/note/notes_page.dart';
 
-import 'islamic_app_bar.dart';
-import 'main.dart';
+import '../../islamic_app_bar.dart';
+import '../../main.dart';
 
 class NotesBookMarksPage extends StatefulWidget {
   @override
@@ -48,6 +48,7 @@ class _NotesBookMarksPageState extends State<NotesBookMarksPage>
             _pageController.animateToPage(index,
                 duration: Duration(milliseconds: 300), curve: Curves.linear);
           },
+
           indicatorWeight: 5,
           labelColor: Colors.white,
           unselectedLabelStyle: TextStyle(

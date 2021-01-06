@@ -4,7 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/islamics_page.dart';
 import 'package:quran/main/bloc/theme/theme_cubit.dart';
-import 'package:quran/notes_bookmarks_page.dart';
+import 'package:quran/page/notes_bookmarks/notes_bookmarks_page.dart';
 import 'package:quran/page/juz_surah/surahs_juzes_page.dart';
 import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
 import 'package:quran/page/surah_details/quran_reader_page.dart';
