@@ -1,12 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quran/data/model/quran.dart';
 import 'package:quran/page/surah_details/surah_player.dart';
 import 'package:quran/page/surah_details/tafseer_widget.dart';
 import 'package:quran/popup_menu.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import 'bloc/tafseer/tafseer_bloc.dart';
 import 'bloc/tafseer/tafseer_event.dart';
 
@@ -70,21 +70,8 @@ class _SurahWidgetState extends State<SurahWidget> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              SvgPicture.asset('assets/images/surah_name_title.svg'),
-              Text(
-                widget.surah.name,
-                style: TextStyle(
-                    color: Color(0xffFD9434),
-                    fontSize: 22,
-                    fontFamily: 'Al-QuranAlKareem'),
-              )
-            ],
-          ),
+          SurahTitleWidget(surah: widget.surah,),
           SizedBox(
             height: 16,
           ),
@@ -96,24 +83,22 @@ class _SurahWidgetState extends State<SurahWidget> {
                     fontFamily: 'alquran',
                     fontSize: 23,
                     fontWeight: FontWeight.bold),
-                children: widget.surah.ayahs
-                    .map((e) => TextSpan(
-                        style: _playingAyahId == e.number ||
-                                widget.selectedAyahId == e.number
-                            ? TextStyle(
-                                backgroundColor: Theme.of(context)
-                                    .primaryColor
-                                    .withAlpha(100))
-                            : null,
-                        text:
-                            "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
-                        semanticsLabel: 'semanticsLabel',
-                        recognizer: TapGestureRecognizer()
-                          ..onTapDown = (tapDown) {
-                            print(e.toJson());
-                            showContextMenuAt(tapDown, context, e);
-                          }))
-                    .toList()),
+                children: widget.surah.ayahs.map((e) {
+                  return TextSpan(
+                      style: _playingAyahId == e.number ||
+                              widget.selectedAyahId == e.number
+                          ? TextStyle(
+                              backgroundColor:
+                                  Theme.of(context).primaryColor.withAlpha(100))
+                          : null,
+                      text:
+                          "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
+                      semanticsLabel: 'semanticsLabel',
+                      recognizer: TapGestureRecognizer()
+                        ..onTapDown = (tapDown) {
+                          showContextMenuAt(tapDown, context, e);
+                        });
+                }).toList()),
             semanticsLabel: 'semanticsLabel',
             textAlign: TextAlign.center,
             softWrap: true,
@@ -121,6 +106,29 @@ class _SurahWidgetState extends State<SurahWidget> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class SurahTitleWidget extends StatelessWidget {
+
+  final Surah surah;
+
+  const SurahTitleWidget({Key key, this.surah}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        SvgPicture.asset('assets/images/surah_name_title.svg'),
+        Text(
+          surah.name,
+          style: TextStyle(
+              color: Color(0xffFD9434),
+              fontSize: 22,
+              fontFamily: 'Al-QuranAlKareem'),
+        )
+      ],
     );
   }
 }

@@ -14,7 +14,7 @@ import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
 import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
 import 'package:quran/page/surah_details/bloc/tafseer/tafseer_bloc.dart';
 
-import 'bloc_observer.dart';
+import 'main/bloc_observer.dart';
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +25,7 @@ main() async {
   DependencyProvider.provide<QuranProvider>()
       .load()
       .then((value) => print(value.data.surahs.length));
-  var noteDatabase = DependencyProvider.provide<NoteDatabaseClient>();
+  var noteDatabase = DependencyProvider.provide<QuranDatabaseClient>();
   await noteDatabase.initDb();
 
   runApp(MyApp());

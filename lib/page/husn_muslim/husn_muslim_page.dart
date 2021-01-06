@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/di.dart';
-import 'package:quran/main/main.dart';
+import 'package:quran/main.dart';
 import 'package:quran/page/husn_muslim/bloc/husn_muslim/bloc.dart';
 import 'package:quran/page/husn_muslim/husn_reader_page.dart';
 

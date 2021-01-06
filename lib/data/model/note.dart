@@ -1,5 +1,16 @@
 import 'dart:math';
 
+class NoteColumns {
+  static String table = 'note';
+  static String columnId = 'id';
+  static String columnTitle = 'title';
+  static String columnContent = 'content';
+  static String columnDate = 'date';
+  static var columns = [columnId, columnTitle, columnContent, columnDate];
+
+  NoteColumns._();
+}
+
 class Note {
   String title;
   String content;

@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/model/quran.dart';
 import 'package:quran/di.dart';
-import 'package:quran/main/main.dart';
 import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
 import 'package:quran/page/surah_details/quran_controls_modal_widget.dart';
 import 'package:quran/page/surah_details/search_delegate.dart';
@@ -11,8 +10,6 @@ import 'package:quran/page/surah_details/surah_player.dart';
 import 'package:quran/page/surah_details/surah_widget.dart';
 import 'package:quran/popup_menu.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../islamic_app_bar.dart';
 import 'bloc/readers/readers_bloc.dart';
 
@@ -21,6 +18,7 @@ enum ReadingMode { full, juz }
 class QuranReaderPage extends StatefulWidget {
   final List<Surah> surahs;
   final int index;
+
 
   QuranReaderPage({Key key, this.surahs, this.index}) : super(key: key);
 
@@ -37,10 +35,13 @@ class _QuranReaderPageState extends State<QuranReaderPage>
       ItemPositionsListener.create();
   Surah _currentSurah;
   AyahSearchResult query;
-
+  ScrollController _controller = ScrollController();
   @override
   void initState() {
     super.initState();
+    _controller.addListener(() {
+      print(_controller.offset);
+    });
     _quranReaderBloc = context.bloc<QuranReaderBloc>();
     _surahPlayer =
         SurahPlayer(context.bloc<ReadersBloc>(), DependencyProvider.provide());
@@ -54,10 +55,12 @@ class _QuranReaderPageState extends State<QuranReaderPage>
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      itemScrollController.jumpTo(index: widget.index, alignment: 0);
+      itemScrollController.jumpTo(index: widget.index);
     });
 
     itemPositionsListener.itemPositions.addListener(() {
+      print(itemPositionsListener.itemPositions.value);
+
       var index = itemPositionsListener.itemPositions.value.first.index;
       var surah = widget.surahs[index];
       if (_currentSurah != surah) {
@@ -73,6 +76,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
   @override
   void dispose() {
     _surahPlayer.dispose();
+
     super.dispose();
   }
 
@@ -93,7 +97,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
         initialScrollIndex: widget.index,
         itemBuilder: (context, index) {
           return Padding(
-            padding: EdgeInsets.only(bottom: index == 113 ? 400 : 0),
+            padding: EdgeInsets.only(bottom: index == 113 ? 300 : 0),
             child: SurahWidget(
               selectedAyahId: query?.ayah?.number ?? -1,
               player: _surahPlayer,
@@ -132,9 +136,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
         IconButton(
           icon: Icon(Icons.share),
           onPressed: () {
-            SharedPreferences.getInstance().then((value) {
-              print(value.getDouble("key"));
-            });
+
           },
         ),
       ],

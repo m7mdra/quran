@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:quran/main/main.dart';
+import 'package:quran/main.dart';
 
 import '../../islamic_app_bar.dart';
 

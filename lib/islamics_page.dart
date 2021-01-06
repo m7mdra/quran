@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:quran/main/main.dart';
+import 'package:quran/main.dart';
 import 'package:quran/page/dua_mathor/dua_mathor_page.dart';
 import 'package:quran/page/husn_muslim/husn_muslim_page.dart';
 import 'package:quran/page/khatm_quran/khatm_quran_page.dart';

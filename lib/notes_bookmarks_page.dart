@@ -3,7 +3,7 @@ import 'package:quran/bookmarks_page.dart';
 import 'package:quran/notes_page.dart';
 
 import 'islamic_app_bar.dart';
-import 'main/main.dart';
+import 'main.dart';
 
 class NotesBookMarksPage extends StatefulWidget {
   @override
