@@ -13,8 +13,17 @@ import 'package:quran/page/juz_surah/surahs/bloc/surahs_bloc.dart';
 import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
 import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
 import 'package:quran/page/surah_details/bloc/tafseer/tafseer_bloc.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'main/bloc_observer.dart';
+
+void callbackDispatcher() {
+  Workmanager.executeTask((task, inputData) {
+    print(task);
+    print(inputData);
+    return Future.value(true);
+  });
+}
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +36,7 @@ main() async {
       .then((value) => print(value.data.surahs.length));
   var noteDatabase = DependencyProvider.provide<QuranDatabaseClient>();
   await noteDatabase.initDb();
+  Workmanager.initialize(callbackDispatcher, isInDebugMode: true);
 
   runApp(MyApp());
 }
