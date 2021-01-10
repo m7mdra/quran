@@ -4,6 +4,7 @@ import 'package:path/path.dart';
 import 'package:quran/data/local/bookmark_repository.dart';
 import 'package:quran/data/model/bookmark.dart';
 import 'package:quran/data/model/note.dart';
+import 'package:quran/data/model/reminder.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'note_repository.dart';
@@ -13,29 +14,20 @@ class QuranDatabaseClient implements NoteRepository, BookmarkRepository {
 
   Future<Database> get database async {
     if (_db != null) return _db;
-    // lazily instantiate the db the first time it is accessed
-    await initDb();
-    _db = await _openDatabase();
+
+
+    _db = await initDb();
     return _db;
   }
 
-  Future _openDatabase() async {
-    var databasesPath = await getDatabasesPath();
-    var path = join(databasesPath, "meta.db");
-    print("open database");
-    return await openDatabase(path, readOnly: false);
-  }
 
 
   initDb() async {
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'meta.db');
     var exists = await databaseExists(path);
-    if(!exists) {
-      await deleteDatabase(path); // just for testing
-     await openDatabase(path, version: 1, onCreate: _onCreate);
-      
-    }
+
+    return await openDatabase(path, version: 2, onCreate: _onCreate);
   }
 
   void _onCreate(Database db, int newVersion) async {
@@ -50,6 +42,12 @@ class QuranDatabaseClient implements NoteRepository, BookmarkRepository {
         ' ${BookmarkColumns.columnSurah} INTEGER,'
         ' ${BookmarkColumns.columnName} TEXT,'
         ' ${BookmarkColumns.columnDate} INTEGER)');
+
+    await db.execute('CREATE TABLE ${ReminderColumns.table}'
+        '(${ReminderColumns.columnId} INTEGER PRIMARY KEY,'
+        ' ${ReminderColumns.columnCompleted} INTEGER,'
+        ' ${ReminderColumns.columnName} TEXT,'
+        ' ${ReminderColumns.columnDate} INTEGER)');
   }
 
   @override
@@ -57,6 +55,28 @@ class QuranDatabaseClient implements NoteRepository, BookmarkRepository {
     var dbClient = await database;
     var result = await dbClient.insert(NoteColumns.table, note.toMap());
 
+    return result;
+  }
+
+  Future<List<Reminder>> getReminders() async {
+    var dbClient = await database;
+    var result = await dbClient.query(ReminderColumns.table,
+        columns: ReminderColumns.columns);
+    return result.map((e) => Reminder.fromMap(e)).toList();
+  }
+
+  Future<int> completeReminder(int id) async {
+    var dbClient = await database;
+    var result = await dbClient.update(
+        ReminderColumns.table, {ReminderColumns.columnCompleted: '1'},
+        where: '${ReminderColumns.columnId} = ?', whereArgs: [id]);
+    print("completeReminder: $result");
+    return result;
+  }
+
+  Future<int> addReminder(Reminder reminder) async {
+    var dbClient = await database;
+    var result = await dbClient.insert(ReminderColumns.table, reminder.toMap());
     return result;
   }
 

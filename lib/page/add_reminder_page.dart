@@ -1,8 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:quran/data/local/quran_database_client.dart';
+import 'package:quran/data/model/reminder.dart';
+import 'package:quran/di.dart';
 import 'package:quran/islamic_app_bar.dart';
-import 'package:workmanager/workmanager.dart';
 
 class AddReminderPage extends StatefulWidget {
   @override
@@ -77,18 +79,22 @@ class _AddReminderPageState extends State<AddReminderPage> {
                 'Save',
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              color: Theme.of(context).primaryColor,
+              color: Theme
+                  .of(context)
+                  .primaryColor,
               textColor: Colors.white,
               onPressed: selectedDate != null && selectedTime != null
                   ? () async {
-                      if (_globalKey.currentState.validate()) {
-                        var id = Random().nextInt(1000000);
-                        print("register task with id: $id");
-                        await Workmanager.registerOneOffTask(
-                            "uniqueName", "reminder$id",
-                            tag: "$id", initialDelay: difference());
-                      }
-                    }
+          /*      if (_globalKey.currentState.validate()) {
+                  var id = Random().nextInt(1000000);
+                  print("register task with id: $id");
+                  await Workmanager.registerOneOffTask(
+                      "reminder$id", "reminder$id",
+                      inputData: {'id': id}, initialDelay: difference());
+                  var client = DependencyProvider.provide<QuranDatabaseClient>();
+                  client.addReminder(Reminder(id, _nameEditingController.text));
+                }*/
+              }
                   : null,
               elevation: 0,
               hoverElevation: 0,
@@ -115,7 +121,10 @@ class _AddReminderPageState extends State<AddReminderPage> {
       padding: const EdgeInsets.all(4),
       child: Center(child: Icon(icon)),
       decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor.withAlpha(100),
+          color: Theme
+              .of(context)
+              .primaryColor
+              .withAlpha(100),
           borderRadius: BorderRadius.circular(8)),
     );
   }
@@ -125,14 +134,16 @@ class _AddReminderPageState extends State<AddReminderPage> {
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 5));
+        lastDate: DateTime(DateTime
+            .now()
+            .year + 5));
     if (date != null) {
       setState(() {
         this.selectedDate = date;
       });
       showTimePickerDialog();
       _dateEditingController.text =
-          "${selectedDate.year}/${selectedDate.month}/${selectedDate.day}";
+      "${selectedDate.year}/${selectedDate.month}/${selectedDate.day}";
     }
   }
 
@@ -140,7 +151,7 @@ class _AddReminderPageState extends State<AddReminderPage> {
     var time = await showTimePicker(
         context: context,
         initialTime:
-            TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 5))));
+        TimeOfDay.fromDateTime(DateTime.now().add(Duration(minutes: 5))));
     if (time != null) {
       setState(() {
         selectedTime = time;

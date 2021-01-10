@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Add this line
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/islamics_page.dart';
 import 'package:quran/main/bloc/theme/theme_cubit.dart';
 import 'package:quran/page/juz_surah/surahs_juzes_page.dart';
 import 'package:quran/page/notes_bookmarks/notes_bookmarks_page.dart';
-import 'package:quran/page/reminder_page.dart';
 import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
 import 'package:quran/page/surah_details/quran_reader_page.dart';
 
@@ -126,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               Column(
                                 children: [
-                                  Text("أخر قراءة",
+                                  Text(AppLocalizations.of(context).lastReading,
                                       style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                                         fontFamily: 'Al-QuranAlKareem',
                                         fontSize: 20,
                                       )),
-                                  Text("اضغط للذهاب للسورة",
+                                  Text(AppLocalizations.of(context).tapToView,
                                       style: TextStyle(
                                         fontFamily: 'Cairo',
                                         fontSize: 12,
@@ -208,9 +208,7 @@ class _HomePageState extends State<HomePage> {
             icon: SvgPicture.asset(isDarkMode(context)
                 ? 'assets/images/ic_lang_dark.svg'
                 : 'assets/images/ic_lang.svg'),
-            onPressed: () {
-              //TODO: change language
-            },
+            onPressed: () {},
             splashRadius: 20,
             iconSize: 40),
         IconButton(
@@ -227,7 +225,7 @@ class _HomePageState extends State<HomePage> {
             },
             splashRadius: 20,
             iconSize: 40),
-        IconButton(
+/*        IconButton(
             icon: SvgPicture.asset(isDarkMode(context)
                 ? 'assets/images/ic_reminder_dark.svg'
                 : 'assets/images/ic_reminder.svg'),
@@ -236,7 +234,7 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(builder: (context) => ReminderPage()));
             },
             splashRadius: 20,
-            iconSize: 40),
+            iconSize: 40),*/
       ],
     );
   }
@@ -275,7 +273,10 @@ class HomeMenuItem extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsetsDirectional.only(start: 8, end: 8),
-                child: Text(item.title,
+                child: Text(
+                    Localizations.localeOf(context).languageCode == 'ar'
+                        ? item.title
+                        : item.titleEn,
                     style: TextStyle(
                       fontFamily: 'Cairo',
                       fontSize: 14,
@@ -284,8 +285,12 @@ class HomeMenuItem extends StatelessWidget {
                     )),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8, right: 8, bottom: 16),
-                child: Text(item.subtitle,
+                padding: const EdgeInsetsDirectional.only(
+                    start: 16, end: 16, bottom: 16),
+                child: Text(
+                    Localizations.localeOf(context).languageCode == 'ar'
+                        ? item.subtitle
+                        : item.subtitleEn,
                     style: TextStyle(
                       fontFamily: 'Cairo',
                       fontSize: 12,
@@ -299,29 +304,41 @@ class HomeMenuItem extends StatelessWidget {
   }
 }
 
+
 class HomeMenuData {
   final String image;
   final String title;
+  final String titleEn;
   final String subtitle;
+  final String subtitleEn;
 
-  HomeMenuData({this.image, this.title, this.subtitle});
+  HomeMenuData(
+      {this.image, this.title, this.titleEn, this.subtitle, this.subtitleEn});
 }
 
 final homeMenuDataList = [
   HomeMenuData(
       image: 'assets/images/quran.svg',
-      title: 'سور و أجزاءالقران ',
-      subtitle: 'بصوت 22 قارئ من أئمة الحرمين'),
+      title: 'السور و الأجزاء',
+      titleEn: 'Surahs and Chapters',
+      subtitleEn: 'With the voice of 17 of the most distinguished imams',
+      subtitle: 'بصوت ١٧ قارئ من الائمة المتميزين'),
   HomeMenuData(
       image: 'assets/images/bookmarks.svg',
       title: 'العلامات و الملاحظات',
-      subtitle: 'العلامات علي الصفحات و السور ، و الملاحظات المدونة'),
+      titleEn: 'Bookmarks and notes',
+      subtitleEn: 'Bookmarks on pages, pictures, and written notes',
+      subtitle: 'العلامات علي الصفحات و الصور ، و الملاحظات المدونة'),
   HomeMenuData(
       image: 'assets/images/about.svg',
       title: 'عن الجهة المطوّرة',
+      titleEn: 'About the developer',
+      subtitleEn: '',
       subtitle: ''),
   HomeMenuData(
       image: 'assets/images/islamics.svg',
       title: 'إسلاميات',
-      subtitle: 'يحتوي علي الأدعية ، الأذكار و حصن المسلم '),
+      titleEn: 'Islamics',
+      subtitleEn: 'Islamic prayers, dhikr and the Muslim fortress',
+      subtitle: 'الأدعية ، الأذكار و حصن المسلم'),
 ];

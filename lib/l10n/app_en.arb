@@ -1,0 +1,18 @@
+{
+  "splashLoadingTitle": "Loading quran data...",
+  "@splashLoadingTitle": {
+    "description": ""
+  },
+  "applicationSponsor": "Application Sponsor : Wado Tech",
+  "@applicationSponsor": {
+    "description": ""
+  },
+  "lastReading": "Last reading",
+  "@lastReading": {
+    "description": ""
+  },
+  "tapToView": "Tap to view",
+  "@tapToView": {
+    "description": ""
+  }
+}

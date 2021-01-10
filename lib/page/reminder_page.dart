@@ -1,7 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:quran/data/local/quran_database_client.dart';
+import 'package:quran/data/model/reminder.dart';
+import 'package:quran/di.dart';
 import 'package:quran/islamic_app_bar.dart';
-import 'package:quran/page/add_reminder_page.dart';
+
+import 'add_reminder_page.dart';
 
 class ReminderPage extends StatefulWidget {
   @override
@@ -9,6 +15,8 @@ class ReminderPage extends StatefulWidget {
 }
 
 class _ReminderPageState extends State<ReminderPage> {
+  var quranDbClient = DependencyProvider.provide<QuranDatabaseClient>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,6 +26,32 @@ class _ReminderPageState extends State<ReminderPage> {
               MaterialPageRoute(builder: (context) => AddReminderPage()));
         },
         child: Icon(Icons.add),
+      ),
+      body: FutureBuilder(
+        builder:
+            (BuildContext context, AsyncSnapshot<List<Reminder>> snapshot) {
+          var list = snapshot.data;
+          if (!snapshot.hasData)
+            return Container();
+          else
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                return ListTile(
+                  onTap: () {
+                    quranDbClient.completeReminder(list[index].id);
+                    setState(() {
+
+                    });
+                  },
+                  title: Text(list[index].name),
+                  trailing: Text(
+                      list[index].isCompleted ? 'completed' : 'not completed'),
+                );
+              },
+              itemCount: list.length,
+            );
+        },
+        future: quranDbClient.getReminders(),
       ),
       appBar: IslamicAppBar(
         title: 'التنبيهات',

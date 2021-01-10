@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:quran/generated/l10n.dart';
 import 'package:quran/home_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Add this line
 
 class SplashPage extends StatefulWidget {
   @override
@@ -30,6 +32,7 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,
@@ -56,7 +59,7 @@ class _SplashPageState extends State<SplashPage> {
                 SizedBox(
                   height: 8,
                 ),
-                Text("يتم الأن تحميل الصفحات",
+                Text(AppLocalizations.of(context).splashLoadingTitle,
                     style: TextStyle(
                       fontFamily: 'Cairo',
                       color: Color(0xff4e4e4e),
@@ -75,7 +78,7 @@ class _SplashPageState extends State<SplashPage> {
                 SizedBox(
                   height: 80,
                 ),
-                Text("Application Sponsor : Wado Tech",
+                Text(AppLocalizations.of(context).applicationSponsor,
                     style: TextStyle(
                       fontFamily: 'Cairo',
                       color: Color(0xff605959),

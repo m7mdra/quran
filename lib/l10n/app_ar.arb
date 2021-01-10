@@ -1,0 +1,18 @@
+{
+  "splashLoadingTitle": "يتم الأن تحميل الصفحات",
+  "@splashLoadingTitle": {
+    "description": ""
+  },
+  "applicationSponsor": "التطبيق برعاية : ودو تك",
+  "@applicationSponsor": {
+    "description": ""
+  },
+  "lastReading": "اخر قراءة",
+  "@lastReading": {
+    "description": ""
+  },
+  "tapToView": "اضغظ للذهاب للسورة",
+  "@tapToView": {
+    "description": ""
+  }
+}

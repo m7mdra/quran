@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:quran/main.dart';
 import 'package:quran/page/dua_mathor/dua_mathor_page.dart';
 import 'package:quran/page/husn_muslim/husn_muslim_page.dart';
 import 'package:quran/page/khatm_quran/khatm_quran_page.dart';
@@ -20,15 +19,19 @@ class IslamicsPage extends StatefulWidget {
 
 class _IslamicsPageState extends State<IslamicsPage> {
   var islamicMenuList = <IslamicMenuItem>[
-    IslamicMenuItem('assets/images/azkar.svg', 'اذكار المساء'),
-    IslamicMenuItem('assets/images/azkar_mourning.svg', 'اذكار الصباح'),
-    IslamicMenuItem('assets/images/prayer_azkar.svg', 'اذكار الصلاة'),
-    IslamicMenuItem('assets/images/douaa.svg', 'أدعية مأثورة'),
-    IslamicMenuItem('assets/images/husen.svg', 'حصن المسلم'),
-    IslamicMenuItem('assets/images/musbaha.svg', 'المسبحة'),
-    IslamicMenuItem('assets/images/qibla.svg', 'اتجاه القبلة'),
-    IslamicMenuItem('assets/images/doua_khtm.svg', 'دعاء ختم القران'),
-    IslamicMenuItem('assets/images/riyadh.svg', 'رياض الصالحين'),
+    IslamicMenuItem(
+        'assets/images/azkar.svg', 'اذكار المساء', 'Evening Doaa'),
+    IslamicMenuItem(
+        'assets/images/azkar_mourning.svg', 'اذكار الصباح', 'Morning Doaa '),
+    IslamicMenuItem(
+        'assets/images/prayer_azkar.svg', 'اذكار الصلاة', 'Prayer Doaa '),
+    IslamicMenuItem('assets/images/douaa.svg', 'أدعية مأثورة', ' Doaas'),
+    IslamicMenuItem(
+        'assets/images/husen.svg', 'حصن المسلم', "Muslims fortress"),
+    IslamicMenuItem('assets/images/musbaha.svg', 'المسبحة', 'Tasbih'),
+    IslamicMenuItem('assets/images/qibla.svg', 'اتجاه القبلة', 'Qiblah'),
+    IslamicMenuItem('assets/images/doua_khtm.svg', 'دعاء ختم القران', 'End of quran Doaa'),
+    IslamicMenuItem('assets/images/riyadh.svg', 'رياض الصالحين', 'Righteous Riad'),
   ];
 
   @override
@@ -104,7 +107,11 @@ class _IslamicsPageState extends State<IslamicsPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SvgPicture.asset(data.image),
-                  Text(data.title,
+                  Text(
+                      Localizations.localeOf(context).languageCode == 'ar'
+                          ? data.title
+                          : data.titleEn,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         fontSize: 14,
@@ -122,6 +129,7 @@ class _IslamicsPageState extends State<IslamicsPage> {
 class IslamicMenuItem {
   final String image;
   final String title;
+  final String titleEn;
 
-  IslamicMenuItem(this.image, this.title);
+  IslamicMenuItem(this.image, this.title, this.titleEn);
 }

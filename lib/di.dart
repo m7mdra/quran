@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/local/dua_mathor_provider.dart';
 import 'data/local/husn_chapter_provider.dart';
-import 'data/local/note_database_client.dart';
+import 'data/local/quran_database_client.dart';
 import 'data/local/tafseer_repository.dart';
 
 var _registrar = GetIt.instance;
