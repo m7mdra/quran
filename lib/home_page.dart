@@ -334,7 +334,7 @@ final homeMenuDataList = [
       image: 'assets/images/bookmarks.svg',
       title: 'العلامات و الملاحظات',
       titleEn: 'Bookmarks and notes',
-      subtitleEn: 'Bookmarks on pages, pictures, and written notes',
+      subtitleEn: 'Bookmarks on pages, notes',
       subtitle: 'العلامات علي الصفحات و الصور ، و الملاحظات المدونة'),
   HomeMenuData(
       image: 'assets/images/about.svg',
