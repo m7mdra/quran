@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Add this line
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/islamics_page.dart';
+import 'package:quran/main/bloc/lang/language_cubit.dart';
 import 'package:quran/main/bloc/theme/theme_cubit.dart';
 import 'package:quran/page/juz_surah/surahs_juzes_page.dart';
 import 'package:quran/page/notes_bookmarks/notes_bookmarks_page.dart';
@@ -208,7 +209,14 @@ class _HomePageState extends State<HomePage> {
             icon: SvgPicture.asset(isDarkMode(context)
                 ? 'assets/images/ic_lang_dark.svg'
                 : 'assets/images/ic_lang.svg'),
-            onPressed: () {},
+            onPressed: () {
+              var langCubit = context.bloc<LanguageCubit>();
+              if (Localizations.localeOf(context).languageCode == 'ar') {
+                langCubit.en();
+              } else {
+                langCubit.ar();
+              }
+            },
             splashRadius: 20,
             iconSize: 40),
         IconButton(
@@ -303,7 +311,6 @@ class HomeMenuItem extends StatelessWidget {
         ));
   }
 }
-
 
 class HomeMenuData {
   final String image;

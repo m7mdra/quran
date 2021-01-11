@@ -39,6 +39,15 @@ class Preference {
     return saved;
   }
 
+  String lang() {
+    return _sharedPreferences.getString("lang");
+  }
+
+  Future saveCurrentLanguage(String lang) async {
+    var saved = await _sharedPreferences.setString("lang", lang);
+    return saved;
+  }
+
   Future<bool> setLightTheme() async {
     var saved = await _sharedPreferences.setInt("theme", 1);
     return saved;

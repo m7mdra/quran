@@ -9,6 +9,7 @@ import 'package:quran/data/local/quran_database_client.dart';
 import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
 import 'package:quran/di.dart';
+import 'package:quran/main/bloc/lang/language_cubit.dart';
 import 'package:quran/main/bloc/theme/theme_cubit.dart';
 import 'package:quran/page/juz_surah/surahs/bloc/surahs_bloc.dart';
 import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
@@ -18,7 +19,6 @@ import 'package:quran/splash_page.dart';
 import 'package:quran/theme.dart';
 
 import 'main/bloc_observer.dart';
-
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,10 +31,10 @@ main() async {
       .then((value) => print(value.data.surahs.length));
   var noteDatabase = DependencyProvider.provide<QuranDatabaseClient>();
   await noteDatabase.initDb();
-
-  runApp(MyApp());
+  LanguageCubit cubit = LanguageCubit(DependencyProvider.provide());
+  cubit.load();
+  runApp(BlocProvider.value(value: cubit, child: MyApp()));
 }
-
 
 class MyApp extends StatefulWidget {
   @override
@@ -43,41 +43,60 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   ThemeCubit _themeCubit;
+  LanguageCubit _languageCubit;
 
   @override
   void initState() {
-    _themeCubit = ThemeCubit(DependencyProvider.provide());
     super.initState();
+    _languageCubit = context.bloc();
+    _themeCubit = ThemeCubit(DependencyProvider.provide());
   }
 
   @override
   void dispose() {
     _themeCubit.close();
+    _languageCubit.close();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext appContext) {
     return BlocBuilder(
-      cubit: _themeCubit,
+      cubit: _languageCubit,
+      builder: (BuildContext context, langState) {
+        return BlocBuilder(
+          cubit: _themeCubit,
+          builder: (BuildContext context, themeState) {
+            return MaterialApp(
+              localizationsDelegates: [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate
+              ],
+              localeListResolutionCallback: (locales, supportedLocales) {
+                for (Locale locale in locales) {
+                  // if device language is supported by the app,
+                  // just return it to set it as current app language
+                  if (supportedLocales.contains(locale)) {
+                    return locale;
+                  }
+                }
 
-      builder: (BuildContext context, state) {
-        return MaterialApp(
-          localizationsDelegates: [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate
-          ],
-          supportedLocales: [
-            const Locale('en'), // English, no country code
-            const Locale('ar'),
-          ],
-          themeMode: _modeFromState(state),
-          builder: (context, widget) {
-            return MultiBlocProvider(
-                providers: [
+                // if device language is not supported by the app,
+                // the app will set it to english but return this to set to Bahasa instead
+                return Locale('ar');
+              },
+              supportedLocales: [
+                const Locale('en'),
+                const Locale('ar'),
+              ],
+              locale: _languageForState(langState),
+              themeMode: _modeFromState(themeState),
+              builder: (context, widget) {
+                return MultiBlocProvider(providers: [
                   BlocProvider(create: (context) => _themeCubit),
+                  BlocProvider(create: (context) => _languageCubit),
                   BlocProvider(
                       create: (context) =>
                           SurahsBloc(DependencyProvider.provide())),
@@ -91,16 +110,25 @@ class _MyAppState extends State<MyApp> {
                   BlocProvider(
                       create: (context) =>
                           TafseerBloc(DependencyProvider.provide())),
-                ],
-                child: widget);
+                ], child: widget);
+              },
+              title: 'Flutter Demo',
+              darkTheme: darkTheme,
+              theme: theme,
+              home: SplashPage(),
+            );
           },
-          title: 'Flutter Demo',
-          darkTheme: darkTheme,
-          theme: theme,
-          home: SplashPage(),
         );
       },
     );
+  }
+
+  Locale _languageForState(LanguageState state) {
+    var savedLanguage = state.language;
+    if (savedLanguage != null)
+      return Locale(savedLanguage);
+    else
+      return Locale('ar');
   }
 
   ThemeMode _modeFromState(ThemeState state) {
