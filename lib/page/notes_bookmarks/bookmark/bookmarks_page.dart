@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/di.dart';
 import 'package:quran/page/notes_bookmarks/bookmark/bloc/get_bookmarks_cubit.dart';
+import 'package:quran/page/surah_details/surah_details.dart';
 
 import 'bookmark_widget.dart';
 import 'empty_bookmarks_widget.dart';
@@ -56,8 +58,17 @@ class _BookmarksPageState extends State<BookmarksPage>
                   itemBuilder: (context, index) {
                     var bookmark = state.list[index];
                     return BookmarkWidget(
-                      onTap: (bookmark){
-                        print(bookmark.toMap());
+                      onTap: (bookmark) async {
+                        var surahList = await QuranProvider().loadSurahList();
+                        var surah = surahList[bookmark.surah];
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SurahDetails(
+                                      surah: surah,
+                                      index: surah.number - 1,
+                                      offset: bookmark.position,
+                                    )));
                       },
                       bookmark: bookmark,
                       index: index,

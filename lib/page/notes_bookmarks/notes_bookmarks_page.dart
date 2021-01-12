@@ -24,7 +24,6 @@ class _NotesBookMarksPageState extends State<NotesBookMarksPage>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _tabController.dispose();
     _pageController.dispose();
