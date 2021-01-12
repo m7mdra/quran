@@ -5,6 +5,7 @@ import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
 import 'package:quran/page/surah_details/surah_details.dart';
 
 import 'bloc/bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SurahsPage extends StatefulWidget {
   @override
@@ -85,7 +86,7 @@ class _SurahsPageState extends State<SurahsPage>
               itemCount: state.surah.length,
             );
           }
-          return Center(child: Text('فشل تحميل السور'));
+          return Center(child: Text(AppLocalizations.of(context).failedToLoadData));
         },
       ),
     );

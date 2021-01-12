@@ -33,7 +33,9 @@ class ReadersBloc extends Bloc<ReadersEvent, ReadersState> {
           return;
         } else {
           var search = list
-              .where((element) => element.name.contains(event.query))
+              .where((element) =>
+                  element.name.contains(event.query) ||
+                  element.englishName.toLowerCase().contains(event.query))
               .toList();
           if (search.isEmpty) {
             yield ReadersEmptyState();

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/common.dart';
 import 'package:quran/di.dart';
-import 'package:quran/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:quran/generated/l10n.dart';
 
 import '../../islamic_app_bar.dart';
 import 'bloc/bloc.dart';
@@ -31,7 +33,7 @@ class _DuaMathorPageState extends State<DuaMathorPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: IslamicAppBar(
-        title: 'ادعية ماثورة',
+        title: isArabic(context) ? 'ادعية ماثورة' : 'Duas Mathura',
         context: context,
       ),
       body: BlocBuilder(
@@ -64,7 +66,7 @@ class _DuaMathorPageState extends State<DuaMathorPage> {
               child: CircularProgressIndicator(),
             );
           } else {
-            return Text('فشل تحميل البيانات');
+            return Text(AppLocalizations.of(context).failedToLoadData);
           }
         },
       ),

@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/model/quran.dart';
 import 'package:quran/di.dart';
+import 'package:quran/generated/l10n.dart';
 import 'package:quran/islamic_app_bar.dart';
 import 'package:quran/page/surah_details/bloc/bookmark/add_bookmark_cubit.dart';
 import 'package:quran/page/surah_details/quran_controls_modal_widget.dart';
 import 'package:quran/page/surah_details/surah_player.dart';
 import 'package:quran/page/surah_details/surah_widget.dart';
 import 'package:quran/page/surah_details/tafseer_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../popup_menu.dart';
 import 'bloc/bookmark/add_bookmark_cubit.dart';
@@ -128,10 +130,10 @@ class _SurahDetailsState extends State<SurahDetails> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text('حسنا'))
+                            child: Text(MaterialLocalizations.of(context).okButtonLabel))
                       ],
-                      title: Text('حفظ علامة قراءة'),
-                      content: Text('فشل حفظ علامة القراءة'),
+                      title: Text(AppLocalizations.of(context).saveBookmarkDialogTitle),
+                      content: Text(AppLocalizations.of(context).bookmarkSaveError),
                     ));
           }
           if (state is AddBookmarkSavedSuccess) {
@@ -145,10 +147,10 @@ class _SurahDetailsState extends State<SurahDetails> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text('حسنا'))
+                            child: Text(MaterialLocalizations.of(context).okButtonLabel))
                       ],
-                      title: Text('حفظ علامة قراءة'),
-                      content: Text('تم حفظ علامة القراءة بنجاح'),
+                      title: Text(AppLocalizations.of(context).saveBookmarkDialogTitle),
+                      content: Text(AppLocalizations.of(context).bookmarkSaveSuccess),
                     ));
           }
           if (state is AddBookmarkSavedLoading) {
@@ -165,7 +167,8 @@ class _SurahDetailsState extends State<SurahDetails> {
         },
         child: SingleChildScrollView(
           controller: _scrollController,
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(
+              top: 16.0, right: 16.0, left: 16.0, bottom: 150),
           child: Column(
             children: [
               SurahTitleWidget(
@@ -210,60 +213,6 @@ class _SurahDetailsState extends State<SurahDetails> {
     );
   }
 
-  AlertDialog _showSaveBookmarkDialog() {
-    TextEditingController textEditingController = TextEditingController();
-    return AlertDialog(
-      title: Text('حفظ علامة قراءة'),
-      shape: _roundedRectangleBorder,
-      content: Column(
-        children: [
-          Text('قم بكتابة اسم علامة القراءة حتى يمكنك الرجع اليها لاحقا'),
-          SizedBox(
-            height: 16,
-          ),
-          TextField(
-            maxLines: 1,
-            controller: textEditingController,
-            decoration: InputDecoration(
-                isDense: true,
-                hintText: 'مثال: سورة البقرة الاية ١٠',
-                border: OutlineInputBorder()),
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              RaisedButton(
-                onPressed: () {
-                  var text = textEditingController.text;
-                  if (text.isNotEmpty) {
-                    Navigator.pop(context, text);
-                  }
-                },
-                child: Text('حفظ'),
-                focusElevation: 0,
-                elevation: 0,
-                disabledElevation: 0,
-                highlightElevation: 0,
-                hoverElevation: 0,
-                textColor: Colors.white,
-                color: Theme.of(context).primaryColor,
-              ),
-              FlatButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('الغاء'),
-              ),
-            ],
-          )
-        ],
-        mainAxisSize: MainAxisSize.min,
-      ),
-    );
-  }
 
   RoundedRectangleBorder get _roundedRectangleBorder =>
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(16));

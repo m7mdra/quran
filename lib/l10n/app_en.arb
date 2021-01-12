@@ -14,5 +14,129 @@
   "tapToView": "Tap to view",
   "@tapToView": {
     "description": ""
+  },
+  "suarAlquran": "Suar Alquran",
+  "@suarAlquran": {
+    "description": ""
+  },
+  "reader": "Reader",
+  "@reader": {
+    "description": ""
+  },
+  "interpretation": "Interpretation",
+  "@interpretation": {
+    "description": ""
+  },
+  "save": "Save",
+  "@save": {
+    "description": ""
+  },
+  "play": "Play",
+  "@play": {
+    "description": ""
+  },
+  "saveBookmarkDialogTitle": "Save bookmark",
+  "@saveBookmarkDialogTitle": {
+    "description": ""
+  },
+  "saveBookmarkDialogMessage": "Write the name of the Bookmark so that you can refer to it later",
+  "@saveBookmarkDialogMessage": {
+    "description": ""
+  },
+  "saveBookmarkDialogFieldHint": "Example: Surat Al-Baqarah verse 10",
+  "@saveBookmarkDialogFieldHint": {
+    "description": ""
+  },
+  "save": "Save",
+  "@save": {
+    "description": ""
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": ""
+  },
+  "searchReader": "Search reader by name",
+  "@searchReader": {
+    "description": ""
+  },
+  "searchReaderNotFound": "No readers were found with the search key",
+  "@searchReaderNotFound": {
+    "description": ""
+  },
+  "failedToLoadData": "Failed to load data.",
+  "@failedToLoadData": {
+    "description": ""
+  },
+  "error": "There was an error.",
+  "@error": {
+    "description": ""
+  },
+  "bookmarkSaveError": "Failed to save bookmark",
+  "@bookmarkSaveError": {
+    "description": ""
+  },
+  "bookmarkSaveSuccess": "Bookmark save successfully.",
+  "@bookmarkSaveSuccess": {
+    "description": ""
+  } ,
+   "contents": "Contents",
+  "@contents": {
+    "description": ""
+  },
+   "times": "times",
+  "@times": {
+    "description": ""
+  },
+   "praise": "Praise",
+  "@praise": {
+    "description": ""
+  },
+   "resetCounter": "Reset the counter",
+  "@resetCounter": {
+    "description": ""
+  },
+   "resetCounterDialogTitle": "Do you want to go back to zero?",
+  "@resetCounterDialogTitle": {
+    "description": ""
+  },
+   "attention": "Attention",
+  "@attention": {
+    "description": ""
+  },
+  "noBookmarks": "No bookmarks saved.",
+  "@noBookmarks": {
+    "description": ""
+  },
+  "addNote": "Add Note",
+  "@addNote": {
+    "description": ""
+  },
+  "noteTitleHint": "Title",
+  "@noteTitleHint": {
+    "description": ""
+  },
+  "noteTitleEmptyError": "Title field is empty",
+  "@noteTitleEmptyError": {
+    "description": ""
+  },
+  "noteDescriptionHint": "Content",
+  "@noteDescriptionHint": {
+    "description": ""
+  },
+  "noteDescriptionEmptyError": "Content field is empty",
+  "@noteDescriptionEmptyError": {
+    "description": ""
+  },
+
+   "noNoteSaved": "No notes saved",
+  "@noNoteSaved": {
+    "description": ""
+  },
+  "noNoteSavedContent": "Add a note by clicking the circular button with the plus sign at the bottom",
+  "@noNoteSavedContent": {
+    "description": ""
   }
+
+
+
 }

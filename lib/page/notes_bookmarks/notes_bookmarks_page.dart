@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:quran/common.dart';
 import 'package:quran/page/notes_bookmarks/bookmark/bookmarks_page.dart';
 import 'package:quran/page/notes_bookmarks/note/notes_page.dart';
 
 import '../../islamic_app_bar.dart';
 import '../../main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotesBookMarksPage extends StatefulWidget {
   @override
@@ -41,7 +43,7 @@ class _NotesBookMarksPageState extends State<NotesBookMarksPage>
         children: [BookmarksPage(), NotesPage()],
       ),
       appBar: IslamicAppBar(
-        title: 'العلامات والملاحظات',
+        title: isArabic(context)?'العلامات والملاحظات':'Notes and Bookmarks',
         bottom: TabBar(
           onTap: (index) {
             _pageController.animateToPage(index,
@@ -65,10 +67,10 @@ class _NotesBookMarksPageState extends State<NotesBookMarksPage>
               fontSize: 20.0),
           tabs: [
             Tab(
-              text: 'العلامات',
+              text: isArabic(context)?'العلامات':'Bookmarks',
             ),
             Tab(
-              text: 'الملاحظات',
+              text: isArabic(context)?'الملاحظات':'Notes',
             )
           ],
           controller: _tabController,

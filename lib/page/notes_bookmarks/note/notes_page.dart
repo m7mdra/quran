@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/data/model/note.dart';
 import 'package:quran/di.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../common.dart';
 import 'bloc/bloc.dart';
@@ -167,31 +168,31 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              Text("اضافة ملاحظة",
+              Text(AppLocalizations.of(context).addNote,
                   style: TextStyle(
                       fontFamily: 'Cairo',
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       fontStyle: FontStyle.normal)),
               SizedBox(height: 16),
-              Text('عنوان الملاحظة'),
+              Text(AppLocalizations.of(context).noteTitleHint),
               TextFormField(
                   controller: _titleTextEditingController,
                   validator: (title) {
                     if (title.isEmpty)
-                      return "العنوان خالي";
+                      return AppLocalizations.of(context).noteTitleEmptyError;
                     else
                       return null;
                   },
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), isDense: true)),
               SizedBox(height: 8),
-              Text('تفاصيل الملاحظة'),
+              Text(AppLocalizations.of(context).noteDescriptionHint),
               TextFormField(
                   controller: _contentTextEditingController,
                   validator: (title) {
                     if (title.isEmpty)
-                      return "حقل التفاصيل خالي";
+                      return AppLocalizations.of(context).noteDescriptionEmptyError;
                     else
                       return null;
                   },
@@ -225,7 +226,7 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
                               Navigator.pop(context);
                             }
                           },
-                          child: Text('حفظ')),
+                          child: Text(AppLocalizations.of(context).save)),
                       flex: 2),
                   SizedBox(width: 8),
                   Expanded(
@@ -238,7 +239,7 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: Text('الفاء'))),
+                          child: Text(AppLocalizations.of(context).cancel))),
                 ],
               )
             ],
@@ -264,7 +265,7 @@ class EmptyNotesWidget extends StatelessWidget {
           SizedBox(
             height: 16,
           ),
-          Text("لا توجد ملاحظات حتي الأن ",
+          Text(AppLocalizations.of(context).noNoteSaved,
               style: TextStyle(
                 fontFamily: 'Cairo',
                 fontSize: 18,
@@ -272,7 +273,7 @@ class EmptyNotesWidget extends StatelessWidget {
                 fontStyle: FontStyle.normal,
               )),
           Text(
-              "قم باضافة ملاحظة بالضغط على الزر الدائري بعلامة الزائد في الاسفل",
+              AppLocalizations.of(context).noNoteSavedContent,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Cairo',

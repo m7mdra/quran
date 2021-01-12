@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/generated/l10n.dart';
 import 'package:quran/home_page.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Add this line
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SplashPage extends StatefulWidget {
   @override

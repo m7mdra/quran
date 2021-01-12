@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/common.dart';
 import 'package:quran/di.dart';
-import 'package:quran/main.dart';
+import 'package:quran/generated/l10n.dart';
 import 'package:quran/page/husn_muslim/bloc/husn_muslim/bloc.dart';
 import 'package:quran/page/husn_muslim/husn_reader_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../islamic_app_bar.dart';
 import 'bloc/husn_muslim/bloc.dart';
@@ -27,7 +29,7 @@ class _HusnMuslimPageState extends State<HusnMuslimPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: IslamicAppBar(
-        title: "حصن المسلم",
+        title:isArabic(context)? "حصن المسلم":"Muslims fortress",
         context: context,
       ),
       body: Column(
@@ -36,7 +38,7 @@ class _HusnMuslimPageState extends State<HusnMuslimPage> {
           Padding(
             padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
             child: Text(
-              'الفهرس',
+              AppLocalizations.of(context).contents,
               textAlign: TextAlign.start,
               style: TextStyle(
                   color: Theme.of(context).accentColor,
@@ -79,7 +81,7 @@ class _HusnMuslimPageState extends State<HusnMuslimPage> {
                     },
                   );
                 } else {
-                  return Text('فشل تحميل الملفات');
+                  return Text(AppLocalizations.of(context).failedToLoadData);
                 }
               },
             ),

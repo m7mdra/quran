@@ -14,5 +14,136 @@
   "tapToView": "اضغظ للذهاب للسورة",
   "@tapToView": {
     "description": ""
-  }
+  },
+  "suarAlquran": "سور القران",
+  "@suarAlquran": {
+     "description": ""
+  },
+     "reader": "القارئ",
+     "@reader": {
+       "description": ""
+     },
+     "interpretation": "تفسير",
+     "@interpretation": {
+       "description": ""
+     },
+     "save": "حفظ",
+     "@save": {
+       "description": ""
+     },
+     "play": "تشغيل",
+     "@play": {
+       "description": ""
+     },
+       "saveBookmarkDialogTitle": "حفظ علامة قراءة",
+       "@saveBookmarkDialogTitle": {
+         "description": ""
+       },
+       "saveBookmarkDialogMessage": "قم بكتابة اسم علامة القراءة حتى يمكن الرجوع اليها لاحقا",
+       "@saveBookmarkDialogMessage": {
+         "description": ""
+       },
+       "saveBookmarkDialogFieldHint": "مثال: سورة البقرة الاية ١٠",
+       "@saveBookmarkDialogFieldHint": {
+         "description": ""
+       },
+       "save": "حفظ",
+       "@save": {
+         "description": ""
+       },
+       "cancel": "الغاء",
+       "@cancel": {
+         "description": ""
+       },
+       "searchReader": "ابحث عن قارئ بالاسم",
+       "@searchReader": {
+         "description": ""
+       },
+  "searchReaderNotFound": "لم يتم ايجاد قارئين بمفتاح البحث",
+  "@searchReaderNotFound": {
+    "description": ""
+  },
+  "failedToLoadData": "فشل تحميل البيانات",
+  "@failedToLoadData": {
+    "description": ""
+  },  "error": "حصل خطا, قم بالمحاولة مرة اخرى",
+      "@error": {
+        "description": ""
+      },
+      "bookmarkSaveError": "فشل حفظ علامة القراءة",
+      "@bookmarkSaveError": {
+        "description": ""
+      },
+      "bookmarkSaveSuccess": "تم حفظ علامة القراءة بنجاح.",
+      "@bookmarkSaveSuccess": {
+        "description": ""
+      } ,
+   "contents": "الفهرس",
+  "@contents": {
+    "description": ""
+  },
+
+   "contents": "Contents",
+  "@contents": {
+    "description": ""
+  },
+   "times": "مرة",
+  "@times": {
+    "description": ""
+  },
+   "praise": "تسبيح",
+  "@praise": {
+    "description": ""
+  },
+   "resetCounter": "تصفير العداد",
+  "@resetCounter": {
+    "description": ""
+  },
+   "resetCounterDialogTitle": "هل انت واثق من تصفير العداد؟",
+  "@resetCounterDialogTitle": {
+    "description": ""
+  },
+     "attention": "تنبيه",
+    "@attention": {
+      "description": ""
+    },
+  "noBookmarks": "لا توجد علامات حفظ حتي الأن",
+  "@noBookmarks": {
+    "description": ""
+  },
+    "noBookmarks": "لا توجد ملاحظات حتى الان",
+    "@noBookmarks": {
+      "description": ""
+    },
+    "addNote": "اضافة ملاحظة",
+    "@addNote": {
+      "description": ""
+    },
+    "noteTitleHint": "العنوان",
+    "@noteTitleHint": {
+      "description": ""
+    },
+    "noteTitleEmptyError": "حقل العنوان خالي",
+    "@noteTitleEmptyError": {
+      "description": ""
+    },
+    "noteDescriptionHint": "المتحوى",
+    "@noteDescriptionHint": {
+      "description": ""
+    },
+    "noteDescriptionEmptyError": "حقل المحتوى خالي",
+    "@noteDescriptionEmptyError": {
+      "description": ""
+    },
+
+     "noNoteSaved": "لم يتم اضافة ملاحظات بعد",
+    "@noNoteSaved": {
+      "description": ""
+    },
+    "noNoteSavedContent": "قم باضافة ملاحظة بالضغط على الزر الدائري بعلامة الزائد في الاسفل",
+    "@noNoteSavedContent": {
+      "description": ""
+    }
+
+
 }

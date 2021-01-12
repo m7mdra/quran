@@ -1,9 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/common.dart';
 import 'package:quran/di.dart';
-import 'package:quran/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../islamic_app_bar.dart';
 
@@ -52,7 +53,7 @@ class _MusbahaPageState extends State<MusbahaPage> {
     return Scaffold(
       appBar: IslamicAppBar(
         context: context,
-        title: 'المسبحة',
+        title: isArabic(context) ? 'المسبحة' : 'Tasbih',
       ),
       body: Center(
         child: Padding(
@@ -70,7 +71,7 @@ class _MusbahaPageState extends State<MusbahaPage> {
                           TextStyle(fontSize: 60, fontWeight: FontWeight.bold),
                       children: [
                         TextSpan(
-                            text: ' مرة ',
+                            text: ' ${AppLocalizations.of(context).times} ',
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w600))
                       ]));
@@ -89,7 +90,7 @@ class _MusbahaPageState extends State<MusbahaPage> {
                         await _counterCubit.increment();
                       },
                       child: Text(
-                        'تسبيح',
+                        AppLocalizations.of(context).praise,
                         style: TextStyle(fontSize: 20),
                       ),
                     ),
@@ -101,7 +102,7 @@ class _MusbahaPageState extends State<MusbahaPage> {
                     onPressed: () {
                       _showMaterialDialog();
                     },
-                    child: Text('تصفير العداد', style: TextStyle(fontSize: 16)),
+                    child: Text(AppLocalizations.of(context).resetCounter, style: TextStyle(fontSize: 16)),
                   ),
                 ],
               )
@@ -118,11 +119,11 @@ class _MusbahaPageState extends State<MusbahaPage> {
         builder: (context) {
           return AlertDialog(
             title: Text(
-              'تنبيه',
+              AppLocalizations.of(context).attention,
               textAlign: TextAlign.right,
             ),
             content: Text(
-              'هل تريد الرجوع إلي الصفر؟',
+              AppLocalizations.of(context).resetCounterDialogTitle,
               textAlign: TextAlign.right,
             ),
             actions: <Widget>[
@@ -130,13 +131,13 @@ class _MusbahaPageState extends State<MusbahaPage> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('إلغاء')),
+                  child: Text(MaterialLocalizations.of(context).cancelButtonLabel)),
               FlatButton(
                 onPressed: () async {
                   Navigator.pop(context);
                   await _counterCubit.zero();
                 },
-                child: Text('نعم'),
+                child: Text(MaterialLocalizations.of(context).okButtonLabel),
               )
             ],
           );

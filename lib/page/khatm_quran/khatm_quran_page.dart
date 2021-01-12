@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:quran/common.dart';
 import 'package:quran/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../islamic_app_bar.dart';
 
@@ -12,7 +14,7 @@ class _KhatmQuranPageState extends State<KhatmQuranPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: IslamicAppBar(title: 'دعاء ختم القران', context: context),
+      appBar: IslamicAppBar(title: isArabic(context)? 'دعاء ختم القران':'End of quran Doaa', context: context),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Text.rich(

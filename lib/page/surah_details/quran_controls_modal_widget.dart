@@ -1,14 +1,13 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:quran/common.dart';
 import 'package:quran/data/model/quran.dart';
-import 'package:quran/di.dart';
 import 'package:quran/page/surah_details/surah_player.dart';
 import 'package:quran/page/surah_details/tafseer_widget.dart';
 
-import 'bloc/bookmark/add_bookmark_cubit.dart';
-import 'bloc/bookmark/add_bookmark_state.dart';
 import 'bloc/readers/readers_bloc.dart';
 import 'bloc/readers/readers_event.dart';
 import 'bloc/readers/readers_state.dart';
@@ -19,10 +18,12 @@ class QuranControlsModal extends StatefulWidget {
   final Surah surah;
   final SurahPlayer player;
   final Function(String) onSaveBookMarkClick;
+
   const QuranControlsModal({
     Key key,
     @required this.surah,
-    this.player, this.onSaveBookMarkClick,
+    this.player,
+    this.onSaveBookMarkClick,
   }) : super(key: key);
 
   @override
@@ -43,8 +44,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding:
-            const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
+        padding: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -52,7 +52,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
               cubit: context.bloc<ReadersBloc>(),
               builder: (BuildContext context, state) {
                 return SuraOptions(
-                  title: 'القارئ',
+                  title: AppLocalizations.of(context).reader,
                   image: state is DefaultReaderLoadedState ||
                           state is ReadersLoadedState
                       ? 'assets/images/readers_images/${state.reader.identifier}.jpg'
@@ -67,7 +67,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
               },
             ),
             SuraOptions(
-              title: 'التفسير',
+              title: AppLocalizations.of(context).interpretation,
               image: 'assets/images/tafseer.svg',
               onTap: () {
                 var list = widget.surah.ayahs;
@@ -78,7 +78,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
               },
             ),
             SuraOptions(
-              title: 'حفظ',
+              title: AppLocalizations.of(context).save,
               image: 'assets/images/bookmark_sura.svg',
               onTap: () async {
                 var name = await showDialog<String>(
@@ -108,7 +108,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
                         );
                       }),
                 ),
-                Text('تشغيل',
+                Text(AppLocalizations.of(context).play,
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
@@ -127,11 +127,11 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
   AlertDialog _showSaveBookmarkDialog() {
     TextEditingController textEditingController = TextEditingController();
     return AlertDialog(
-      title: Text('حفظ علامة قراءة'),
+      title: Text(AppLocalizations.of(context).saveBookmarkDialogTitle),
       shape: _roundedRectangleBorder,
       content: Column(
         children: [
-          Text('قم بكتابة اسم علامة القراءة حتى يمكنك الرجع اليها لاحقا'),
+          Text(AppLocalizations.of(context).saveBookmarkDialogMessage),
           SizedBox(
             height: 16,
           ),
@@ -140,7 +140,8 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
             controller: textEditingController,
             decoration: InputDecoration(
                 isDense: true,
-                hintText: 'مثال: سورة البقرة الاية ١٠',
+                hintText:
+                    AppLocalizations.of(context).saveBookmarkDialogFieldHint,
                 border: OutlineInputBorder()),
           ),
           SizedBox(
@@ -156,7 +157,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
                     Navigator.pop(context, text);
                   }
                 },
-                child: Text('حفظ'),
+                child: Text(AppLocalizations.of(context).save),
                 focusElevation: 0,
                 elevation: 0,
                 disabledElevation: 0,
@@ -169,7 +170,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('الغاء'),
+                child: Text(AppLocalizations.of(context).cancel),
               ),
             ],
           )
@@ -237,7 +238,8 @@ class ReadersWidget extends StatelessWidget {
                 context.bloc<ReadersBloc>().add(FindReaderByKeyword(query));
               },
               decoration: InputDecoration(
-                  hintText: "بحث باسم القارئ", suffixIcon: Icon(Icons.search)),
+                  hintText: AppLocalizations.of(context).searchReader,
+                  suffixIcon: Icon(Icons.search)),
             ),
           ),
           BlocBuilder(
@@ -276,8 +278,10 @@ class ReadersWidget extends StatelessWidget {
                             .add(SetDefaultReader(reader));
                         Navigator.pop(context);
                       },
-                      title: Text(reader.name),
-                      subtitle: Text(reader.englishName),
+                      title: Text(
+                          isArabic(context) ? reader.name : reader.englishName),
+                      subtitle: Text(
+                          isArabic(context) ? reader.englishName : reader.name),
                     );
                   },
                   itemCount: list.length,
@@ -287,7 +291,7 @@ class ReadersWidget extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(48.0),
                     child: Text(
-                      'فشل تحميل القارئين ',
+                      AppLocalizations.of(context).failedToLoadData,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Theme.of(context).errorColor,
@@ -300,7 +304,7 @@ class ReadersWidget extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.all(48.0),
                   child: Text(
-                    'لم يتم ايجاد قارئيين بمفتاح البحث',
+                    AppLocalizations.of(context).searchReaderNotFound,
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
                   ),

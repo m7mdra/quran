@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EmptyBookmarksWidget extends StatelessWidget {
   @override
@@ -11,7 +12,7 @@ class EmptyBookmarksWidget extends StatelessWidget {
           SvgPicture.asset('assets/images/empty_bookmarks.svg'),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text("لا توجد علامات حفظ حتي الأن",
+            child: Text(AppLocalizations.of(context).noBookmarks,
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,

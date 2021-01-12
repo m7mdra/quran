@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/common.dart';
 import 'package:quran/data/model/zekr.dart';
 import 'package:quran/main.dart';
 import 'package:quran/page/night_zekr/bloc/bloc.dart';
@@ -32,7 +33,7 @@ class _NightZekrPageState extends State<NightZekrPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: IslamicAppBar(title: 'اذكار المساء', context: context),
+      appBar: IslamicAppBar(title:isDarkMode(context)? 'اذكار المساء':'Evening Doaa', context: context),
       body: BlocBuilder(
         cubit: _bloc,
         builder: (BuildContext context, state) {
@@ -87,7 +88,7 @@ class ZekrWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'تكرار ${item.repeat}',
+                   isArabic(context)? 'تكرار${item.repeat}':'Repeat ${item.repeat}',
                     style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,

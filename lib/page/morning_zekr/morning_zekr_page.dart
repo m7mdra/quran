@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/common.dart';
 import 'package:quran/main.dart';
 import 'package:quran/page/night_zekr/bloc/bloc.dart';
 import 'package:quran/page/night_zekr/night_zekr_page.dart';
@@ -31,7 +32,7 @@ class _MorningZekrPageState extends State<MorningZekrPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: IslamicAppBar(title: 'اذكار الصباح', context: context),
+      appBar: IslamicAppBar(title: isArabic(context)?'اذكار الصباح':'Morning Doaa', context: context),
       body: BlocBuilder(
         cubit: _bloc,
         builder: (BuildContext context, state) {

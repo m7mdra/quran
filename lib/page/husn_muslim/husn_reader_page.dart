@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/common.dart';
 import 'package:quran/data/model/husn.dart';
 import 'package:quran/di.dart';
 import 'package:quran/page/husn_muslim/bloc/husn_muslim_chapter/bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../islamic_app_bar.dart';
-import '../../main.dart';
 
 class HusnReaderPage extends StatefulWidget {
   final List<Chapter> chapters;
@@ -36,7 +37,9 @@ class _HusnReaderPageState extends State<HusnReaderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: IslamicAppBar(title: 'حصن المسلم', context: context),
+      appBar: IslamicAppBar(
+          title: isArabic(context) ? 'حصن المسلم' : "Muslims fortress",
+          context: context),
       body: Column(
         children: [
           Expanded(
@@ -167,7 +170,7 @@ class _HusnChapterWidgetState extends State<HusnChapterWidget> {
             ],
           );
         } else {
-          return Text('فشل تحميل البيانات');
+          return Text(AppLocalizations.of(context).failedToLoadData);
         }
       },
     );
