@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Add this line
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'
+    as l10n; // Add this line
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:quran/data/local/quran_database_client.dart';
 import 'package:quran/data/local/quran_provider.dart';
@@ -13,7 +14,7 @@ import 'package:quran/di.dart';
 import 'package:quran/main/bloc/lang/language_cubit.dart';
 import 'package:quran/main/bloc/theme/theme_cubit.dart';
 import 'package:quran/page/juz_surah/surahs/bloc/surahs_bloc.dart';
-import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
+import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
 import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
 import 'package:quran/page/surah_details/bloc/tafseer/tafseer_bloc.dart';
 import 'package:quran/splash_page.dart';
@@ -49,9 +50,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.white54
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(statusBarColor: Colors.white54));
     _languageCubit = context.bloc();
     _themeCubit = ThemeCubit(DependencyProvider.provide());
   }
@@ -73,7 +73,7 @@ class _MyAppState extends State<MyApp> {
           builder: (BuildContext context, themeState) {
             return MaterialApp(
               localizationsDelegates: [
-                AppLocalizations.delegate,
+                l10n.AppLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate
@@ -98,23 +98,29 @@ class _MyAppState extends State<MyApp> {
               locale: _languageForState(langState),
               themeMode: _modeFromState(themeState),
               builder: (context, widget) {
-                return MultiBlocProvider(providers: [
-                  BlocProvider(create: (context) => _themeCubit),
-                  BlocProvider(create: (context) => _languageCubit),
-                  BlocProvider(
-                      create: (context) =>
-                          SurahsBloc(DependencyProvider.provide())),
-                  BlocProvider(
-                      create: (context) =>
-                          QuranReaderBloc(DependencyProvider.provide())),
-                  BlocProvider(
-                      create: (context) => ReadersBloc(
-                          DependencyProvider.provide(),
-                          DependencyProvider.provide())),
-                  BlocProvider(
-                      create: (context) =>
-                          TafseerBloc(DependencyProvider.provide())),
-                ], child: widget);
+                return MultiBlocProvider(
+                    providers: [
+                      BlocProvider(create: (context) => _themeCubit),
+                      BlocProvider(create: (context) => _languageCubit),
+                      BlocProvider(
+                          create: (context) =>
+                              SurahsBloc(DependencyProvider.provide())),
+                      BlocProvider(
+                          create: (context) =>
+                              LastReadBloc(DependencyProvider.provide())),
+                      BlocProvider(
+                          create: (context) => ReadersBloc(
+                              DependencyProvider.provide(),
+                              DependencyProvider.provide())),
+                      BlocProvider(
+                          create: (context) =>
+                              LastReadBloc(DependencyProvider.provide())),
+                      BlocProvider(
+                          create: (context) =>
+                              TafseerBloc(DependencyProvider.provide())),
+                    ],
+                    child: Directionality(
+                        textDirection: TextDirection.rtl, child: widget));
               },
               title: 'Flutter Demo',
               darkTheme: darkTheme,

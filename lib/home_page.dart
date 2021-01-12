@@ -8,8 +8,9 @@ import 'package:quran/main/bloc/lang/language_cubit.dart';
 import 'package:quran/main/bloc/theme/theme_cubit.dart';
 import 'package:quran/page/juz_surah/surahs_juzes_page.dart';
 import 'package:quran/page/notes_bookmarks/notes_bookmarks_page.dart';
-import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
+import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
 import 'package:quran/page/surah_details/quran_reader_page.dart';
+import 'package:quran/page/surah_details/surah_details.dart';
 
 import 'common.dart';
 import 'page/juz_surah/surahs/bloc/bloc.dart';
@@ -20,14 +21,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  QuranReaderBloc _quranReaderBloc;
+  LastReadBloc _quranReaderBloc;
 
   SurahsBloc _surahsBloc;
 
   @override
   void initState() {
     super.initState();
-    _quranReaderBloc = context.bloc<QuranReaderBloc>();
+    _quranReaderBloc = context.bloc<LastReadBloc>();
     _surahsBloc = context.bloc<SurahsBloc>();
     _quranReaderBloc.add(LoadLastReadingSurah());
   }
@@ -110,15 +111,22 @@ class _HomePageState extends State<HomePage> {
                 child: BlocBuilder(
                   cubit: _quranReaderBloc,
                   builder: (BuildContext context, state) {
-                    if (state is QuranReaderLoaded) {
+                    if (state is LastReadLoaded) {
+                      var lastRead = state.lastRead;
                       return Card(
                         elevation: 6,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16)),
                         child: InkWell(
                           onTap: () {
-                            _surahsBloc
-                                .add(LoadSurahListIndexed(state.position));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SurahDetails(
+                                          index: lastRead.index,
+                                          surah: lastRead.surah,
+                                          offset: lastRead.position,
+                                        )));
                           },
                           borderRadius: BorderRadius.circular(16),
                           child: Row(
@@ -132,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
                                       )),
-                                  Text(state.surah.name,
+                                  Text(lastRead.surah.name,
                                       style: TextStyle(
                                         fontFamily: 'Al-QuranAlKareem',
                                         fontSize: 20,

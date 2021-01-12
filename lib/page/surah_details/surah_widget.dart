@@ -26,15 +26,26 @@ class SurahWidget extends StatefulWidget {
 class _SurahWidgetState extends State<SurahWidget> {
   int _playingAyahId = 0;
   ScrollController _scrollController;
+  SurahPlayer player;
 
   @override
   void initState() {
     super.initState();
+    player = widget.player;
     _scrollController = ScrollController();
     _scrollController.addListener(() {
       print(_scrollController.offset);
     });
-    widget.player.currentPlayingIndex.listen((event) {
+    player.errorStream.listen((event) {
+      if (mounted)
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text('حصل خطا'),
+                  content: Text('فشل تشغيل المقطع, حاول مرة اخرى'),
+                ));
+    });
+    player.currentPlayingIndex.listen((event) {
       if (mounted)
         setState(() {
           _playingAyahId = event;
@@ -57,7 +68,7 @@ class _SurahWidgetState extends State<SurahWidget> {
     popMenu.show(
         rect: rect,
         onPlayClick: () async {
-          widget.player.playAyah(ayah);
+          player.playAyah(ayah);
         },
         onTafseerCallback: () async {
           context.bloc<TafseerBloc>().add(LoadTafseerForAyah(ayah.number));
@@ -67,11 +78,14 @@ class _SurahWidgetState extends State<SurahWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return SingleChildScrollView(
+      controller: _scrollController,
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          SurahTitleWidget(surah: widget.surah,),
+          SurahTitleWidget(
+            surah: widget.surah,
+          ),
           SizedBox(
             height: 16,
           ),
@@ -94,8 +108,8 @@ class _SurahWidgetState extends State<SurahWidget> {
                       text:
                           "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
                       semanticsLabel: 'semanticsLabel',
-                      recognizer: TapGestureRecognizer()
-                        ..onTapDown = (tapDown) {
+                      recognizer: DoubleTapGestureRecognizer()
+                        ..onDoubleTapDown = (tapDown) {
                           showContextMenuAt(tapDown, context, e);
                         });
                 }).toList()),
@@ -111,10 +125,10 @@ class _SurahWidgetState extends State<SurahWidget> {
 }
 
 class SurahTitleWidget extends StatelessWidget {
-
   final Surah surah;
 
   const SurahTitleWidget({Key key, this.surah}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Stack(

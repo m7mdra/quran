@@ -40,6 +40,7 @@ class QuranDatabaseClient implements NoteRepository, BookmarkRepository {
     await db.execute('CREATE TABLE ${BookmarkColumns.table}'
         '(${BookmarkColumns.columnId} INTEGER PRIMARY KEY,'
         ' ${BookmarkColumns.columnSurah} INTEGER,'
+        ' ${BookmarkColumns.columnPosition} DOUBLE,'
         ' ${BookmarkColumns.columnName} TEXT,'
         ' ${BookmarkColumns.columnDate} INTEGER)');
 

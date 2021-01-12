@@ -18,11 +18,11 @@ import 'bloc/tafseer/tafseer_event.dart';
 class QuranControlsModal extends StatefulWidget {
   final Surah surah;
   final SurahPlayer player;
-
+  final Function(String) onSaveBookMarkClick;
   const QuranControlsModal({
     Key key,
     @required this.surah,
-    this.player,
+    this.player, this.onSaveBookMarkClick,
   }) : super(key: key);
 
   @override
@@ -31,146 +31,93 @@ class QuranControlsModal extends StatefulWidget {
 
 class _QuranModalWidgetState extends State<QuranControlsModal> {
   SurahPlayer player;
-  BookmarkCubit _bookmarkCubit;
 
   @override
   void initState() {
     super.initState();
     player = widget.player;
-    _bookmarkCubit = BookmarkCubit(DependencyProvider.provide());
     context.bloc<ReadersBloc>().add(LoadSelectedReader());
   }
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: BlocListener(
-        cubit: _bookmarkCubit,
-        listener: (context, state) {
-          if (state is AddBookmarkSavedFailed) {
-            Navigator.of(context, rootNavigator: true).pop("dialog");
-            showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                      shape: _roundedRectangleBorder,
-                      actions: [
-                        FlatButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text('حسنا'))
-                      ],
-                      title: Text('حفظ علامة قراءة'),
-                      content: Text('فشل حفظ علامة القراءة'),
-                    ));
-          }
-          if (state is AddBookmarkSavedSuccess) {
-            Navigator.of(context, rootNavigator: true).pop("dialog");
-            showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                      shape: _roundedRectangleBorder,
-                      actions: [
-                        FlatButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text('حسنا'))
-                      ],
-                      title: Text('حفظ علامة قراءة'),
-                      content: Text('تم حفظ علامة القراءة بنجاح'),
-                    ));
-          }
-          if (state is AddBookmarkSavedLoading) {
-            showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) => AlertDialog(
-                      content: Container(
-                          height: 70,
-                          width: 70,
-                          child: Center(child: CircularProgressIndicator())),
-                    ));
-          }
-        },
-        child: Padding(
-          padding:
-              const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              BlocBuilder(
-                cubit: context.bloc<ReadersBloc>(),
-                builder: (BuildContext context, state) {
-                  return SuraOptions(
-                    title: 'القارئ',
-                    image: state is DefaultReaderLoadedState ||
-                            state is ReadersLoadedState
-                        ? 'assets/images/readers_images/${state.reader.identifier}.jpg'
-                        : 'assets/images/choose_reader.svg',
-                    onTap: () {
-                      context.read<ReadersBloc>().add(LoadReaders());
-                      showDialog(
-                          context: context,
-                          builder: (context) => ReadersWidget());
-                    },
-                  );
-                },
-              ),
-              SuraOptions(
-                title: 'التفسير',
-                image: 'assets/images/tafseer.svg',
-                onTap: () {
-                  var list = widget.surah.ayahs;
-                  context.bloc<TafseerBloc>().add(
-                      LoadTafseerForSurah(list.first.number, list.last.number));
-                  showDialog(
-                      context: context, builder: (context) => TafseerWidget());
-                },
-              ),
-              SuraOptions(
-                title: 'حفظ',
-                image: 'assets/images/bookmark_sura.svg',
-                onTap: () async {
-                  var name = await showDialog<String>(
-                      context: context,
-                      builder: (context) => _showSaveBookmarkDialog());
-                  if (name != null) {
-                    await _bookmarkCubit.saveBookMark(
-                        name, widget.surah.number);
-                  }
-                },
-              ),
-              Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: Color(0xff95B93E), shape: BoxShape.circle),
-                    child: StreamBuilder<AudioPlayerState>(
-                        stream: player.onPlayerStateChanged,
-                        builder: (context, snapshot) {
-                          var state = snapshot.data;
-                          return IconButton(
-                            icon: state == AudioPlayerState.PLAYING
-                                ? Icon(Icons.pause)
-                                : Icon(Icons.play_arrow),
-                            onPressed: () async {
-                              player.playSurah(widget.surah);
-                            },
-                          );
-                        }),
-                  ),
-                  Text('تشغيل',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                      ))
-                ],
-                mainAxisSize: MainAxisSize.min,
-              )
-            ],
-          ),
+      child: Padding(
+        padding:
+            const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            BlocBuilder(
+              cubit: context.bloc<ReadersBloc>(),
+              builder: (BuildContext context, state) {
+                return SuraOptions(
+                  title: 'القارئ',
+                  image: state is DefaultReaderLoadedState ||
+                          state is ReadersLoadedState
+                      ? 'assets/images/readers_images/${state.reader.identifier}.jpg'
+                      : 'assets/images/choose_reader.svg',
+                  onTap: () {
+                    context.read<ReadersBloc>().add(LoadReaders());
+                    showDialog(
+                        context: context,
+                        builder: (context) => ReadersWidget());
+                  },
+                );
+              },
+            ),
+            SuraOptions(
+              title: 'التفسير',
+              image: 'assets/images/tafseer.svg',
+              onTap: () {
+                var list = widget.surah.ayahs;
+                context.bloc<TafseerBloc>().add(
+                    LoadTafseerForSurah(list.first.number, list.last.number));
+                showDialog(
+                    context: context, builder: (context) => TafseerWidget());
+              },
+            ),
+            SuraOptions(
+              title: 'حفظ',
+              image: 'assets/images/bookmark_sura.svg',
+              onTap: () async {
+                var name = await showDialog<String>(
+                    context: context,
+                    builder: (context) => _showSaveBookmarkDialog());
+                if (name != null) {
+                  widget.onSaveBookMarkClick(name);
+                }
+              },
+            ),
+            Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      color: Color(0xff95B93E), shape: BoxShape.circle),
+                  child: StreamBuilder<AudioPlayerState>(
+                      stream: player.onPlayerStateChanged,
+                      builder: (context, snapshot) {
+                        var state = snapshot.data;
+                        return IconButton(
+                          icon: state == AudioPlayerState.PLAYING
+                              ? Icon(Icons.pause)
+                              : Icon(Icons.play_arrow),
+                          onPressed: () async {
+                            player.playSurah(widget.surah);
+                          },
+                        );
+                      }),
+                ),
+                Text('تشغيل',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      fontStyle: FontStyle.normal,
+                    ))
+              ],
+              mainAxisSize: MainAxisSize.min,
+            )
+          ],
         ),
       ),
       margin: EdgeInsets.zero,

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:quran/data/local/readers_provider.dart';
-import 'package:quran/data/model/quran.dart';
+import 'package:quran/data/model/last_read.dart';
 import 'package:quran/data/model/reader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,19 +18,18 @@ class Preference {
     return Future.value();
   }
 
-  Future<void> saveReading(Surah surah, int position) async {
-    await _sharedPreferences.setString("last", jsonEncode(surah.toJson()));
-    await _sharedPreferences.setInt("position", position);
+  Future<void> saveReading(LastRead lastRead) async {
+    await _sharedPreferences.setString("last", jsonEncode(lastRead.toJson()));
   }
 
-  Future<MapEntry<int, Surah>> getReading() async {
+  Future<LastRead> getReading() async {
     await _sharedPreferences.reload();
     var json = _sharedPreferences.getString("last");
     if (json == null) {
-      return MapEntry(0, Surah.kTheOpening);
+      return LastRead.kDefault;
     } else {
-      return MapEntry(_sharedPreferences.getInt('position'),
-          Surah.fromJson(jsonDecode(json)));
+      return LastRead.fromJson(
+          jsonDecode(_sharedPreferences.getString("last")));
     }
   }
 

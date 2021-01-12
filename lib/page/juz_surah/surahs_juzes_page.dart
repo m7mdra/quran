@@ -32,6 +32,7 @@ class _SurahsJuzesPageState extends State<SurahsJuzesPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: SurahsPage(),
       appBar: IslamicAppBar(
         context: context,

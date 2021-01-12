@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/model/quran.dart';
 import 'package:quran/di.dart';
-import 'package:quran/page/surah_details/bloc/reader/quran_reader_bloc.dart';
+import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
 import 'package:quran/page/surah_details/quran_controls_modal_widget.dart';
 import 'package:quran/page/surah_details/search_delegate.dart';
 import 'package:quran/page/surah_details/surah_player.dart';
@@ -29,7 +29,7 @@ class QuranReaderPage extends StatefulWidget {
 class _QuranReaderPageState extends State<QuranReaderPage>
     with TickerProviderStateMixin {
   SurahPlayer _surahPlayer;
-  QuranReaderBloc _quranReaderBloc;
+  LastReadBloc _quranReaderBloc;
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
       ItemPositionsListener.create();
@@ -42,7 +42,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
     _controller.addListener(() {
       print(_controller.offset);
     });
-    _quranReaderBloc = context.bloc<QuranReaderBloc>();
+    _quranReaderBloc = context.bloc<LastReadBloc>();
     _surahPlayer =
         SurahPlayer(context.bloc<ReadersBloc>(), DependencyProvider.provide());
     _surahPlayer.errorStream.listen((event) {
@@ -64,7 +64,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
       var index = itemPositionsListener.itemPositions.value.first.index;
       var surah = widget.surahs[index];
       if (_currentSurah != surah) {
-        _quranReaderBloc.add(SaveReadingSurah(surah, index));
+        // _quranReaderBloc.add(SaveReadingSurah(surah, index));
         _surahPlayer.stop();
         setState(() {
           this._currentSurah = surah;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/di.dart';
-import 'package:quran/page/surah_details/quran_reader_page.dart';
+import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
+import 'package:quran/page/surah_details/surah_details.dart';
 
 import 'bloc/bloc.dart';
 
@@ -13,10 +14,12 @@ class SurahsPage extends StatefulWidget {
 class _SurahsPageState extends State<SurahsPage>
     with AutomaticKeepAliveClientMixin {
   SurahsBloc _bloc;
+  LastReadBloc _quranReaderBloc;
 
   @override
   void initState() {
     super.initState();
+    _quranReaderBloc = context.bloc();
     _bloc = SurahsBloc(DependencyProvider.provide());
     _bloc.add(LoadSurahListEvent());
   }
@@ -46,11 +49,14 @@ class _SurahsPageState extends State<SurahsPage>
                 return ListTile(
                   dense: true,
                   onTap: () {
+                    _quranReaderBloc.add(SaveReadingSurah(surah, index, 0.0));
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => QuranReaderPage(
-                                surahs: state.surah, index: index)));
+                            builder: (context) => SurahDetails(
+                                  surah: surah,
+                                  index: index,
+                                )));
                   },
                   leading: Text("﴿${surah.number}﴾",
                       style: TextStyle(

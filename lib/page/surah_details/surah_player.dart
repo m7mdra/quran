@@ -99,8 +99,8 @@ class SurahPlayer {
 
   void _play() async {
     var firstAyah = mapAyahToUrl(_playlist.first);
-    _currentPlayingIndexController.sink.add(_playlist.first.number);
 
+    _currentPlayingIndexController.sink.add(_playlist.first.number);
     var result = await _player.setUrl(firstAyah);
     if (result == 1) {
       await _player.resume();

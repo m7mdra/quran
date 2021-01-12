@@ -56,6 +56,9 @@ class _BookmarksPageState extends State<BookmarksPage>
                   itemBuilder: (context, index) {
                     var bookmark = state.list[index];
                     return BookmarkWidget(
+                      onTap: (bookmark){
+                        print(bookmark.toMap());
+                      },
                       bookmark: bookmark,
                       index: index,
                     );

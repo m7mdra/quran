@@ -13,7 +13,6 @@ class GetBookmarkCubit extends Cubit<BookmarkState> {
   void loadBookmarks() async {
     try {
       emit(GetBookmarksLoading());
-     await Future.delayed(Duration(seconds: 1));
       var bookmarks = await _repository.getBookmarks();
       if (bookmarks.isNotEmpty) {
         bookmarks.sort((first,second)=>second.dateTime.compareTo(first.dateTime));
