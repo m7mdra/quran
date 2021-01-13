@@ -32,7 +32,9 @@ class _PostPrayerZekrPageState extends State<PostPrayerZekrPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: IslamicAppBar(title: isArabic(context)? 'اذكار الصلاة':'Prayer Doaa', context: context),
+      appBar: IslamicAppBar(
+          title: isArabic(context) ? 'اذكار الصلاة' : 'Prayer Doaa',
+          context: context),
       body: BlocBuilder(
         cubit: _bloc,
         builder: (BuildContext context, state) {

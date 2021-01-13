@@ -1,7 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:dio_http_cache/dio_http_cache.dart';
-import 'package:quran/data/model/juz_response.dart';
-import 'package:quran/data/model/surah_response.dart';
 
 class QuranApi {
   final Dio _client;

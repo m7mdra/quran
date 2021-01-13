@@ -1,36 +1,18 @@
-import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/common.dart';
-import 'package:quran/generated/l10n.dart';
-import 'package:quran/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SplashPage extends StatefulWidget {
+class AboutPage extends StatefulWidget {
   @override
-  _SplashPageState createState() => _SplashPageState();
+  _AboutPageState createState() => _AboutPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
-  Timer _timer;
+class _AboutPageState extends State<AboutPage> {
 
-  @override
-  void initState() {
-    super.initState();
-    _timer = Timer(Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _timer?.cancel();
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,56 +27,44 @@ class _SplashPageState extends State<SplashPage> {
               alignment: AlignmentDirectional(0, -0.4),
               child: isDarkMode(context)
                   ? Image.asset(
-                      'assets/images/logo_dark.png',
-                      height: 200,
-                    )
+                'assets/images/logo_dark.png',
+                height: 200,
+              )
                   : Image.asset('assets/images/logo_light.png', height: 200)),
+
           Align(
-            alignment: AlignmentDirectional(0, 0.3),
+            alignment: Alignment.center,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CupertinoActivityIndicator(
-                  radius: 15,
-                ),
+
                 SizedBox(
-                  height: 8,
+                  height: 150,
                 ),
-                Text(AppLocalizations.of(context).splashLoadingTitle,
+                Text('القران الكريم',
                     style: TextStyle(
                       fontFamily: 'Cairo',
-                      color: Color(0xff4e4e4e),
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700,
                       fontStyle: FontStyle.normal,
-                    ))
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: 80,
-                ),
+                    )),
                 Text(AppLocalizations.of(context).applicationSponsor,
                     style: TextStyle(
                       fontFamily: 'Cairo',
-                      color: Color(0xff605959),
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.w700,
                       fontStyle: FontStyle.normal,
                     )),
                 Text("2020 - 2021",
                     style: const TextStyle(
-                        color: const Color(0xff605959),
                         fontWeight: FontWeight.w300,
                         fontFamily: "Cairo",
                         fontStyle: FontStyle.normal,
-                        fontSize: 16.0),
-                    textAlign: TextAlign.left)
+                        fontSize: 18.0),
+                    textAlign: TextAlign.left),
+                TextButton(onPressed: (){
+                  Navigator.pop(context);
+                }, child: Text(MaterialLocalizations.of(context).backButtonTooltip))
               ],
             ),
           ),

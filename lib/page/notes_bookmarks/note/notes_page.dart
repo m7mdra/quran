@@ -61,7 +61,6 @@ class _NotesPageState extends State<NotesPage>
               itemBuilder: (context, index) {
                 var note = list[index];
                 return ListTile(
-
                   onTap: () {
                     showDialog(
                         context: context,
@@ -69,8 +68,8 @@ class _NotesPageState extends State<NotesPage>
                   },
                   tileColor: index % 2 == 0
                       ? isDarkMode(context)
-                      ? Colors.black12
-                      : Color(0xfffcfcfc)
+                          ? Colors.black12
+                          : Color(0xfffcfcfc)
                       : Colors.transparent,
                   title: Text(note.title),
                   subtitle: Text(
@@ -79,18 +78,12 @@ class _NotesPageState extends State<NotesPage>
                   ),
                   trailing: Text(
                     timeago.format(note.dateTime, clock: DateTime.now()),
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .caption,
+                    style: Theme.of(context).textTheme.caption,
                   ),
-                  isThreeLine:
-                  true
-                  ,
+                  isThreeLine: true,
                 );
               },
               itemCount: list.length,
-
             );
           }
           return Container();
@@ -107,17 +100,11 @@ class _NotesPageState extends State<NotesPage>
         children: [
           Text(
             note.title,
-            style: Theme
-                .of(context)
-                .textTheme
-                .headline6,
+            style: Theme.of(context).textTheme.headline6,
           ),
           Text(
             timeago.format(note.dateTime, clock: DateTime.now()),
-            style: Theme
-                .of(context)
-                .textTheme
-                .caption,
+            style: Theme.of(context).textTheme.caption,
           ),
           Text(note.content)
         ],
@@ -158,9 +145,7 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(16), topRight: Radius.circular(16))),
-      color: Theme
-          .of(context)
-          .dialogBackgroundColor,
+      color: Theme.of(context).dialogBackgroundColor,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -192,7 +177,8 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
                   controller: _contentTextEditingController,
                   validator: (title) {
                     if (title.isEmpty)
-                      return AppLocalizations.of(context).noteDescriptionEmptyError;
+                      return AppLocalizations.of(context)
+                          .noteDescriptionEmptyError;
                     else
                       return null;
                   },
@@ -209,9 +195,7 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
                           highlightElevation: 0,
                           focusElevation: 0,
                           disabledElevation: 0,
-                          color: Theme
-                              .of(context)
-                              .primaryColor,
+                          color: Theme.of(context).primaryColor,
                           textColor: Colors.white,
                           onPressed: () {
                             if (_formKey.currentState.validate()) {
@@ -272,8 +256,7 @@ class EmptyNotesWidget extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 fontStyle: FontStyle.normal,
               )),
-          Text(
-              AppLocalizations.of(context).noNoteSavedContent,
+          Text(AppLocalizations.of(context).noNoteSavedContent,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Cairo',

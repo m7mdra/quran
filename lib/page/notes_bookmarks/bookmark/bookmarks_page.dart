@@ -61,18 +61,15 @@ class _BookmarksPageState extends State<BookmarksPage>
                     var bookmark = state.list[index];
                     return BookmarkWidget(
                       onTap: (bookmark) async {
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) {
-                                  var surah = bookmark.getSurah;
-                                  return SurahDetails(
-                                      surah: surah,
-                                      index: surah.number - 1,
-                                      offset: bookmark.position,
-                                    );
-                                }));
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          var surah = bookmark.getSurah;
+                          return SurahDetails(
+                            surah: surah,
+                            index: surah.number - 1,
+                            offset: bookmark.position,
+                          );
+                        }));
                       },
                       bookmark: bookmark,
                       index: index,
@@ -80,7 +77,6 @@ class _BookmarksPageState extends State<BookmarksPage>
                   },
                   itemCount: state.list.length,
                 ),
-
               ],
             );
           }

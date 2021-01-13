@@ -8,9 +8,10 @@ class LanguageCubit extends Cubit<LanguageState> {
 
   LanguageCubit(this._preference) : super(LanguageState(_preference.lang()));
 
-  void load(){
+  void load() {
     emit(LanguageState(_preference.lang()));
   }
+
   Future<void> ar() async {
     await _preference.saveCurrentLanguage('ar');
     emit(LanguageState('ar'));

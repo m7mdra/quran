@@ -32,7 +32,9 @@ class _MorningZekrPageState extends State<MorningZekrPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: IslamicAppBar(title: isArabic(context)?'اذكار الصباح':'Morning Doaa', context: context),
+      appBar: IslamicAppBar(
+          title: isArabic(context) ? 'اذكار الصباح' : 'Morning Doaa',
+          context: context),
       body: BlocBuilder(
         cubit: _bloc,
         builder: (BuildContext context, state) {

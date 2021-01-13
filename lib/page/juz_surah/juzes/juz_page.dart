@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/di.dart';
-import 'package:quran/page/surah_details/quran_reader_page.dart';
 
 import 'bloc/bloc.dart';
 import 'bloc/juz_bloc.dart';

@@ -1,13 +1,11 @@
-import 'dart:convert';
-
 import 'package:quran/data/model/quran.dart';
 
 class LastRead {
   final Surah surah;
   final int index;
   final double position;
-  static LastRead kDefault = LastRead(
-      index: 0, position: 0, surah: Surah.kTheOpening);
+  static LastRead kDefault =
+      LastRead(index: 0, position: 0, surah: Surah.kTheOpening);
 
   LastRead({this.surah, this.index, this.position});
 

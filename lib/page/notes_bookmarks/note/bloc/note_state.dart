@@ -2,9 +2,6 @@ import 'package:quran/data/model/note.dart';
 
 class NoteState {}
 
-
-
-
 class NoteLoadingState extends NoteState {}
 
 class NoteLoadedState extends NoteState {

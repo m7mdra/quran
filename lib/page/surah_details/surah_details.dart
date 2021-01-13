@@ -67,11 +67,9 @@ class _SurahDetailsState extends State<SurahDetails> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       if (widget.highlightIndex != -1) {
         setState(() {
-        _playingAyahId = widget.highlightIndex;
-
+          _playingAyahId = widget.highlightIndex;
         });
       }
-
     });
     _surahPlayer.currentPlayingIndex.listen((event) {
       if (mounted)
@@ -205,8 +203,8 @@ class _SurahDetailsState extends State<SurahDetails> {
                     children: widget.surah.ayahs.map((e) {
                       return TextSpan(
                           style: _playingAyahId == e.number
-                                  ? _greenHightlight(context)
-                                  : null,
+                              ? _greenHightlight(context)
+                              : null,
                           text:
                               "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
                           semanticsLabel: 'semanticsLabel',

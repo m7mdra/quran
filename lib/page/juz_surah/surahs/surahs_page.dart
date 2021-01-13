@@ -86,7 +86,8 @@ class _SurahsPageState extends State<SurahsPage>
               itemCount: state.surah.length,
             );
           }
-          return Center(child: Text(AppLocalizations.of(context).failedToLoadData));
+          return Center(
+              child: Text(AppLocalizations.of(context).failedToLoadData));
         },
       ),
     );

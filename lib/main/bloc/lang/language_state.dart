@@ -1,6 +1,6 @@
 part of 'language_cubit.dart';
 
- class LanguageState {
+class LanguageState {
   final String language;
 
   LanguageState(this.language);
@@ -10,4 +10,3 @@ part of 'language_cubit.dart';
     return 'LanguageState{language: $language}';
   }
 }
-

@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -19,7 +18,6 @@ class EmptyBookmarksWidget extends StatelessWidget {
                   fontStyle: FontStyle.normal,
                 )),
           ),
-
         ],
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,

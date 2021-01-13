@@ -102,7 +102,8 @@ class _MusbahaPageState extends State<MusbahaPage> {
                     onPressed: () {
                       _showMaterialDialog();
                     },
-                    child: Text(AppLocalizations.of(context).resetCounter, style: TextStyle(fontSize: 16)),
+                    child: Text(AppLocalizations.of(context).resetCounter,
+                        style: TextStyle(fontSize: 16)),
                   ),
                 ],
               )
@@ -131,7 +132,8 @@ class _MusbahaPageState extends State<MusbahaPage> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(MaterialLocalizations.of(context).cancelButtonLabel)),
+                  child: Text(
+                      MaterialLocalizations.of(context).cancelButtonLabel)),
               FlatButton(
                 onPressed: () async {
                   Navigator.pop(context);

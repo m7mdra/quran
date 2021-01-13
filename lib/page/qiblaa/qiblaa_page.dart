@@ -54,7 +54,7 @@ class _QiblaaPageState extends State<QiblaaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: IslamicAppBar(
-        title: isArabic(context)? 'القبلة':'Qiblaa',
+        title: isArabic(context) ? 'القبلة' : 'Qiblaa',
         context: context,
       ),
       body: StreamBuilder(

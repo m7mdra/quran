@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/common.dart';
 import 'package:quran/di.dart';
-import 'package:quran/generated/l10n.dart';
 import 'package:quran/page/husn_muslim/bloc/husn_muslim/bloc.dart';
 import 'package:quran/page/husn_muslim/husn_reader_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -29,7 +28,7 @@ class _HusnMuslimPageState extends State<HusnMuslimPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: IslamicAppBar(
-        title:isArabic(context)? "حصن المسلم":"Muslims fortress",
+        title: isArabic(context) ? "حصن المسلم" : "Muslims fortress",
         context: context,
       ),
       body: Column(

@@ -33,7 +33,6 @@ class Bookmark {
     _surah = value;
   }
 
-
   Surah get getSurah => _surah;
 
   Bookmark(

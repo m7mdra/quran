@@ -15,17 +15,13 @@ class QuranDatabaseClient implements NoteRepository, BookmarkRepository {
   Future<Database> get database async {
     if (_db != null) return _db;
 
-
     _db = await initDb();
     return _db;
   }
 
-
-
   initDb() async {
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'meta.db');
-    var exists = await databaseExists(path);
 
     return await openDatabase(path, version: 2, onCreate: _onCreate);
   }

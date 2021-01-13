@@ -39,9 +39,7 @@ class _ReminderPageState extends State<ReminderPage> {
                 return ListTile(
                   onTap: () {
                     quranDbClient.completeReminder(list[index].id);
-                    setState(() {
-
-                    });
+                    setState(() {});
                   },
                   title: Text(list[index].name),
                   trailing: Text(

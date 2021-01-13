@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:get_it/get_it.dart';
 import 'package:quran/data/local/bookmark_repository.dart';
 import 'package:quran/data/local/husn_proivder.dart';
@@ -35,11 +34,7 @@ class DependencyProvider {
     var client = Dio(options);
 
     client.interceptors
-      ..add(DioCacheManager(CacheConfig(
-              baseUrl: 'http://api.alquran.cloud/v1/',
-              defaultMaxAge: Duration(days: 356),
-              defaultMaxStale: Duration(days: 356)))
-          .interceptor)
+
       ..add(LogInterceptor(
         error: true,
         request: true,

@@ -98,28 +98,26 @@ class _MyAppState extends State<MyApp> {
               locale: _languageForState(langState),
               themeMode: _modeFromState(themeState),
               builder: (context, widget) {
-                return MultiBlocProvider(
-                    providers: [
-                      BlocProvider(create: (context) => _themeCubit),
-                      BlocProvider(create: (context) => _languageCubit),
-                      BlocProvider(
-                          create: (context) =>
-                              SurahsBloc(DependencyProvider.provide())),
-                      BlocProvider(
-                          create: (context) =>
-                              LastReadBloc(DependencyProvider.provide())),
-                      BlocProvider(
-                          create: (context) => ReadersBloc(
-                              DependencyProvider.provide(),
-                              DependencyProvider.provide())),
-                      BlocProvider(
-                          create: (context) =>
-                              LastReadBloc(DependencyProvider.provide())),
-                      BlocProvider(
-                          create: (context) =>
-                              TafseerBloc(DependencyProvider.provide())),
-                    ],
-                    child: widget);
+                return MultiBlocProvider(providers: [
+                  BlocProvider(create: (context) => _themeCubit),
+                  BlocProvider(create: (context) => _languageCubit),
+                  BlocProvider(
+                      create: (context) =>
+                          SurahsBloc(DependencyProvider.provide())),
+                  BlocProvider(
+                      create: (context) =>
+                          LastReadBloc(DependencyProvider.provide())),
+                  BlocProvider(
+                      create: (context) => ReadersBloc(
+                          DependencyProvider.provide(),
+                          DependencyProvider.provide())),
+                  BlocProvider(
+                      create: (context) =>
+                          LastReadBloc(DependencyProvider.provide())),
+                  BlocProvider(
+                      create: (context) =>
+                          TafseerBloc(DependencyProvider.provide())),
+                ], child: widget);
               },
               title: 'Flutter Demo',
               darkTheme: darkTheme,

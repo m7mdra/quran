@@ -21,7 +21,6 @@ class QuranReaderPage extends StatefulWidget {
   final List<Surah> surahs;
   final int index;
 
-
   QuranReaderPage({Key key, this.surahs, this.index}) : super(key: key);
 
   @override
@@ -136,9 +135,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
         ),
         IconButton(
           icon: Icon(Icons.share),
-          onPressed: () {
-
-          },
+          onPressed: () {},
         ),
       ],
     );

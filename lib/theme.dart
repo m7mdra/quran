@@ -15,7 +15,7 @@ const MaterialColor _swatch = MaterialColor(_swatchPrimaryValue, <int, Color>{
 const int _swatchPrimaryValue = 0xFF9CBD17;
 
 const MaterialColor swatchAccent =
-MaterialColor(_swatchAccentValue, <int, Color>{
+    MaterialColor(_swatchAccentValue, <int, Color>{
   100: Color(0xFFECFFC5),
   200: Color(_swatchAccentValue),
   400: Color(0xFFCBFF5F),

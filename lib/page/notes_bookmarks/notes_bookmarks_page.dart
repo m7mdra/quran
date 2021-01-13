@@ -43,13 +43,13 @@ class _NotesBookMarksPageState extends State<NotesBookMarksPage>
         children: [BookmarksPage(), NotesPage()],
       ),
       appBar: IslamicAppBar(
-        title: isArabic(context)?'العلامات والملاحظات':'Notes and Bookmarks',
+        title:
+            isArabic(context) ? 'العلامات والملاحظات' : 'Notes and Bookmarks',
         bottom: TabBar(
           onTap: (index) {
             _pageController.animateToPage(index,
                 duration: Duration(milliseconds: 300), curve: Curves.linear);
           },
-
           indicatorWeight: 5,
           labelColor: Colors.white,
           unselectedLabelStyle: TextStyle(
@@ -67,10 +67,10 @@ class _NotesBookMarksPageState extends State<NotesBookMarksPage>
               fontSize: 20.0),
           tabs: [
             Tab(
-              text: isArabic(context)?'العلامات':'Bookmarks',
+              text: isArabic(context) ? 'العلامات' : 'Bookmarks',
             ),
             Tab(
-              text: isArabic(context)?'الملاحظات':'Notes',
+              text: isArabic(context) ? 'الملاحظات' : 'Notes',
             )
           ],
           controller: _tabController,

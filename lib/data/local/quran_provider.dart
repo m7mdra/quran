@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:quran/data/model/quran.dart';
 

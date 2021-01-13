@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/islamics_page.dart';
 import 'package:quran/main/bloc/lang/language_cubit.dart';
 import 'package:quran/main/bloc/theme/theme_cubit.dart';
+import 'package:quran/page/about.dart';
 import 'package:quran/page/juz_surah/surahs_juzes_page.dart';
 import 'package:quran/page/notes_bookmarks/notes_bookmarks_page.dart';
 import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
@@ -189,6 +190,12 @@ class _HomePageState extends State<HomePage> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => NotesBookMarksPage()));
+                        }
+                        if (index == 2) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AboutPage()));
                         }
                         if (index == 3) {
                           Navigator.push(

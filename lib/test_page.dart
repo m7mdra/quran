@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/model/quran.dart';
 import 'dart:math' as math;
+
 class TestPage extends StatefulWidget {
   @override
   _TestPageState createState() => _TestPageState();
@@ -29,7 +30,7 @@ class _TestPageState extends State<TestPage> {
         builder: (BuildContext context, AsyncSnapshot<List<Surah>> snapshot) {
           if (!snapshot.hasData) return Container();
           var ayah = snapshot.data[50].ayahs;
-          return  new GridView.custom(
+          return new GridView.custom(
             gridDelegate: new HomeGridDelegate(),
             childrenDelegate: new HomeChildDelegate(),
             padding: new EdgeInsets.all(12.0),
@@ -41,23 +42,20 @@ class _TestPageState extends State<TestPage> {
 }
 
 class HomeChildDelegate extends SliverChildDelegate {
-
   @override
   Widget build(BuildContext context, int index) {
-
-    if(index >= 20)
-      return null;
+    if (index >= 20) return null;
 
     Color color = Colors.red;
 
-    if(index == 0)
+    if (index == 0)
       color = Colors.blue;
-    else if(index == 1 || index == 10)
+    else if (index == 1 || index == 10)
       color = Colors.cyan;
-    else if(index < 10)
-      color = Colors.green;
+    else if (index < 10) color = Colors.green;
 
-    return new Container(decoration: new BoxDecoration(color: color , shape: BoxShape.rectangle));
+    return new Container(
+        decoration: new BoxDecoration(color: color, shape: BoxShape.rectangle));
   }
 
   @override
@@ -68,28 +66,25 @@ class HomeChildDelegate extends SliverChildDelegate {
 }
 
 class HomeGridDelegate extends SpanableSliverGridDelegate {
-
   HomeGridDelegate() : super(3, mainAxisSpacing: 10.0, crossAxisSpacing: 10.0);
 
   @override
   int getCrossAxisSpan(int index) {
-    if(index > 1 && index < 10)
-      return 1;
+    if (index > 1 && index < 10) return 1;
 
     return 3;
   }
 
   @override
   double getMainAxisExtent(int index) {
-    if(index == 0)
-      return 220.0;
+    if (index == 0) return 220.0;
 
-    if(index == 1 || index == 10)
-      return 50.0;
+    if (index == 1 || index == 10) return 50.0;
 
     return 100.0;
   }
 }
+
 class _CoordinateOffset {
   final double main, cross;
   _CoordinateOffset(this.main, this.cross);
@@ -100,7 +95,6 @@ typedef int GetCrossAxisSpan(int index);
 typedef double GetMainAxisExtent(int index);
 
 class SpanableSliverGridLayout extends SliverGridLayout {
-
   /// Creates a layout that uses equally sized and spaced tiles.
   ///
   /// All of the arguments must not be null and must not be negative. The
@@ -111,8 +105,8 @@ class SpanableSliverGridLayout extends SliverGridLayout {
       this.crossAxisStride,
       this.mainAxisSpacing,
       this.getCrossAxisSpan,
-      this.getMainAxisExtend) :
-        assert(crossAxisCount != null && crossAxisCount > 0),
+      this.getMainAxisExtend)
+      : assert(crossAxisCount != null && crossAxisCount > 0),
         assert(mainAxisSpacing != null && mainAxisSpacing >= 0),
         assert(childCrossAxisExtent != null && childCrossAxisExtent >= 0),
         assert(crossAxisStride != null && crossAxisStride >= 0),
@@ -139,18 +133,17 @@ class SpanableSliverGridLayout extends SliverGridLayout {
   final GetMainAxisExtent getMainAxisExtend;
 
   _CoordinateOffset _findOffset(int index) {
-    int cross= 0;
+    int cross = 0;
     double mainOffset = 0.0;
     double crossOffset = 0.0;
     double extend = 0.0;
     int span;
 
     for (int i = 0; i <= index; i++) {
-
       span = getCrossAxisSpan(i);
       span = math.min(this.crossAxisCount, math.max(0, span));
 
-      if((cross + span) > this.crossAxisCount) {
+      if ((cross + span) > this.crossAxisCount) {
         cross = 0;
         mainOffset += extend + this.mainAxisSpacing;
         crossOffset = 0.0;
@@ -187,8 +180,7 @@ class SpanableSliverGridLayout extends SliverGridLayout {
 
       if (min && scrollOffset <= mainOffset + extend) {
         return (i ~/ this.crossAxisCount) * this.crossAxisCount;
-      }
-      else if(!min && scrollOffset < mainOffset) {
+      } else if (!min && scrollOffset < mainOffset) {
         return i;
       }
       i++;
@@ -196,10 +188,12 @@ class SpanableSliverGridLayout extends SliverGridLayout {
   }
 
   @override
-  int getMinChildIndexForScrollOffset(double scrollOffset) => getMinOrMaxChildIndexForScrollOffset(scrollOffset, true);
+  int getMinChildIndexForScrollOffset(double scrollOffset) =>
+      getMinOrMaxChildIndexForScrollOffset(scrollOffset, true);
 
   @override
-  int getMaxChildIndexForScrollOffset(double scrollOffset) => getMinOrMaxChildIndexForScrollOffset(scrollOffset, false);
+  int getMaxChildIndexForScrollOffset(double scrollOffset) =>
+      getMinOrMaxChildIndexForScrollOffset(scrollOffset, false);
 
   @override
   SliverGridGeometry getGeometryForChildIndex(int index) {
@@ -211,17 +205,17 @@ class SpanableSliverGridLayout extends SliverGridLayout {
       scrollOffset: offset.main,
       crossAxisOffset: offset.cross,
       mainAxisExtent: mainAxisExtent,
-      crossAxisExtent: this.childCrossAxisExtent + (span - 1) * this.crossAxisStride,
+      crossAxisExtent:
+          this.childCrossAxisExtent + (span - 1) * this.crossAxisStride,
     );
   }
 
   @override
   double computeMaxScrollOffset(int childCount) {
-    if(childCount <= 0)
-      return 0.0;
+    if (childCount <= 0) return 0.0;
 
-    var lastOffset = _findOffset(childCount-1);
-    var extent = getMainAxisExtend(childCount-1);
+    var lastOffset = _findOffset(childCount - 1);
+    var extent = getMainAxisExtend(childCount - 1);
     return lastOffset.main + extent;
   }
 }
@@ -234,10 +228,10 @@ abstract class SpanableSliverGridDelegate extends SliverGridDelegate {
   /// `crossAxisSpacing` arguments must not be negative. The `crossAxisCount`
   /// and `childAspectRatio` arguments must be greater than zero.
   const SpanableSliverGridDelegate(
-      this.crossAxisCount,
-      {this.mainAxisSpacing: 0.0,
-        this.crossAxisSpacing: 0.0,
-      }) : assert(crossAxisCount != null && crossAxisCount > 0),
+    this.crossAxisCount, {
+    this.mainAxisSpacing: 0.0,
+    this.crossAxisSpacing: 0.0,
+  })  : assert(crossAxisCount != null && crossAxisCount > 0),
         assert(mainAxisSpacing != null && mainAxisSpacing >= 0),
         assert(crossAxisSpacing != null && crossAxisSpacing >= 0);
 
@@ -260,7 +254,8 @@ abstract class SpanableSliverGridDelegate extends SliverGridDelegate {
   @override
   SliverGridLayout getLayout(SliverConstraints constraints) {
     assert(_debugAssertIsValid());
-    final double usableCrossAxisExtent = constraints.crossAxisExtent - crossAxisSpacing * (crossAxisCount - 1);
+    final double usableCrossAxisExtent =
+        constraints.crossAxisExtent - crossAxisSpacing * (crossAxisCount - 1);
     final double childCrossAxisExtent = usableCrossAxisExtent / crossAxisCount;
     return new SpanableSliverGridLayout(
       crossAxisCount,
@@ -278,8 +273,8 @@ abstract class SpanableSliverGridDelegate extends SliverGridDelegate {
 
   @override
   bool shouldRelayout(SpanableSliverGridDelegate oldDelegate) {
-    return oldDelegate.crossAxisCount != crossAxisCount
-        || oldDelegate.mainAxisSpacing != mainAxisSpacing
-        || oldDelegate.crossAxisSpacing != crossAxisSpacing;
+    return oldDelegate.crossAxisCount != crossAxisCount ||
+        oldDelegate.mainAxisSpacing != mainAxisSpacing ||
+        oldDelegate.crossAxisSpacing != crossAxisSpacing;
   }
 }

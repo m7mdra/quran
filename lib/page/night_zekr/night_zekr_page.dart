@@ -33,7 +33,9 @@ class _NightZekrPageState extends State<NightZekrPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: IslamicAppBar(title:isDarkMode(context)? 'اذكار المساء':'Evening Doaa', context: context),
+      appBar: IslamicAppBar(
+          title: isDarkMode(context) ? 'اذكار المساء' : 'Evening Doaa',
+          context: context),
       body: BlocBuilder(
         cubit: _bloc,
         builder: (BuildContext context, state) {
@@ -88,7 +90,9 @@ class ZekrWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                   isArabic(context)? 'تكرار${item.repeat}':'Repeat ${item.repeat}',
+                    isArabic(context)
+                        ? 'تكرار${item.repeat}'
+                        : 'Repeat ${item.repeat}',
                     style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontWeight: FontWeight.bold,

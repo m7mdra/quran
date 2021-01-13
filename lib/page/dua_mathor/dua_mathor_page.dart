@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/common.dart';
 import 'package:quran/di.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:quran/generated/l10n.dart';
 
 import '../../islamic_app_bar.dart';
 import 'bloc/bloc.dart';

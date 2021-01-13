@@ -19,19 +19,21 @@ class IslamicsPage extends StatefulWidget {
 
 class _IslamicsPageState extends State<IslamicsPage> {
   var islamicMenuList = <IslamicMenuItem>[
-    IslamicMenuItem(
-        'assets/images/azkar.svg', 'اذكار المساء', 'Evening Doaa'),
+    IslamicMenuItem('assets/images/azkar.svg', 'اذكار المساء', 'Evening Doaa'),
     IslamicMenuItem(
         'assets/images/azkar_mourning.svg', 'اذكار الصباح', 'Morning Doaa'),
     IslamicMenuItem(
         'assets/images/prayer_azkar.svg', 'اذكار الصلاة', 'Prayer Doaa'),
-    IslamicMenuItem('assets/images/douaa.svg', 'أدعية مأثورة', ' Duas Mathura.'),
+    IslamicMenuItem(
+        'assets/images/douaa.svg', 'أدعية مأثورة', ' Duas Mathura.'),
     IslamicMenuItem(
         'assets/images/husen.svg', 'حصن المسلم', "Muslims fortress"),
     IslamicMenuItem('assets/images/musbaha.svg', 'المسبحة', 'Tasbih'),
     IslamicMenuItem('assets/images/qibla.svg', 'اتجاه القبلة', 'Qiblah'),
-    IslamicMenuItem('assets/images/doua_khtm.svg', 'دعاء ختم القران', 'End of quran Doaa'),
-    IslamicMenuItem('assets/images/riyadh.svg', 'رياض الصالحين', 'Righteous Riad'),
+    IslamicMenuItem(
+        'assets/images/doua_khtm.svg', 'دعاء ختم القران', 'End of quran Doaa'),
+    IslamicMenuItem(
+        'assets/images/riyadh.svg', 'رياض الصالحين', 'Righteous Riad'),
   ];
 
   @override
