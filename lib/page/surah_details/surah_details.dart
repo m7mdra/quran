@@ -1,16 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quran/data/model/quran.dart';
 import 'package:quran/di.dart';
-import 'package:quran/generated/l10n.dart';
 import 'package:quran/islamic_app_bar.dart';
 import 'package:quran/page/surah_details/bloc/bookmark/add_bookmark_cubit.dart';
 import 'package:quran/page/surah_details/quran_controls_modal_widget.dart';
 import 'package:quran/page/surah_details/surah_player.dart';
 import 'package:quran/page/surah_details/surah_widget.dart';
 import 'package:quran/page/surah_details/tafseer_widget.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../popup_menu.dart';
 import 'bloc/bookmark/add_bookmark_cubit.dart';
@@ -23,8 +22,14 @@ class SurahDetails extends StatefulWidget {
   final Surah surah;
   final double offset;
   final int index;
+  final int highlightIndex;
 
-  const SurahDetails({Key key, this.surah, this.offset = 0, this.index})
+  const SurahDetails(
+      {Key key,
+      this.surah,
+      this.offset = 0,
+      this.index,
+      this.highlightIndex = -1})
       : super(key: key);
 
   @override
@@ -41,13 +46,11 @@ class _SurahDetailsState extends State<SurahDetails> {
   @override
   void initState() {
     super.initState();
+
     _quranReaderBloc = context.bloc();
     bookmarkCubit = BookmarkCubit(DependencyProvider.provide());
     _surahPlayer = SurahPlayer(context.bloc(), DependencyProvider.provide());
-    _scrollController = ScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (widget.offset != 0) _scrollController.jumpTo(widget.offset);
-    });
+    _scrollController = ScrollController(initialScrollOffset: widget.offset);
 
     _scrollController.addListener(() {
       _quranReaderBloc.add(SaveReadingSurah(
@@ -58,9 +61,17 @@ class _SurahDetailsState extends State<SurahDetails> {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-                  title: Text('حصل خطا'),
-                  content: Text('فشل تشغيل المقطع, حاول مرة اخرى'),
+                  title: Text(AppLocalizations.of(context).error),
                 ));
+    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (widget.highlightIndex != -1) {
+        setState(() {
+        _playingAyahId = widget.highlightIndex;
+
+        });
+      }
+
     });
     _surahPlayer.currentPlayingIndex.listen((event) {
       if (mounted)
@@ -130,10 +141,13 @@ class _SurahDetailsState extends State<SurahDetails> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text(MaterialLocalizations.of(context).okButtonLabel))
+                            child: Text(MaterialLocalizations.of(context)
+                                .okButtonLabel))
                       ],
-                      title: Text(AppLocalizations.of(context).saveBookmarkDialogTitle),
-                      content: Text(AppLocalizations.of(context).bookmarkSaveError),
+                      title: Text(
+                          AppLocalizations.of(context).saveBookmarkDialogTitle),
+                      content:
+                          Text(AppLocalizations.of(context).bookmarkSaveError),
                     ));
           }
           if (state is AddBookmarkSavedSuccess) {
@@ -147,10 +161,13 @@ class _SurahDetailsState extends State<SurahDetails> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text(MaterialLocalizations.of(context).okButtonLabel))
+                            child: Text(MaterialLocalizations.of(context)
+                                .okButtonLabel))
                       ],
-                      title: Text(AppLocalizations.of(context).saveBookmarkDialogTitle),
-                      content: Text(AppLocalizations.of(context).bookmarkSaveSuccess),
+                      title: Text(
+                          AppLocalizations.of(context).saveBookmarkDialogTitle),
+                      content: Text(
+                          AppLocalizations.of(context).bookmarkSaveSuccess),
                     ));
           }
           if (state is AddBookmarkSavedLoading) {
@@ -188,11 +205,8 @@ class _SurahDetailsState extends State<SurahDetails> {
                     children: widget.surah.ayahs.map((e) {
                       return TextSpan(
                           style: _playingAyahId == e.number
-                              ? TextStyle(
-                                  backgroundColor: Theme.of(context)
-                                      .primaryColor
-                                      .withAlpha(100))
-                              : null,
+                                  ? _greenHightlight(context)
+                                  : null,
                           text:
                               "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
                           semanticsLabel: 'semanticsLabel',
@@ -213,6 +227,10 @@ class _SurahDetailsState extends State<SurahDetails> {
     );
   }
 
+  TextStyle _greenHightlight(BuildContext context) {
+    return TextStyle(
+        backgroundColor: Theme.of(context).primaryColor.withAlpha(100));
+  }
 
   RoundedRectangleBorder get _roundedRectangleBorder =>
       RoundedRectangleBorder(borderRadius: BorderRadius.circular(16));

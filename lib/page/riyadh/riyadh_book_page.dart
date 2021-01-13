@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:quran/common.dart';
 import 'package:quran/di.dart';
-import 'package:quran/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../islamic_app_bar.dart';
 import 'bloc/bloc.dart';
@@ -39,7 +40,7 @@ class _RiyadhBookPageState extends State<RiyadhBookPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: IslamicAppBar(
-          title: 'رياض الصالحين',
+          title: isArabic(context) ? 'رياض الصالحين' : 'Righteous Riyadh',
           context: context,
         ),
         body: BlocBuilder(
@@ -72,7 +73,7 @@ class _RiyadhBookPageState extends State<RiyadhBookPage> {
                       onPressed: () {
                         _bookBloc.add(DownloadBookEvent());
                       },
-                      child: Text('اعادة التحميل'),
+                      child: Text(AppLocalizations.of(context).retry),
                     )
                   ],
                   mainAxisSize: MainAxisSize.min,
@@ -94,7 +95,7 @@ class _RiyadhBookPageState extends State<RiyadhBookPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'جاري تحميل الكتاب',
+                            AppLocalizations.of(context).downloadingFile,
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
@@ -134,7 +135,7 @@ class BookNotFoundWidget extends StatelessWidget {
               height: 8,
             ),
             Text(
-              'هذا الملف غير متوفر في الجهاز, سوف يقوم الجهاز بتحميله من الانترنت ليكون متوفر دائما',
+              AppLocalizations.of(context).downloadNotFound,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
@@ -152,7 +153,7 @@ class BookNotFoundWidget extends StatelessWidget {
                 onPressed: () async {
                   context.bloc<RiyadhBookBloc>().add(DownloadBookEvent());
                 },
-                child: Text('تحميل'),
+                child: Text(AppLocalizations.of(context).download),
               ),
             )
           ],

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/tafseer/tafseer_bloc.dart';
 import 'bloc/tafseer/tafseer_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TafseerWidget extends StatelessWidget {
   const TafseerWidget({
@@ -23,7 +24,7 @@ class TafseerWidget extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: Text("التفسير الميَّسر",
+                    child: Text(AppLocalizations.of(context).interpretation,
                         style: TextStyle(
                             fontFamily: 'Cairo',
                             fontSize: 18,
@@ -56,7 +57,8 @@ class TafseerWidget extends StatelessWidget {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text('اغلاق'),
+                    child: Text(
+                        MaterialLocalizations.of(context).closeButtonLabel),
                   )
                 ],
               );
@@ -67,7 +69,7 @@ class TafseerWidget extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text("التفسير الميَّسر",
+                    Text(AppLocalizations.of(context).interpretation,
                         style: TextStyle(
                             fontFamily: 'Cairo',
                             fontSize: 18,

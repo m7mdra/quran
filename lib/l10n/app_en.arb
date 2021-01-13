@@ -135,7 +135,40 @@
   "noNoteSavedContent": "Add a note by clicking the circular button with the plus sign at the bottom",
   "@noNoteSavedContent": {
     "description": ""
+  },
+  "permissionDeniedTitle": "Geolocation access has been denied",
+  "@permissionDeniedTitle": {
+    "description": ""
+  },
+  "permissionDeniedMessage": "Press the button below to grant permission and display Qibla direction",
+  "@permissionDeniedMessage": {
+    "description": ""
+  },
+  "grantAccess": "Grant access",
+  "@grantAccess": {
+    "description": ""
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": ""
+  },
+  "downloadFailed": "Failed to download file, try again",
+  "@downloadFailed": {
+    "description": ""
+  },
+  "downloadingFile": "Downloading book...",
+  "@downloadingFile": {
+    "description": ""
+  },
+  "downloadNotFound": "This file is not available on the device, the device will download it from the Internet so that it is always available",
+  "@downloadNotFound": {
+    "description": ""
+  },
+  "download": "Download",
+  "@download": {
+    "description": ""
   }
+
 
 
 

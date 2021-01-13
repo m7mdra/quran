@@ -119,8 +119,7 @@ class _MyAppState extends State<MyApp> {
                           create: (context) =>
                               TafseerBloc(DependencyProvider.provide())),
                     ],
-                    child: Directionality(
-                        textDirection: TextDirection.rtl, child: widget));
+                    child: widget);
               },
               title: 'Flutter Demo',
               darkTheme: darkTheme,

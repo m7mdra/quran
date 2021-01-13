@@ -66,7 +66,8 @@
   "failedToLoadData": "فشل تحميل البيانات",
   "@failedToLoadData": {
     "description": ""
-  },  "error": "حصل خطا, قم بالمحاولة مرة اخرى",
+  },
+   "error": "حصل خطا, قم بالمحاولة مرة اخرى",
       "@error": {
         "description": ""
       },
@@ -143,7 +144,41 @@
     "noNoteSavedContent": "قم باضافة ملاحظة بالضغط على الزر الدائري بعلامة الزائد في الاسفل",
     "@noNoteSavedContent": {
       "description": ""
-    }
+    },
+      "permissionDeniedTitle": "لقد تم رفض صلاحية الوصول للموقع",
+      "@permissionDeniedTitle": {
+        "description": ""
+      },
+      "permissionDeniedMessage": "اضغط على الزر بالاسفل لمنح الصلاحية وعرض اتجاه القبلة",
+      "@permissionDeniedMessage": {
+        "description": ""
+      },
+      "grantAccess": "منح الصلاحية",
+      "@grantAccess": {
+        "description": ""
+      },
+      "retry": "اعادة المحاولة",
+      "@retry": {
+        "description": ""
+      },
+        "downloadFailed": "فشل تحميل الملف, حاول مجددا",
+        "@downloadFailed": {
+          "description": ""
+        },
+        "downloadingFile": "جاري تحميل الكتاب",
+        "@downloadingFile": {
+          "description": ""
+        },
+        "downloadNotFound": "هذا الملف غير متوفر في الجهاز, سوف يقوم الجهاز بتحميله من الانترنت ليكون متوفر دائما",
+        "@downloadNotFound": {
+          "description": ""
+        },
+        "download": "تحميل",
+        "@download": {
+          "description": ""
+        }
+
+
 
 
 }

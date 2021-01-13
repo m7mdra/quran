@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:quran/common.dart';
 import 'package:quran/main.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../islamic_app_bar.dart';
 
@@ -52,7 +54,7 @@ class _QiblaaPageState extends State<QiblaaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: IslamicAppBar(
-        title: 'اتجاه القبلة',
+        title: isArabic(context)? 'القبلة':'Qiblaa',
         context: context,
       ),
       body: StreamBuilder(
@@ -69,16 +71,16 @@ class _QiblaaPageState extends State<QiblaaPage> {
 
               case LocationPermission.denied:
                 return LocationEnabledWidget(
-                  title: 'لقد تم رفض صلاحية الوصول للموقع',
-                  message: 'اضفط على الزر بالاسفل لمنح الصلاحية وعرض القبلة',
+                  title: AppLocalizations.of(context).permissionDeniedTitle,
+                  message: AppLocalizations.of(context).permissionDeniedMessage,
                   callback: () async {
                     await Geolocator.openLocationSettings();
                   },
                 );
               case LocationPermission.deniedForever:
                 return LocationEnabledWidget(
-                  title: 'لقد تم رفض صلاحية الوصول للموقع للابد',
-                  message: 'قم بالذهاب الى الاعدادات لاعادة منح الصلاحية',
+                  title: AppLocalizations.of(context).permissionDeniedTitle,
+                  message: AppLocalizations.of(context).permissionDeniedMessage,
                   callback: () async {
                     await Geolocator.openLocationSettings();
                   },
@@ -88,8 +90,8 @@ class _QiblaaPageState extends State<QiblaaPage> {
             }
           } else {
             return LocationEnabledWidget(
-              title: 'لقد تم رفض صلاحية الوصول للموقع',
-              message: 'اضفط على الزر بالاسفل لمنح الصلاحية وعرض القبلة',
+              title: AppLocalizations.of(context).permissionDeniedTitle,
+              message: AppLocalizations.of(context).permissionDeniedMessage,
               callback: () async {
                 await Geolocator.openLocationSettings();
               },
@@ -146,7 +148,7 @@ class LocationEnabledWidget extends StatelessWidget {
                     onPressed: () {
                       callback();
                     },
-                    child: Text('اضغظ لمنح صلاحية الوصول للموقع'))
+                    child: Text(AppLocalizations.of(context).grantAccess))
           ],
         ),
       ),
@@ -245,7 +247,7 @@ class LocationErrorWidget extends StatelessWidget {
             ),
             box,
             RaisedButton(
-              child: Text("Retry"),
+              child: Text(AppLocalizations.of(context).retry),
               onPressed: () {
                 if (callback != null) callback();
               },

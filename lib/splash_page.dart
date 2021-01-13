@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:quran/common.dart';
 import 'package:quran/generated/l10n.dart';
 import 'package:quran/home_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -32,7 +33,6 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Stack(
         alignment: Alignment.center,
@@ -42,12 +42,13 @@ class _SplashPageState extends State<SplashPage> {
             fit: BoxFit.cover,
           ),
           Align(
-            alignment: AlignmentDirectional(0, -0.4),
-            child: SvgPicture.asset(
-              'assets/images/logo.svg',
-              fit: BoxFit.cover,
-            ),
-          ),
+              alignment: AlignmentDirectional(0, -0.4),
+              child: isDarkMode(context)
+                  ? Image.asset(
+                      'assets/images/logo_dark.png',
+                      height: 150,
+                    )
+                  : Image.asset('assets/images/logo_light.png', height: 150)),
           Align(
             alignment: AlignmentDirectional(0, 0.3),
             child: Column(

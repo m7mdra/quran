@@ -334,7 +334,7 @@ class HomeMenuData {
 final homeMenuDataList = [
   HomeMenuData(
       image: 'assets/images/quran.svg',
-      title: 'السور و الأجزاء',
+      title: 'السور ',
       titleEn: 'Surahs and Chapters',
       subtitleEn: 'With the voice of 17 of the most distinguished imams',
       subtitle: 'بصوت ١٧ قارئ من الائمة المتميزين'),

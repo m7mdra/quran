@@ -24,7 +24,7 @@ class _IslamicsPageState extends State<IslamicsPage> {
     IslamicMenuItem(
         'assets/images/azkar_mourning.svg', 'اذكار الصباح', 'Morning Doaa'),
     IslamicMenuItem(
-        'assets/images/prayer_azkar.svg', 'اذكار الصلاة', 'Prayer Doaa '),
+        'assets/images/prayer_azkar.svg', 'اذكار الصلاة', 'Prayer Doaa'),
     IslamicMenuItem('assets/images/douaa.svg', 'أدعية مأثورة', ' Duas Mathura.'),
     IslamicMenuItem(
         'assets/images/husen.svg', 'حصن المسلم', "Muslims fortress"),
