@@ -84,7 +84,7 @@
     "description": ""
   },
 
-   "contents": "Contents",
+   "contents": "الفهرس",
   "@contents": {
     "description": ""
   },
@@ -176,7 +176,19 @@
         "download": "تحميل",
         "@download": {
           "description": ""
-        }
+        },
+          "searchPlaceHolder": "ابحث عن ايات",
+          "@searchPlaceHolder": {
+            "description": ""
+          },
+          "searchFailed": "فشل ايجاد ايات مطابقة لكلمة البحث",
+          "@searchFailed": {
+            "description": ""
+          },
+          "searchEmpty": "لم يتم ايجاد ايات مطابقة لكلمة البحث",
+          "@searchEmpty": {
+            "description": ""
+          }
 
 
 

@@ -5,14 +5,14 @@ import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/model/quran.dart';
 import '../../data/local/normalization.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AyahSearchDelegate extends SearchDelegate<AyahSearchResult> {
   final SearchBloc _searchBloc;
 
   AyahSearchDelegate(this._searchBloc)
       : super(
-            searchFieldStyle: TextStyle(color: Colors.grey),
-            searchFieldLabel: 'ابحث عن ايات');
+            searchFieldStyle: TextStyle(color: Colors.grey));
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -48,7 +48,7 @@ class AyahSearchDelegate extends SearchDelegate<AyahSearchResult> {
         }
         if (state is SearchEmptyState) {
           return Center(
-            child: Text('لم يتم ايجاد كلمة مطابقة لكلمة البحث'),
+            child: Text(AppLocalizations.of(context).searchEmpty),
           );
         }
         if (state is SearchSuccessState) {
@@ -76,9 +76,9 @@ class AyahSearchDelegate extends SearchDelegate<AyahSearchResult> {
           );
         }
         if (state is SearchErrorState) {
-          return Center(child: Text('فشل ايجاد ايات مطابقة لكلمة البحث'));
+          return Center(child: Text(AppLocalizations.of(context).searchFailed));
         }
-        return Center(child: Text('قم بالبحث عن سورة او اية'));
+        return Center(child: Text(AppLocalizations.of(context).searchPlaceHolder));
       },
       cubit: _searchBloc,
     );

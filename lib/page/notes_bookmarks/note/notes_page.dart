@@ -256,14 +256,17 @@ class EmptyNotesWidget extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 fontStyle: FontStyle.normal,
               )),
-          Text(AppLocalizations.of(context).noNoteSavedContent,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: 'Cairo',
-                fontSize: 16,
-                fontWeight: FontWeight.w300,
-                fontStyle: FontStyle.normal,
-              ))
+          Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Text(AppLocalizations.of(context).noNoteSavedContent,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: 'Cairo',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.normal,
+                )),
+          )
         ],
       ),
     );

@@ -167,7 +167,20 @@
   "download": "Download",
   "@download": {
     "description": ""
+  },
+  "searchPlaceHolder": "Search for Ayah",
+  "@searchPlaceHolder": {
+    "description": ""
+  },
+  "searchFailed": "Failed to find verses matching the search word",
+  "@searchFailed": {
+    "description": ""
+  },
+  "searchEmpty": "No verses were found matching the search word",
+  "@searchEmpty": {
+    "description": ""
   }
+
 
 
 
