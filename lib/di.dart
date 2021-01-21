@@ -34,7 +34,6 @@ class DependencyProvider {
     var client = Dio(options);
 
     client.interceptors
-
       ..add(LogInterceptor(
         error: true,
         request: true,

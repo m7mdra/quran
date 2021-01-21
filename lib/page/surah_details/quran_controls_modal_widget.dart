@@ -103,7 +103,11 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
                               ? Icon(Icons.pause)
                               : Icon(Icons.play_arrow),
                           onPressed: () async {
-                            player.playSurah(widget.surah);
+                            if (player.isPlaying) {
+                              player.stop();
+                            } else {
+                              player.playSurah(widget.surah);
+                            }
                           },
                         );
                       }),

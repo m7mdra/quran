@@ -152,7 +152,7 @@ class Ayah {
 
   @override
   String toString() {
-    return "$number $text";
+    return "$number $text\n";
   }
 }
 

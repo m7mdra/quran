@@ -82,6 +82,7 @@ class _SurahWidgetState extends State<SurahWidget> {
       controller: _scrollController,
       padding: const EdgeInsets.all(16.0),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           SurahTitleWidget(
             surah: widget.surah,

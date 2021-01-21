@@ -11,8 +11,7 @@ class AyahSearchDelegate extends SearchDelegate<AyahSearchResult> {
   final SearchBloc _searchBloc;
 
   AyahSearchDelegate(this._searchBloc)
-      : super(
-            searchFieldStyle: TextStyle(color: Colors.grey));
+      : super(searchFieldStyle: TextStyle(color: Colors.grey));
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -78,7 +77,8 @@ class AyahSearchDelegate extends SearchDelegate<AyahSearchResult> {
         if (state is SearchErrorState) {
           return Center(child: Text(AppLocalizations.of(context).searchFailed));
         }
-        return Center(child: Text(AppLocalizations.of(context).searchPlaceHolder));
+        return Center(
+            child: Text(AppLocalizations.of(context).searchPlaceHolder));
       },
       cubit: _searchBloc,
     );

@@ -8,6 +8,7 @@ import 'package:quran/page/surah_details/search_delegate.dart';
 import 'package:quran/page/surah_details/surah_details.dart';
 
 import '../../islamic_app_bar.dart';
+import 'juzes/juz_page.dart';
 
 class SurahsJuzesPage extends StatefulWidget {
   @override
@@ -16,45 +17,70 @@ class SurahsJuzesPage extends StatefulWidget {
 
 class _SurahsJuzesPageState extends State<SurahsJuzesPage>
     with TickerProviderStateMixin {
-  LastReadBloc _quranReaderBloc;
+  PageController _pageController;
+  TabController _tabController;
+  var currentPage = 0;
 
   @override
   void initState() {
     super.initState();
-    _quranReaderBloc = context.bloc();
+    _tabController = TabController(length: 2, vsync: this);
+    _pageController = PageController(keepPage: true);
   }
-
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+    _pageController.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SurahsPage(),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          _tabController.animateTo(index,
+              duration: Duration(milliseconds: 200), curve: Curves.linear);
+
+        },
+        children: [
+          SurahsPage(),
+          JuzPage()
+        ],
+      ),
       appBar: IslamicAppBar(
         context: context,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () async {
-              var result = await showSearch<AyahSearchResult>(
-                  context: context,
-                  delegate: AyahSearchDelegate(
-                      SearchBloc(DependencyProvider.provide())));
-              if (result != null) {
-                _quranReaderBloc.add(SaveReadingSurah(
-                    result.surah, result.surah.number - 1, 0.0));
-                print(result.ayah);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SurahDetails(
-                              surah: result.surah,
-                              index: result.surah.number - 1,
-                              highlightIndex: result.ayah.number,
-                            )));
-              }
-            },
-          ),
-        ],
         title: AppLocalizations.of(context).suarAlquran,
+        bottom: TabBar(
+          onTap: (index) {
+            _pageController.animateToPage(index,
+                duration: Duration(milliseconds: 300), curve: Curves.linear);
+          },
+          indicatorWeight: 5,
+          labelColor: Colors.white,
+          unselectedLabelStyle: TextStyle(
+            fontFamily: 'Cairo',
+            color: Color(0xffffffff),
+            fontSize: 18,
+            fontWeight: FontWeight.w400,
+            fontStyle: FontStyle.normal,
+          ),
+          labelStyle: const TextStyle(
+              color: const Color(0xffffffff),
+              fontWeight: FontWeight.w700,
+              fontFamily: "Cairo",
+              fontStyle: FontStyle.normal,
+              fontSize: 20.0),
+          tabs: [
+            Tab(
+              text: 'السور',
+            ),
+            Tab(
+              text: 'الاجزاء',
+            )
+          ],
+          controller: _tabController,
+        ),
       ),
     );
   }
