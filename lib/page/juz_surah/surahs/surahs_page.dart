@@ -1,14 +1,15 @@
+
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/model/quran.dart';
 import 'package:quran/di.dart';
 import 'package:quran/islamic_app_bar.dart';
 import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
-import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
-import 'package:quran/page/surah_details/surah_player.dart';
-import 'package:quran/page/surah_details/surah_widget.dart';
 
 import 'bloc/bloc.dart';
 
@@ -112,40 +113,79 @@ class TestWidget extends StatefulWidget {
 }
 
 class _TestWidgetState extends State<TestWidget> {
-  Surah surah;
+  Map<int, List<Ayah>> surah;
 
   @override
   void initState() {
-    surah = widget.surahList[widget.index];
+    var ayahs = flatten(widget.surahList.map((e) => e.ayahs).toList());
+    surah = groupBy(ayahs, (e) {
+      return e.page;
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var surahList = widget.surahList[widget.index];
+    var ayah = surahList.ayahs[0];
+    var page = ayah.page-1;
+    print(page);
+    print(surahList);
+    print(ayah);
     return Scaffold(
-      appBar: IslamicAppBar(
-        title: surah.name,
-      ),
+      appBar: IslamicAppBar(title: 'Hello',),
       body: PageView.builder(
         clipBehavior: Clip.antiAlias,
         onPageChanged: (page) {
-          setState(() {
-            surah = widget.surahList[page];
-          });
+          print(page);
         },
-        controller: PageController(initialPage: widget.index),
-        scrollDirection: Axis.horizontal,
+        controller: PageController(
+            initialPage: page),
         itemBuilder: (context, index) {
-          var value = widget.surahList[index];
-          return SurahWidget(
-            surah: value,
-            player: SurahPlayer(
-                ReadersBloc(
-                    DependencyProvider.provide(), DependencyProvider.provide()),
-                DependencyProvider.provide()),
-          );
+          var list = surah.values.toList()[index];
+          return SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  /*SurahTitleWidget(
+                    surah: widget.surah,
+                  ),*/
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Text.rich(
+                    TextSpan(
+                        text: "",
+                        semanticsLabel: 'semanticsLabel',
+                        style: TextStyle(
+                            fontFamily: 'alquran',
+                            fontSize: 23,
+                            fontWeight: FontWeight.bold),
+                        children: surah.values.toList()[index].map((e) {
+                          return TextSpan(
+                           /*   style: _playingAyahId == e.number ||
+                                  widget.selectedAyahId == e.number
+                                  ? TextStyle(
+                                  backgroundColor:
+                                  Theme.of(context).primaryColor.withAlpha(100))
+                                  : null,*/
+                              text:
+                              "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
+                              semanticsLabel: 'semanticsLabel',
+                              recognizer: DoubleTapGestureRecognizer()
+                                ..onDoubleTapDown = (tapDown) {
+                                  /*showContextMenuAt(tapDown, context, e);*/
+                                });
+                        }).toList()),
+                    semanticsLabel: 'semanticsLabel',
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                    textDirection: TextDirection.rtl,
+                  ),
+                ],
+              ));
         },
-        itemCount: widget.surahList.length,
+        itemCount: surah.values.length,
       ),
     );
   }
