@@ -31,13 +31,13 @@ class SurahPlayer {
 
   AudioPlayerState get _state => _player.state;
 
-  bool get _isPlaying => _state == AudioPlayerState.PLAYING;
+  bool get isPlaying => _state == AudioPlayerState.PLAYING;
 
-  bool get _isStopped => _state == AudioPlayerState.STOPPED;
+  bool get isStopped => _state == AudioPlayerState.STOPPED;
 
-  bool get _isCompleted => _state == AudioPlayerState.COMPLETED;
+  bool get isCompleted => _state == AudioPlayerState.COMPLETED;
 
-  bool get _isPaused => _state == AudioPlayerState.PAUSED;
+  bool get isPaused => _state == AudioPlayerState.PAUSED;
 
   SurahPlayer(this._readersBloc, this._preference) {
     WidgetsFlutterBinding.ensureInitialized();
@@ -73,7 +73,7 @@ class SurahPlayer {
   }
 
   void stop() async {
-    if (!_isStopped) {
+    if (!isStopped) {
       _currentPlayingIndexController.sink.add(0);
       await _player.stop();
     }
@@ -111,11 +111,11 @@ class SurahPlayer {
   }
 
   void pause() async {
-    if (_isPlaying && !_isPaused) await _player.pause();
+    if (isPlaying && !isPaused) await _player.pause();
   }
 
   void resume() async {
-    if (!_isPaused && !_isPlaying) await _player.resume();
+    if (!isPaused && !isPlaying) await _player.resume();
   }
 
   String mapAyahToUrl(Ayah ayah) {

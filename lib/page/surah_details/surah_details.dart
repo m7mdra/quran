@@ -192,9 +192,14 @@ class _SurahDetailsState extends State<SurahDetails> {
               SizedBox(
                 height: 16,
               ),
+              Text('بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيم',
+                  style: TextStyle(
+                      fontFamily: 'alquran',
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold)),
               Text.rich(
                 TextSpan(
-                    text: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيم \n",
+                    text: '',
                     semanticsLabel: 'semanticsLabel',
                     style: TextStyle(
                         fontFamily: 'alquran',
@@ -214,9 +219,8 @@ class _SurahDetailsState extends State<SurahDetails> {
                             });
                     }).toList()),
                 semanticsLabel: 'semanticsLabel',
-                textAlign: TextAlign.center,
+                textAlign: TextAlign.justify,
                 softWrap: true,
-                textDirection: TextDirection.rtl,
               ),
             ],
           ),

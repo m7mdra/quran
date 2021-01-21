@@ -1,11 +1,16 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:quran/data/model/quran.dart';
 import 'package:quran/di.dart';
+import 'package:quran/islamic_app_bar.dart';
 import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
-import 'package:quran/page/surah_details/surah_details.dart';
+import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
+import 'package:quran/page/surah_details/surah_player.dart';
+import 'package:quran/page/surah_details/surah_widget.dart';
 
 import 'bloc/bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SurahsPage extends StatefulWidget {
   @override
@@ -50,13 +55,12 @@ class _SurahsPageState extends State<SurahsPage>
                 return ListTile(
                   dense: true,
                   onTap: () {
-                    _quranReaderBloc.add(SaveReadingSurah(surah, index, 0.0));
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SurahDetails(
-                                  surah: surah,
-                                  index: index,
+                            builder: (context) => TestWidget(
+                                  surahList: state.surah,
+                                  index: surah.number - 1,
                                 )));
                   },
                   leading: Text("﴿${surah.number}﴾",
@@ -95,4 +99,58 @@ class _SurahsPageState extends State<SurahsPage>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+class TestWidget extends StatefulWidget {
+  final List<Surah> surahList;
+  final int index;
+
+  const TestWidget({Key key, this.surahList, this.index}) : super(key: key);
+
+  @override
+  _TestWidgetState createState() => _TestWidgetState();
+}
+
+class _TestWidgetState extends State<TestWidget> {
+  Surah surah;
+
+  @override
+  void initState() {
+    surah = widget.surahList[widget.index];
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: IslamicAppBar(
+        title: surah.name,
+      ),
+      body: PageView.builder(
+        clipBehavior: Clip.antiAlias,
+        onPageChanged: (page) {
+          setState(() {
+            surah = widget.surahList[page];
+          });
+        },
+        controller: PageController(initialPage: widget.index),
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          var value = widget.surahList[index];
+          return SurahWidget(
+            surah: value,
+            player: SurahPlayer(
+                ReadersBloc(
+                    DependencyProvider.provide(), DependencyProvider.provide()),
+                DependencyProvider.provide()),
+          );
+        },
+        itemCount: widget.surahList.length,
+      ),
+    );
+  }
+
+  getTitle(index) {
+    return widget.surahList[index].name;
+  }
 }

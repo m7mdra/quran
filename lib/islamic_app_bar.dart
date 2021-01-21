@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class IslamicAppBar extends AppBar {
   IslamicAppBar({
     @required String title,
-    @required BuildContext context,
+     BuildContext context,
     double height,
     PreferredSizeWidget bottom,
     List<Widget> actions,
