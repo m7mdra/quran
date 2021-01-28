@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:quran/data/local/bookmark_repository.dart';
+import 'package:quran/data/local/database_file.dart';
 import 'package:quran/data/local/husn_proivder.dart';
 import 'package:quran/data/local/note_repository.dart';
 import 'package:quran/data/local/preference.dart';
@@ -48,6 +49,7 @@ class DependencyProvider {
     _registrar.registerSingleton(client);
     _registrar.registerSingleton(QuranApi(client));
     _registrar.registerSingleton(RiyadhFile());
+    _registrar.registerSingleton(DatabaseFile());
     _registrar.registerSingleton(quranDb);
     _registrar.registerSingleton<NoteRepository>(quranDb);
     _registrar.registerSingleton<BookmarkRepository>(quranDb);

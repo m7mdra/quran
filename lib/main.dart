@@ -17,7 +17,7 @@ import 'package:quran/page/juz_surah/surahs/bloc/surahs_bloc.dart';
 import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
 import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
 import 'package:quran/page/surah_details/bloc/tafseer/tafseer_bloc.dart';
-import 'package:quran/splash_page.dart';
+import 'package:quran/page/splash/splash_page.dart';
 import 'package:quran/theme.dart';
 
 import 'main/bloc_observer.dart';
