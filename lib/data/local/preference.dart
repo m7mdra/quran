@@ -62,6 +62,14 @@ class Preference {
     return _sharedPreferences.getBool("bookDownloaded") ?? false;
   }
 
+  Future<void> databaseDownloaded() async {
+    await _sharedPreferences.setBool("dbdd", true);
+  }
+
+  bool didDatabaseDownloadSuccess() {
+    return _sharedPreferences.getBool("dbdd") ?? false;
+  }
+
   Future<Reader> reader() async {
     await _sharedPreferences.reload();
     var json = _sharedPreferences.getString("defaultReader");
