@@ -1,16 +1,36 @@
-# quran
+# Quran
+![](https://raw.githubusercontent.com/m7mdra/quran/master/assets/images/logo.svg?token=AD35QL3BFFJXWAS6DV224V3ACRUJ4)
 
-A new Flutter application.
+A Quran reader built using Flutter framework
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Steps to build the application:
 
-A few resources to get you started if this is your first Flutter project:
+1- Clone the repository:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+using **HTTPS**
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+`git clone https://github.com/m7mdra/quran.git`
+
+using **SSH**
+
+`git@github.com:m7mdra/quran.git`
+
+or using **github-cli**
+
+`gh repo clone m7mdra/quran`
+
+2- Navigate to project folder:
+
+`cd quran`
+
+3- download/update dependencies:
+
+`flutter packages upgrade && flutter packages get`
+
+4- run the project after step 3 is completed:
+
+`flutter run`
+
+## Contribution
+just use `crtl+alt+L` or (`command + alt+L` for mac ... idk if right) after every time your finish write code to **format it** in the editor. or simply run `flutter format [file]` to format a single file or `flutter format . ` to format the full project. 
