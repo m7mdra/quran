@@ -66,8 +66,15 @@ class Preference {
     await _sharedPreferences.setBool("dbdd", true);
   }
 
+  Future<void> databaseDownloadExtracted() async {
+    await _sharedPreferences.setBool("dbde", true);
+  }
+
   bool didDatabaseDownloadSuccess() {
     return _sharedPreferences.getBool("dbdd") ?? false;
+  }
+  bool didExtractDatabaseDownloadSuccess() {
+    return _sharedPreferences.getBool("dbde") ?? false;
   }
 
   Future<Reader> reader() async {

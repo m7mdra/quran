@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/di.dart';
 import 'package:quran/page/riyadh/bloc/bloc.dart';
 import 'package:quran/page/splash/bloc/bloc.dart';
 
@@ -18,14 +19,16 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
   @override
   void initState() {
     super.initState();
-    _progressCubit = context.bloc();
-    _progressCubit.listen((state) {
-      print("progress: $state");
-    });
-    _databaseBloc = context.bloc();
-    _databaseBloc.listen((state) {
-      print("state: $state");
-    });
+/*    _progressCubit = context.bloc();
+
+    _databaseBloc = context.bloc();*/
+    _progressCubit = ProgressCubit(0);
+    _databaseBloc = DownloadDatabaseBloc(
+        DependencyProvider.provide(),
+        DependencyProvider.provide(),
+        _progressCubit,
+        DependencyProvider.provide());
+    _databaseBloc.add(CheckDatabaseExistence());
   }
 
   @override
@@ -39,50 +42,108 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: BlocBuilder(
-          cubit: _databaseBloc,
-          builder: (context, state) {
-            if (state is DownloadDatabaseNotFoundState) {
-              return DatabaseNotFound(databaseBloc: _databaseBloc);
-            }
-            if (state is DatabaseDownloadingState) {
-              return Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: BlocBuilder(
+            cubit: _databaseBloc,
+            builder: (context, state) {
+              print(state);
+              if (state is DownloadDatabaseNotFoundState) {
+                return DatabaseNotFound(databaseBloc: _databaseBloc);
+              }
+              if (state is ProcessingDatabaseLoadingState) {
+                return Column(
                   children: [
-                    DownloadHeader(),
-                    SizedBox(height: 8),
+                    QuranImageWidget(),
+                    size(),
                     Text(
-                      'يتم الان تحميل البيانات التشغيلية',
+                      'يتم الان معالجة البيانات التشغيلية',
                       style: Theme.of(context).textTheme.headline6,
                     ),
-                    SizedBox(height: 16),
+                    size16(),
                     BlocBuilder(
                       builder: (context, state) {
                         return Column(
                           children: [
-                            Text(state != 100? 'تم تحميل ${state.toDouble()}% ':'جاري معالجة البيانات'),
-                            SizedBox(height: 8),
-                            LinearProgressIndicator(
-                                value: state != 100 ? state * 0.01 : null),
+                            size(),
+                            LinearProgressIndicator(value: null),
+                            size(),
+                            Text('قد تاخد هذه العملية زمنا طويلاً...')
                           ],
                         );
                       },
                       cubit: _progressCubit,
                     ),
                   ],
-                ),
-              );
-            }
-            return Container();
-          },
+                );
+              }
+              if (state is DownloadDatabaseSuccessState) {
+                return Column(
+                  children: [
+                    Icon(Icons.check_circle, color: Colors.green, size: 150),
+                    size16(),
+                    Text('تم تحميل ومعالجة البيانات بنجاح',
+                        style: Theme.of(context).textTheme.headline6),
+                    size(),
+                    Text(
+                        'يمكنك الان ان تبدا باستخدام التطبيق بكل خواصه المتاحة',
+                        textAlign: TextAlign.center),
+                    size16(),
+                    RaisedButton(
+                        onPressed: () {},
+                        child: Text('حسنا , ابدا استخدام التطبيق'),
+                        elevation: 0,
+                        color: Theme.of(context).primaryColor,
+                        disabledElevation: 0,
+                        textColor: Colors.white,
+                        focusElevation: 0,
+                        highlightElevation: 0,
+                        hoverElevation: 0)
+                  ],
+                );
+              }
+              if (state is DatabaseDownloadingState) {
+                return Column(
+                  children: [
+                    QuranImageWidget(),
+                    size(),
+                    Text(
+                      'يتم الان تحميل البيانات التشغيلية',
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    size16(),
+                    BlocBuilder(
+                      builder: (context, state) {
+                        return Column(
+                          children: [
+                            Text('تم تحميل ${state.toDouble()}% '),
+                            size(),
+                            LinearProgressIndicator(
+                                value: state != 100 || state == 0
+                                    ? state * 0.01
+                                    : null),
+                          ],
+                        );
+                      },
+                      cubit: _progressCubit,
+                    ),
+                  ],
+                );
+              }
+              return Container();
+            },
+          ),
         ),
       ),
     );
   }
+
+  SizedBox size16() => SizedBox(height: 16);
+
+  SizedBox size() => SizedBox(height: 8);
 }
 
-class DownloadHeader extends StatelessWidget {
+class QuranImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return isDarkMode(context)
@@ -108,7 +169,7 @@ class DatabaseNotFound extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(children: [
-        DownloadHeader(),
+        QuranImageWidget(),
         SizedBox(height: 8),
         Text(
           'مرحبا بكم في تطبيق القران',
