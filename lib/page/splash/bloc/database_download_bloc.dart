@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:quran/data/local/database_file.dart';
@@ -23,17 +21,31 @@ class DownloadDatabaseBloc
   @override
   Stream<DownloadDatabaseState> mapEventToState(
       DownloadDatabaseEvent event) async* {
+    print(await _dbFile.databasePath());
     if (event is UserCanceledDbDownloadEvent) {
       _downloadCancelToken.cancel();
-      await _dbFile.deleteFile();
+      await _dbFile.deleteFiles();
       yield DownloadDatabaseNotFoundState();
     }
     if (event is CheckDatabaseExistence) {
-      await Future.delayed(Duration(seconds: 1));
       if (await _dbFile.doseFileExists() &&
           _preference.didDatabaseDownloadSuccess()) {
-        var path = await _dbFile.filePath();
-        yield DownloadDatabaseFoundState(path);
+        if (await _dbFile.isFileExtracted() &&
+            _preference.didExtractDatabaseDownloadSuccess()) {
+          var path = await _dbFile.databasePath();
+          yield DownloadDatabaseFoundState(path);
+        } else {
+          await _dbFile.deleteExistingIncompleteFileIfFound();
+          _progressCubit.update(100);
+          yield ProcessingDatabaseLoadingState();
+          var file = await _dbFile.extractDatabaseFile();
+          if (file) {
+            await _preference.databaseDownloadExtracted();
+            yield DownloadDatabaseSuccessState(await _dbFile.databasePath());
+          } else {
+            print("failed to extract data");
+          }
+        }
       } else {
         yield DownloadDatabaseNotFoundState();
       }
@@ -48,13 +60,23 @@ class DownloadDatabaseBloc
         }, _downloadCancelToken);
 
         if (success) {
-          print(await File(await _dbFile.filePath()).length());
+          await _dbFile.deleteExistingIncompleteFileIfFound();
+
           await _preference.databaseDownloaded();
-          yield DownloadDatabaseSuccessState(path);
+          _progressCubit.update(100);
+          yield ProcessingDatabaseLoadingState();
+          var fileExtractedSuccessfully = await _dbFile.extractDatabaseFile();
+          if (fileExtractedSuccessfully) {
+            await _preference.databaseDownloadExtracted();
+            yield DownloadDatabaseSuccessState(await _dbFile.databasePath());
+          } else {
+            yield ProcessingDatabaseFailedState();
+          }
         } else {
           yield DownloadDatabaseBookErrorState();
         }
       } catch (error) {
+        print(error);
         yield DownloadDatabaseBookErrorState();
       }
     }

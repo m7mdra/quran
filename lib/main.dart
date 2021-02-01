@@ -14,6 +14,7 @@ import 'package:quran/di.dart';
 import 'package:quran/main/bloc/lang/language_cubit.dart';
 import 'package:quran/main/bloc/theme/theme_cubit.dart';
 import 'package:quran/page/juz_surah/surahs/bloc/surahs_bloc.dart';
+import 'package:quran/page/splash/database_downloader_page.dart';
 import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
 import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
 import 'package:quran/page/surah_details/bloc/tafseer/tafseer_bloc.dart';
@@ -122,7 +123,7 @@ class _MyAppState extends State<MyApp> {
               title: 'Flutter Demo',
               darkTheme: darkTheme,
               theme: theme,
-              home: SplashPage(),
+              home: DatabaseDownloadPage(),
             );
           },
         );

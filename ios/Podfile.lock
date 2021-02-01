@@ -2,6 +2,9 @@ PODS:
   - audioplayers (0.0.1):
     - Flutter
   - Flutter (1.0.0)
+  - flutter_archive (0.0.1):
+    - Flutter
+    - ZIPFoundation (= 0.9.11)
   - flutter_compass (0.0.1):
     - Flutter
   - flutter_pdfview (1.0.2):
@@ -20,10 +23,12 @@ PODS:
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
+  - ZIPFoundation (0.9.11)
 
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
   - Flutter (from `Flutter`)
+  - flutter_archive (from `.symlinks/plugins/flutter_archive/ios`)
   - flutter_compass (from `.symlinks/plugins/flutter_compass/ios`)
   - flutter_pdfview (from `.symlinks/plugins/flutter_pdfview/ios`)
   - flutter_qiblah (from `.symlinks/plugins/flutter_qiblah/ios`)
@@ -35,12 +40,15 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - FMDB
+    - ZIPFoundation
 
 EXTERNAL SOURCES:
   audioplayers:
     :path: ".symlinks/plugins/audioplayers/ios"
   Flutter:
     :path: Flutter
+  flutter_archive:
+    :path: ".symlinks/plugins/flutter_archive/ios"
   flutter_compass:
     :path: ".symlinks/plugins/flutter_compass/ios"
   flutter_pdfview:
@@ -59,6 +67,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_archive: e7010a2779b4ff1483b00386bfb4e847f5836182
   flutter_compass: cbbd285cea1584c7ac9c4e0c3e1f17cbea55e855
   flutter_pdfview: 25f53dd6097661e6395b17de506e6060585946bd
   flutter_qiblah: f69eeb708d127a2634073ab1f27771c979928f50
@@ -67,6 +76,7 @@ SPEC CHECKSUMS:
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
 PODFILE CHECKSUM: 21b64fbb12492d731c9be90cbe0f2d328bef4b49
 
