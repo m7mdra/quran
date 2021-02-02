@@ -34,7 +34,7 @@ main() async {
   if(DependencyProvider.provide<Preference>().didExtractDatabaseDownloadSuccess()){
     var quranDatabase = QuranDatabase(DatabaseFile());
    await quranDatabase.initDb();
-   quranDatabase.query().then((value) => print(value));
+
   }
   await DependencyProvider.provide<TafseerDataBaseClient>().initDatabase();
   DependencyProvider.provide<QuranProvider>()
