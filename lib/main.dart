@@ -11,17 +11,15 @@ import 'package:quran/data/local/database_file.dart';
 import 'package:quran/data/local/preference.dart';
 import 'package:quran/data/local/quran_database.dart';
 import 'package:quran/data/local/quran_meta_database.dart';
-import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
 import 'package:quran/di.dart';
 import 'package:quran/main/bloc/lang/language_cubit.dart';
 import 'package:quran/main/bloc/theme/theme_cubit.dart';
 import 'package:quran/page/juz_surah/surahs/bloc/surahs_bloc.dart';
-import 'package:quran/page/splash/database_downloader_page.dart';
+import 'package:quran/page/splash/splash_page.dart';
 import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
 import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
 import 'package:quran/page/surah_details/bloc/tafseer/tafseer_bloc.dart';
-import 'package:quran/page/splash/splash_page.dart';
 import 'package:quran/theme.dart';
 
 import 'main/bloc_observer.dart';
@@ -31,15 +29,18 @@ main() async {
   Bloc.observer = BlocTransitionObserver();
   AudioPlayer.logEnabled = true;
   await DependencyProvider.build();
-  if(DependencyProvider.provide<Preference>().didExtractDatabaseDownloadSuccess()){
+  if (DependencyProvider.provide<Preference>()
+      .didExtractDatabaseDownloadSuccess()) {
     var quranDatabase = QuranDatabase(DatabaseFile());
-   await quranDatabase.initDb();
-
+    await quranDatabase.initDb();
+    quranDatabase.ayat(104).then((value) {
+      value.take(10).forEach((element) {
+        print(element);
+      });
+    });
   }
   await DependencyProvider.provide<TafseerDataBaseClient>().initDatabase();
-  DependencyProvider.provide<QuranProvider>()
-      .load()
-      .then((value) => print(value.data.surahs.length));
+
   var noteDatabase = DependencyProvider.provide<QuranMetaDatabase>();
   await noteDatabase.initDb();
   LanguageCubit cubit = LanguageCubit(DependencyProvider.provide());
