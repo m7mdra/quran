@@ -14,7 +14,7 @@ class DatabaseFile {
     var databasesPath = await getDatabasesPath();
     /// temporary name only for test.
     ///TODO: rename to quran.db
-    return path.join(databasesPath, "sample.txt");
+    return path.join(databasesPath, "sample-mpg-file.mpg");
   }
 
   Future<bool> isFileExtracted() async {

@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:quran/data/local/quran_database_client.dart';
+import 'package:quran/data/local/quran_meta_database.dart';
 import 'package:quran/data/model/reminder.dart';
 import 'package:quran/di.dart';
 import 'package:quran/islamic_app_bar.dart';
@@ -15,7 +15,7 @@ class ReminderPage extends StatefulWidget {
 }
 
 class _ReminderPageState extends State<ReminderPage> {
-  var quranDbClient = DependencyProvider.provide<QuranDatabaseClient>();
+  var quranDbClient = DependencyProvider.provide<QuranMetaDatabase>();
 
   @override
   Widget build(BuildContext context) {

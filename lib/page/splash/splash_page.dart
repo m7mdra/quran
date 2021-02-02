@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/common.dart';
 import 'package:quran/di.dart';
+import 'package:quran/home_page.dart';
 import 'package:quran/page/riyadh/bloc/riyadh_book_bloc.dart';
 import 'package:quran/page/splash/bloc/bloc.dart';
 import 'package:quran/page/splash/database_downloader_page.dart';
@@ -36,7 +37,8 @@ class _SplashPageState extends State<SplashPage> {
       body: BlocListener(
         cubit: _databaseBloc,
         listener: (context, state) {
-          if (state is DownloadDatabaseNotFoundState) {
+          if (state is DownloadDatabaseNotFoundState ||
+              state is ProcessingDatabaseNotState) {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -44,6 +46,10 @@ class _SplashPageState extends State<SplashPage> {
                           BlocProvider(create: (context) => _databaseBloc),
                           BlocProvider(create: (context) => _progressCubit),
                         ], child: DatabaseDownloadPage())));
+          }
+          if (state is DownloadDatabaseFoundState) {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
           }
         },
         child: Stack(

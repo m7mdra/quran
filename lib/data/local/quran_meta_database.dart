@@ -9,7 +9,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'note_repository.dart';
 
-class QuranDatabaseClient implements NoteRepository, BookmarkRepository {
+class QuranMetaDatabase implements NoteRepository, BookmarkRepository {
   Database _db;
 
   Future<Database> get database async {

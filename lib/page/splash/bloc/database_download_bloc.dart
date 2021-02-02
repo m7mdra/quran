@@ -22,6 +22,7 @@ class DownloadDatabaseBloc
   Stream<DownloadDatabaseState> mapEventToState(
       DownloadDatabaseEvent event) async* {
     print(await _dbFile.databasePath());
+
     if (event is UserCanceledDbDownloadEvent) {
       _downloadCancelToken.cancel();
       await _dbFile.deleteFiles();
@@ -35,15 +36,15 @@ class DownloadDatabaseBloc
           var path = await _dbFile.databasePath();
           yield DownloadDatabaseFoundState(path);
         } else {
+          yield ProcessingDatabaseNotState();
           await _dbFile.deleteExistingIncompleteFileIfFound();
-          _progressCubit.update(100);
           yield ProcessingDatabaseLoadingState();
           var file = await _dbFile.extractDatabaseFile();
           if (file) {
             await _preference.databaseDownloadExtracted();
             yield DownloadDatabaseSuccessState(await _dbFile.databasePath());
           } else {
-            print("failed to extract data");
+            yield ProcessingDatabaseFailedState();
           }
         }
       } else {
@@ -52,18 +53,16 @@ class DownloadDatabaseBloc
     }
     if (event is StartDownloadDatabaseEvent) {
       try {
+        await _dbFile.deleteFiles();
         yield DatabaseDownloadingState();
         var path = await _dbFile.filePath();
         var success = await _quranApi.downloadDatabase(path, (count, total) {
           var progress = ((count / total) * 100).round();
           _progressCubit.update(progress);
         }, _downloadCancelToken);
-
         if (success) {
           await _dbFile.deleteExistingIncompleteFileIfFound();
-
           await _preference.databaseDownloaded();
-          _progressCubit.update(100);
           yield ProcessingDatabaseLoadingState();
           var fileExtractedSuccessfully = await _dbFile.extractDatabaseFile();
           if (fileExtractedSuccessfully) {
@@ -73,11 +72,11 @@ class DownloadDatabaseBloc
             yield ProcessingDatabaseFailedState();
           }
         } else {
-          yield DownloadDatabaseBookErrorState();
+          yield DownloadDatabaseErrorState();
         }
       } catch (error) {
         print(error);
-        yield DownloadDatabaseBookErrorState();
+        yield DownloadDatabaseErrorState();
       }
     }
   }
