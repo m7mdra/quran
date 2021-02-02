@@ -5,7 +5,6 @@ import 'package:quran/page/splash/bloc/bloc.dart';
 import 'package:quran/page/splash/splash_page.dart';
 
 import '../../common.dart';
-import '../../home_page.dart';
 import 'bloc/database_download_bloc.dart';
 
 class DatabaseDownloadPage extends StatefulWidget {
@@ -47,13 +46,16 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
               if (state is ProcessingDatabaseLoadingState) {
                 return buildProcessingDownloadWidget(context);
               }
+              if (state is ProcessingDatabaseFailedState) {
+                return buildDataProcessingErrorWidget(context);
+              }
               if (state is DownloadDatabaseSuccessState) {
                 return buildDownloadSuccessWidget(context);
               }
               if (state is DatabaseDownloadingState) {
                 return buildDownloadProgressWidget(context);
               }
-              if(state is DownloadDatabaseErrorState){
+              if (state is DownloadDatabaseErrorState) {
                 return buildDownloadErrorWidget(context);
               }
               return Container();
@@ -72,7 +74,6 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
         Text(
           'يتم الان معالجة البيانات التشغيلية',
           textAlign: TextAlign.center,
-
           style: Theme.of(context).textTheme.headline6,
         ),
         size16(),
@@ -106,8 +107,8 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
         size16(),
         RaisedButton(
             onPressed: () {
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => SplashPage()));
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => SplashPage()));
             },
             child: Text('حسنا , ابدا استخدام التطبيق'),
             elevation: 0,
@@ -120,6 +121,7 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
       ],
     );
   }
+
   Column buildDownloadErrorWidget(BuildContext context) {
     return Column(
       children: [
@@ -128,7 +130,8 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
         Text('فشل تحميل البيانات',
             style: Theme.of(context).textTheme.headline6),
         size(),
-        Text('لقد حصل خطا اثناء محاولة تحميل البيانات تاكد من وجود اتصال انترنت نشط على الجهاز',
+        Text(
+            'لقد حصل خطا اثناء محاولة تحميل البيانات تاكد من وجود اتصال انترنت نشط على الجهاز',
             textAlign: TextAlign.center),
         size16(),
         RaisedButton(
@@ -137,7 +140,31 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
             },
             child: Text('اعادة المحاولة'),
             elevation: 0,
+            disabledElevation: 0,
+            focusElevation: 0,
+            highlightElevation: 0,
+            hoverElevation: 0)
+      ],
+    );
+  }
 
+  Column buildDataProcessingErrorWidget(BuildContext context) {
+    return Column(
+      children: [
+        Icon(Icons.settings, color: Theme.of(context).errorColor, size: 150),
+        size16(),
+        Text('فشل معالجة البيانات البيانات',
+            style: Theme.of(context).textTheme.headline6),
+        size(),
+        Text('لقد حصل خطا اثناء محاولة معالجة البيانات',
+            textAlign: TextAlign.center),
+        size16(),
+        RaisedButton(
+            onPressed: () {
+              _databaseBloc.add(CheckDatabaseExistence());
+            },
+            child: Text('اعادة المحاولة'),
+            elevation: 0,
             disabledElevation: 0,
             focusElevation: 0,
             highlightElevation: 0,
