@@ -7,6 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'
     as l10n; // Add this line
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:quran/data/local/database_file.dart';
+import 'package:quran/data/local/preference.dart';
+import 'package:quran/data/local/quran_database.dart';
 import 'package:quran/data/local/quran_meta_database.dart';
 import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
@@ -28,6 +31,11 @@ main() async {
   Bloc.observer = BlocTransitionObserver();
   AudioPlayer.logEnabled = true;
   await DependencyProvider.build();
+  if(DependencyProvider.provide<Preference>().didExtractDatabaseDownloadSuccess()){
+    var quranDatabase = QuranDatabase(DatabaseFile());
+   await quranDatabase.initDb();
+   quranDatabase.query().then((value) => print(value));
+  }
   await DependencyProvider.provide<TafseerDataBaseClient>().initDatabase();
   DependencyProvider.provide<QuranProvider>()
       .load()

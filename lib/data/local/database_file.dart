@@ -12,9 +12,7 @@ class DatabaseFile {
 
   Future<String> databasePath() async {
     var databasesPath = await getDatabasesPath();
-    /// temporary name only for test.
-    ///TODO: rename to quran.db
-    return path.join(databasesPath, "sample-mpg-file.mpg");
+    return path.join(databasesPath, "quran.db");
   }
 
   Future<bool> isFileExtracted() async {

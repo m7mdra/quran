@@ -25,7 +25,7 @@ class QuranApi {
       CancelToken cancelToken) async {
     try {
 
-      var fileResponse = await _client.download('https://www.learningcontainer.com/download/sample-large-zip-file/?wpdmdl=1639&refresh=601853653c3591612206949', path,
+      var fileResponse = await _client.download(dbUrl, path,
           onReceiveProgress: progressCallback, cancelToken: cancelToken);
 
       return fileResponse.statusCode == 200;
