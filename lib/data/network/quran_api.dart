@@ -24,8 +24,8 @@ class QuranApi {
   Future<bool> downloadDatabase(String path, ProgressCallback progressCallback,
       CancelToken cancelToken) async {
     try {
-      //TODO: add dbUrl instead.
-      var fileResponse = await _client.download('https://www.learningcontainer.com/download/sample-zip-files/?wpdmdl=1637&refresh=601853653a0011612206949', path,
+
+      var fileResponse = await _client.download('https://www.learningcontainer.com/download/sample-large-zip-file/?wpdmdl=1639&refresh=601853653c3591612206949', path,
           onReceiveProgress: progressCallback, cancelToken: cancelToken);
 
       return fileResponse.statusCode == 200;

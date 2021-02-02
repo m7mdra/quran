@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'
     as l10n; // Add this line
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:quran/data/local/quran_database_client.dart';
+import 'package:quran/data/local/quran_meta_database.dart';
 import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/local/tafseer_database_client.dart';
 import 'package:quran/di.dart';
@@ -32,7 +32,7 @@ main() async {
   DependencyProvider.provide<QuranProvider>()
       .load()
       .then((value) => print(value.data.surahs.length));
-  var noteDatabase = DependencyProvider.provide<QuranDatabaseClient>();
+  var noteDatabase = DependencyProvider.provide<QuranMetaDatabase>();
   await noteDatabase.initDb();
   LanguageCubit cubit = LanguageCubit(DependencyProvider.provide());
   cubit.load();
@@ -123,7 +123,7 @@ class _MyAppState extends State<MyApp> {
               title: 'Flutter Demo',
               darkTheme: darkTheme,
               theme: theme,
-              home: DatabaseDownloadPage(),
+              home: SplashPage(),
             );
           },
         );

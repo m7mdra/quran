@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quran/di.dart';
 import 'package:quran/page/riyadh/bloc/bloc.dart';
 import 'package:quran/page/splash/bloc/bloc.dart';
+import 'package:quran/page/splash/splash_page.dart';
 
 import '../../common.dart';
+import '../../home_page.dart';
 import 'bloc/database_download_bloc.dart';
 
 class DatabaseDownloadPage extends StatefulWidget {
@@ -19,16 +20,8 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
   @override
   void initState() {
     super.initState();
-/*    _progressCubit = context.bloc();
-
-    _databaseBloc = context.bloc();*/
-    _progressCubit = ProgressCubit(0);
-    _databaseBloc = DownloadDatabaseBloc(
-        DependencyProvider.provide(),
-        DependencyProvider.provide(),
-        _progressCubit,
-        DependencyProvider.provide());
-    _databaseBloc.add(CheckDatabaseExistence());
+    _progressCubit = context.bloc();
+    _databaseBloc = context.bloc();
   }
 
   @override
@@ -52,89 +45,130 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
                 return DatabaseNotFound(databaseBloc: _databaseBloc);
               }
               if (state is ProcessingDatabaseLoadingState) {
-                return Column(
-                  children: [
-                    QuranImageWidget(),
-                    size(),
-                    Text(
-                      'يتم الان معالجة البيانات التشغيلية',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    size16(),
-                    BlocBuilder(
-                      builder: (context, state) {
-                        return Column(
-                          children: [
-                            size(),
-                            LinearProgressIndicator(value: null),
-                            size(),
-                            Text('قد تاخد هذه العملية زمنا طويلاً...')
-                          ],
-                        );
-                      },
-                      cubit: _progressCubit,
-                    ),
-                  ],
-                );
+                return buildProcessingDownloadWidget(context);
               }
               if (state is DownloadDatabaseSuccessState) {
-                return Column(
-                  children: [
-                    Icon(Icons.check_circle, color: Colors.green, size: 150),
-                    size16(),
-                    Text('تم تحميل ومعالجة البيانات بنجاح',
-                        style: Theme.of(context).textTheme.headline6),
-                    size(),
-                    Text(
-                        'يمكنك الان ان تبدا باستخدام التطبيق بكل خواصه المتاحة',
-                        textAlign: TextAlign.center),
-                    size16(),
-                    RaisedButton(
-                        onPressed: () {},
-                        child: Text('حسنا , ابدا استخدام التطبيق'),
-                        elevation: 0,
-                        color: Theme.of(context).primaryColor,
-                        disabledElevation: 0,
-                        textColor: Colors.white,
-                        focusElevation: 0,
-                        highlightElevation: 0,
-                        hoverElevation: 0)
-                  ],
-                );
+                return buildDownloadSuccessWidget(context);
               }
               if (state is DatabaseDownloadingState) {
-                return Column(
-                  children: [
-                    QuranImageWidget(),
-                    size(),
-                    Text(
-                      'يتم الان تحميل البيانات التشغيلية',
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    size16(),
-                    BlocBuilder(
-                      builder: (context, state) {
-                        return Column(
-                          children: [
-                            Text('تم تحميل ${state.toDouble()}% '),
-                            size(),
-                            LinearProgressIndicator(
-                                value: state != 100 || state == 0
-                                    ? state * 0.01
-                                    : null),
-                          ],
-                        );
-                      },
-                      cubit: _progressCubit,
-                    ),
-                  ],
-                );
+                return buildDownloadProgressWidget(context);
+              }
+              if(state is DownloadDatabaseErrorState){
+                return buildDownloadErrorWidget(context);
               }
               return Container();
             },
           ),
         ),
       ),
+    );
+  }
+
+  Column buildProcessingDownloadWidget(BuildContext context) {
+    return Column(
+      children: [
+        QuranImageWidget(),
+        size(),
+        Text(
+          'يتم الان معالجة البيانات التشغيلية',
+          textAlign: TextAlign.center,
+
+          style: Theme.of(context).textTheme.headline6,
+        ),
+        size16(),
+        BlocBuilder(
+          builder: (context, state) {
+            return Column(
+              children: [
+                size(),
+                LinearProgressIndicator(value: null),
+                size(),
+                Text('قد تاخد هذه العملية زمنا طويلاً...')
+              ],
+            );
+          },
+          cubit: _progressCubit,
+        ),
+      ],
+    );
+  }
+
+  Column buildDownloadSuccessWidget(BuildContext context) {
+    return Column(
+      children: [
+        Icon(Icons.check_circle, color: Colors.green, size: 150),
+        size16(),
+        Text('تم تحميل ومعالجة البيانات بنجاح',
+            style: Theme.of(context).textTheme.headline6),
+        size(),
+        Text('يمكنك الان ان تبدا باستخدام التطبيق بكل خواصه المتاحة',
+            textAlign: TextAlign.center),
+        size16(),
+        RaisedButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => SplashPage()));
+            },
+            child: Text('حسنا , ابدا استخدام التطبيق'),
+            elevation: 0,
+            color: Theme.of(context).primaryColor,
+            disabledElevation: 0,
+            textColor: Colors.white,
+            focusElevation: 0,
+            highlightElevation: 0,
+            hoverElevation: 0)
+      ],
+    );
+  }
+  Column buildDownloadErrorWidget(BuildContext context) {
+    return Column(
+      children: [
+        Icon(Icons.error, color: Theme.of(context).errorColor, size: 150),
+        size16(),
+        Text('فشل تحميل البيانات',
+            style: Theme.of(context).textTheme.headline6),
+        size(),
+        Text('لقد حصل خطا اثناء محاولة تحميل البيانات تاكد من وجود اتصال انترنت نشط على الجهاز',
+            textAlign: TextAlign.center),
+        size16(),
+        RaisedButton(
+            onPressed: () {
+              _databaseBloc.add(StartDownloadDatabaseEvent());
+            },
+            child: Text('اعادة المحاولة'),
+            elevation: 0,
+
+            disabledElevation: 0,
+            focusElevation: 0,
+            highlightElevation: 0,
+            hoverElevation: 0)
+      ],
+    );
+  }
+
+  Column buildDownloadProgressWidget(BuildContext context) {
+    return Column(
+      children: [
+        QuranImageWidget(),
+        size(),
+        Text('يتم الان تحميل البيانات التشغيلية',
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.headline6),
+        size16(),
+        BlocBuilder(
+          builder: (context, state) {
+            return Column(
+              children: [
+                Text('تم تحميل ${state.toDouble()}% '),
+                size(),
+                LinearProgressIndicator(
+                    value: state != 100 || state == 0 ? state * 0.01 : null),
+              ],
+            );
+          },
+          cubit: context.bloc<ProgressCubit>(),
+        ),
+      ],
     );
   }
 
