@@ -55,14 +55,14 @@ class _HomePageState extends State<HomePage> {
                       ));
             }
             if (state is SurahsLoadedSuccessState) {
-              Navigator.of(context, rootNavigator: true).pop("dialog");
+          /*    Navigator.of(context, rootNavigator: true).pop("dialog");
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => QuranReaderPage(
                             index: state.index,
                             surahs: state.surah,
-                          )));
+                          )));*/
             }
             if (state is SurahsErrorState) {
               Navigator.of(context, rootNavigator: true).pop("dialog");

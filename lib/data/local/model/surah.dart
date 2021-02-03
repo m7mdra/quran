@@ -1,11 +1,11 @@
 class Surah {
-  Surah({
-    this.number,
-    this.name,
-    this.englishName,
-    this.englishNameTranslation,
-    this.revelationType,
-  });
+  Surah(
+      {this.number,
+      this.name,
+      this.englishName,
+      this.englishNameTranslation,
+      this.revelationType,
+      this.numberOfAyat});
 
   @override
   bool operator ==(Object other) =>
@@ -16,27 +16,29 @@ class Surah {
 
   @override
   int get hashCode => number.hashCode;
-  
+
   int number;
   String name;
   String englishName;
   String englishNameTranslation;
   String revelationType;
+  int numberOfAyat;
 
-  factory Surah.fromMap(Map<String, dynamic> json) => Surah(
-      number: json["id"],
-      name: json["name"],
-      englishName: json["englishName"],
-      englishNameTranslation: json["englishtranslation"],
-      revelationType: json["revelationType"],
-  );
+  factory Surah.fromMap(Map<String, dynamic> map) => Surah(
+      number: map["id"],
+      name: map["name"],
+      englishName: map["englishName"],
+      englishNameTranslation: map["englishtranslation"],
+      revelationType: map["revelationType"],
+      numberOfAyat: map['numberOfAyats']);
 
   Map<String, dynamic> toMap() => {
         "number": 'id',
         "name": name,
         "englishName": englishName,
         "englishNameTranslation": englishNameTranslation,
-        "revelationType": revelationType
+        "revelationType": revelationType,
+        "numberOfAyats": numberOfAyat,
       };
 
   @override

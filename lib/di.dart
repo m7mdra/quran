@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/local/dua_mathor_provider.dart';
 import 'data/local/husn_chapter_provider.dart';
+import 'data/local/quran_database.dart';
 import 'data/local/quran_meta_database.dart';
 import 'data/local/tafseer_repository.dart';
 
@@ -49,8 +50,10 @@ class DependencyProvider {
     _registrar.registerSingleton(client);
     _registrar.registerSingleton(QuranApi(client));
     _registrar.registerSingleton(RiyadhFile());
-    _registrar.registerSingleton(DatabaseFile());
+    var databaseFile = DatabaseFile();
+    _registrar.registerSingleton(databaseFile);
     _registrar.registerSingleton(quranDb);
+    _registrar.registerSingleton(QuranDatabase(databaseFile));
     _registrar.registerSingleton<NoteRepository>(quranDb);
     _registrar.registerSingleton<BookmarkRepository>(quranDb);
     _registrar.registerSingleton<TafseerRepository>(TafseerDataBaseClient());

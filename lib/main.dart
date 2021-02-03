@@ -31,12 +31,15 @@ main() async {
   await DependencyProvider.build();
   if (DependencyProvider.provide<Preference>()
       .didExtractDatabaseDownloadSuccess()) {
-    var quranDatabase = QuranDatabase(DatabaseFile());
+    var quranDatabase = DependencyProvider.provide<QuranDatabase>();
     await quranDatabase.initDb();
-    quranDatabase.ayat(104).then((value) {
-      value.take(10).forEach((element) {
+    quranDatabase.rangedTafseer(endId: 100, startId: 90,editionId: 103).then((value) {
+      value.forEach((element) {
         print(element);
       });
+    }).catchError((error,stack){
+      print(error);
+      print(stack);
     });
   }
   await DependencyProvider.provide<TafseerDataBaseClient>().initDatabase();
