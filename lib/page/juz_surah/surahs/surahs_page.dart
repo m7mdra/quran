@@ -5,8 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:quran/data/local/quran_provider.dart';
-import 'package:quran/data/model/quran.dart';
+import 'package:quran/data/local/model/surah.dart';
 import 'package:quran/di.dart';
 import 'package:quran/islamic_app_bar.dart';
 import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
@@ -56,13 +55,13 @@ class _SurahsPageState extends State<SurahsPage>
                 return ListTile(
                   dense: true,
                   onTap: () {
-                    Navigator.push(
+                 /*   Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => TestWidget(
                                   surahList: state.surah,
                                   index: surah.number - 1,
-                                )));
+                                )));*/
                   },
                   leading: Text("﴿${surah.number}﴾",
                       style: TextStyle(
@@ -78,7 +77,7 @@ class _SurahsPageState extends State<SurahsPage>
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
                       )),
-                  subtitle: Text("عدد الايات : ${surah.ayahs.length} ",
+                  subtitle: Text("عدد الايات : ${surah.numberOfAyat} ",
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         color: Color(0xff949393),
@@ -102,6 +101,7 @@ class _SurahsPageState extends State<SurahsPage>
   bool get wantKeepAlive => true;
 }
 
+/*
 class TestWidget extends StatefulWidget {
   final List<Surah> surahList;
   final int index;
@@ -126,12 +126,7 @@ class _TestWidgetState extends State<TestWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var surahList = widget.surahList[widget.index];
-    var ayah = surahList.ayahs[0];
-    var page = ayah.page-1;
-    print(page);
-    print(surahList);
-    print(ayah);
+
     return Scaffold(
       appBar: IslamicAppBar(title: 'Hello',),
       body: PageView.builder(
@@ -147,9 +142,11 @@ class _TestWidgetState extends State<TestWidget> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  /*SurahTitleWidget(
+                  */
+/*SurahTitleWidget(
                     surah: widget.surah,
-                  ),*/
+                  ),*//*
+
                   SizedBox(
                     height: 16,
                   ),
@@ -163,18 +160,22 @@ class _TestWidgetState extends State<TestWidget> {
                             fontWeight: FontWeight.bold),
                         children: surah.values.toList()[index].map((e) {
                           return TextSpan(
-                           /*   style: _playingAyahId == e.number ||
+                           */
+/*   style: _playingAyahId == e.number ||
                                   widget.selectedAyahId == e.number
                                   ? TextStyle(
                                   backgroundColor:
                                   Theme.of(context).primaryColor.withAlpha(100))
-                                  : null,*/
+                                  : null,*//*
+
                               text:
                               "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
                               semanticsLabel: 'semanticsLabel',
                               recognizer: DoubleTapGestureRecognizer()
                                 ..onDoubleTapDown = (tapDown) {
-                                  /*showContextMenuAt(tapDown, context, e);*/
+                                  */
+/*showContextMenuAt(tapDown, context, e);*//*
+
                                 });
                         }).toList()),
                     semanticsLabel: 'semanticsLabel',
@@ -194,3 +195,4 @@ class _TestWidgetState extends State<TestWidget> {
     return widget.surahList[index].name;
   }
 }
+*/

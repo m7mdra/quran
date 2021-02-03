@@ -1,4 +1,6 @@
-import 'package:quran/data/model/quran.dart';
+
+
+import 'package:quran/data/local/model/surah.dart';
 
 abstract class SurahsState {}
 

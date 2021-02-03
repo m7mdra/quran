@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:quran/data/local/database_file.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -30,6 +31,14 @@ class QuranDatabase {
     return query.map((e) => Surah.fromMap(e)).toList();
   }
 
+  //TODO get juz with surah count.
+
+  Future<List<Surah>> surahById(int id) async {
+    var db = await database;
+    var query = await db.rawQuery('SELECT * FROM surat where id = ?', [id]);
+    return query.map((e) => Surah.fromMap(e)).toList();
+  }
+
   Future<List<Edition>> editions() async {
     var db = await database;
     var query = await db.rawQuery('SELECT * FROM edition');
@@ -39,37 +48,63 @@ class QuranDatabase {
   Future<List<Edition>> quranEditions() async {
     var db = await database;
     var query =
-        await db.rawQuery('SELECT * FROM edition where type =?', ['quran']);
+        await db.rawQuery('SELECT * FROM edition WHERE type =?', ['quran']);
     return query.map((e) => Edition.fromMap(e)).toList();
   }
 
   Future<List<Edition>> tafseerEditions() async {
     var db = await database;
     var query =
-        await db.rawQuery('SELECT * FROM edition where type =?', ['tafseer']);
+        await db.rawQuery('SELECT * FROM edition WHERE type =?', ['tafseer']);
     return query.map((e) => Edition.fromMap(e)).toList();
   }
 
   Future<List<Edition>> translationEditions() async {
     var db = await database;
     var query = await db
-        .rawQuery('SELECT * FROM edition where type =?', ['translation']);
+        .rawQuery('SELECT * FROM edition WHERE type =?', ['translation']);
     return query.map((e) => Edition.fromMap(e)).toList();
   }
 
   Future<List<Edition>> verseByVerseEditions() async {
     var db = await database;
     var query = await db
-        .rawQuery('SELECT * FROM edition where type =?', ['versebyverse']);
+        .rawQuery('SELECT * FROM edition WHERE type =?', ['versebyverse']);
     return query.map((e) => Edition.fromMap(e)).toList();
   }
 
   Future<List<Ayah>> ayat([int editionId = 82]) async {
     var db = await database;
     var query = await db
-        .rawQuery('SELECT * FROM ayat where edition_id =?', [editionId]);
+        .rawQuery('SELECT * FROM ayat WHERE edition_id =?', [editionId]);
     return query.map((e) => Ayah.fromMap(e)).toList();
   }
 
+  Future<List<Ayah>> search(String keyword) async {
+    var db = await database;
+    var query = await db.rawQuery("""
+    SELECT *  FROM ayat
+    LEFT  OUTER JOIN  surat
+    ON ayat.surat_id = surat.id
+    WHERE  ayat.edition_id = 78 AND text LIKE '%$keyword%' """);
+    return query.map((e) => Ayah.fromMap(e)).toList();
+  }
 
+  Future<List<Ayah>> singleTafseer(
+      {@required int id, int editionId = 1}) async {
+    var db = await database;
+    var query = await db.rawQuery(
+        'SELECT *  FROM ayat WHERE ayat.id = ? and ayat.edition_id = ?',
+        [id, editionId]);
+    return query.map((e) => Ayah.fromMap(e)).toList();
+  }
+
+  Future<List<Ayah>> rangedTafseer(
+      {@required int startId, @required int endId, int editionId = 1}) async {
+    var db = await database;
+    var query = await db.rawQuery(
+        'SELECT *  FROM ayat WHERE ayat.id BETWEEN ? and ? and ayat.edition_id = 1',
+        [startId, endId, editionId]);
+    return query.map((e) => Ayah.fromMap(e)).toList();
+  }
 }
