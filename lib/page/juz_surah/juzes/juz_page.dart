@@ -41,25 +41,26 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
           if (state is JuzsSuccessState) {
             return ListView.separated(
               itemBuilder: (context, index) {
-                var juz = state.juz[index];
+                var juz = state.juz[index + 1];
                 return ListTile(
                   dense: true,
                   onTap: () {},
-                  leading: Text("﴿${juz.number}﴾",
+                  leading: Text("﴿${index + 1}﴾",
                       style: TextStyle(
                         fontFamily: 'Al-QuranAlKareem',
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                       )),
-                  title: Text("الجزء ${juz.number}",
+                  title: Text("الجزء ${index + 1}",
                       style: TextStyle(
                         fontFamily: 'alquran',
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
                       )),
-                  subtitle: Text("عدد السور : ${juz.surahs.length} ",
+
+                  subtitle: Text("عدد السور : ${juz.length} ",
                       style: TextStyle(
                         fontFamily: 'Cairo',
                         color: Color(0xff949393),

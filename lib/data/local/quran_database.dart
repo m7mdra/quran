@@ -1,9 +1,12 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:quran/data/local/database_file.dart';
+import 'package:quran/data/local/quran_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'model/ayah.dart';
 import 'model/edition.dart';
+import 'model/juz.dart';
 import 'model/surah.dart';
 
 class QuranDatabase {
@@ -30,8 +33,6 @@ class QuranDatabase {
     var query = await db.rawQuery('SELECT * FROM surat');
     return query.map((e) => Surah.fromMap(e)).toList();
   }
-
-  //TODO get juz with surah count.
 
   Future<List<Surah>> surahById(int id) async {
     var db = await database;
@@ -78,6 +79,27 @@ class QuranDatabase {
     var query = await db
         .rawQuery('SELECT * FROM ayat WHERE edition_id =?', [editionId]);
     return query.map((e) => Ayah.fromMap(e)).toList();
+  }
+
+  Future<Map<int, List<JuzReference>>> juz() async {
+    var db = await database;
+
+    var queries = List.generate(30, (index) => index).map((e) => db.rawQuery("""
+        SELECT ayat.surat_id,ayat.juz_id, ayat.id, ayat.numberinsurat ,ayat.text, surat.name
+        FROM ayat 
+        LEFT OUTER JOIN surat
+        on ayat.surat_id = surat.id
+        WHERE juz_id = ${e + 1} and edition_id = 77
+        GROUP BY ayat.surat_id
+        """));
+    var result = await Future.wait(queries);
+    var flatResult = flatten(result);
+
+    var list = flatResult.map((e) => JuzReference.fromMap(e)).toList();
+
+    var juzes = groupBy<JuzReference, int>(list, (juz) => juz.juzId);
+
+    return juzes;
   }
 
   Future<List<Ayah>> search(String keyword) async {

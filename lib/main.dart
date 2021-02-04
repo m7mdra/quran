@@ -33,10 +33,8 @@ main() async {
       .didExtractDatabaseDownloadSuccess()) {
     var quranDatabase = DependencyProvider.provide<QuranDatabase>();
     await quranDatabase.initDb();
-    quranDatabase.rangedTafseer(endId: 100, startId: 90,editionId: 103).then((value) {
-      value.forEach((element) {
-        print(element);
-      });
+    quranDatabase.juz().then((value) {
+      print(value);
     }).catchError((error,stack){
       print(error);
       print(stack);
