@@ -10,12 +10,14 @@ class JuzReference {
   int numberInSurat;
   String text;
   String surahName;
+  int page;
 
   JuzReference(
       {this.suratId,
       this.juzId,
       this.id,
       this.text,
+      this.page,
       this.numberInSurat,
       this.surahName});
 
@@ -26,6 +28,7 @@ class JuzReference {
     text = map["text"];
     surahName = map["name"];
     numberInSurat = map["numberinsurat"];
+    page = map["page_id"];
   }
 
   Map<String, dynamic> toMap() {
@@ -36,6 +39,8 @@ class JuzReference {
     map["text"] = text;
     map["numberinsurat"] = numberInSurat;
     map["name"] = surahName;
+    map["page_id"] = page;
+
 
     return map;
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/di.dart';
+import 'package:quran/page/juz_surah/surahs/surahs_page.dart';
 
 import 'bloc/bloc.dart';
 import 'bloc/juz_bloc.dart';
@@ -44,7 +45,18 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
                 var juz = state.juz[index + 1];
                 return ListTile(
                   dense: true,
-                  onTap: () {},
+                  onTap: () {
+                    var page = juz.first.page;
+                    print("JUMPING TO PAGE: $page");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) {
+                              return TestWidget(
+                                  page: page-1,
+                                );
+                            }));
+                  },
                   leading: Text("﴿${index + 1}﴾",
                       style: TextStyle(
                         fontFamily: 'Al-QuranAlKareem',
@@ -59,7 +71,6 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,
                       )),
-
                   subtitle: Text("عدد السور : ${juz.length} ",
                       style: TextStyle(
                         fontFamily: 'Cairo',

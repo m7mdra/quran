@@ -1,11 +1,14 @@
-
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:quran/data/local/database_file.dart';
+import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/local/model/surah.dart';
+import 'package:quran/data/local/quran_database.dart';
 import 'package:quran/di.dart';
 import 'package:quran/islamic_app_bar.dart';
 import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
@@ -52,16 +55,17 @@ class _SurahsPageState extends State<SurahsPage>
             return ListView.builder(
               itemBuilder: (context, index) {
                 var surah = state.surah[index];
+
                 return ListTile(
                   dense: true,
                   onTap: () {
-                 /*   Navigator.push(
+                    Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => TestWidget(
-                                  surahList: state.surah,
-                                  index: surah.number - 1,
-                                )));*/
+
+                                  page: surah.number - 1,
+                                )));
                   },
                   leading: Text("﴿${surah.number}﴾",
                       style: TextStyle(
@@ -101,98 +105,113 @@ class _SurahsPageState extends State<SurahsPage>
   bool get wantKeepAlive => true;
 }
 
-/*
 class TestWidget extends StatefulWidget {
-  final List<Surah> surahList;
-  final int index;
 
-  const TestWidget({Key key, this.surahList, this.index}) : super(key: key);
+  final int page;
+
+  const TestWidget({Key key, this.page}) : super(key: key);
 
   @override
   _TestWidgetState createState() => _TestWidgetState();
 }
 
 class _TestWidgetState extends State<TestWidget> {
-  Map<int, List<Ayah>> surah;
+  QuranDatabase quranDatabase = QuranDatabase(DatabaseFile());
+  Map<int, List<Ayah>> ayatByPage = {};
+  var _playingAyahId = 0;
+  PageController pageController;
 
   @override
   void initState() {
-    var ayahs = flatten(widget.surahList.map((e) => e.ayahs).toList());
-    surah = groupBy(ayahs, (e) {
-      return e.page;
-    });
     super.initState();
+    pageController = PageController();
+    quranDatabase.ayat().then((value) {
+      setState(() {
+        ayatByPage = groupBy(value, (ayah) => ayah.pageId);
+        pageController.jumpToPage(widget.page);
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: IslamicAppBar(title: 'Hello',),
+      appBar: IslamicAppBar(
+        title: 'Hello',
+      ),
       body: PageView.builder(
         clipBehavior: Clip.antiAlias,
         onPageChanged: (page) {
           print(page);
         },
-        controller: PageController(
-            initialPage: page),
+        controller: pageController,
         itemBuilder: (context, index) {
-          var list = surah.values.toList()[index];
+          var ayatList = ayatByPage.values.toList()[index];
+
+
           return SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  */
-/*SurahTitleWidget(
-                    surah: widget.surah,
-                  ),*//*
+            mainAxisSize: MainAxisSize.min,
+            children: [
 
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Text.rich(
-                    TextSpan(
-                        text: "",
-                        semanticsLabel: 'semanticsLabel',
-                        style: TextStyle(
-                            fontFamily: 'alquran',
-                            fontSize: 23,
-                            fontWeight: FontWeight.bold),
-                        children: surah.values.toList()[index].map((e) {
-                          return TextSpan(
-                           */
-/*   style: _playingAyahId == e.number ||
-                                  widget.selectedAyahId == e.number
-                                  ? TextStyle(
-                                  backgroundColor:
-                                  Theme.of(context).primaryColor.withAlpha(100))
-                                  : null,*//*
-
-                              text:
-                              "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
-                              semanticsLabel: 'semanticsLabel',
-                              recognizer: DoubleTapGestureRecognizer()
-                                ..onDoubleTapDown = (tapDown) {
-                                  */
-/*showContextMenuAt(tapDown, context, e);*//*
-
-                                });
-                        }).toList()),
+              SizedBox(
+                height: 16,
+              ),
+              Text.rich(
+                TextSpan(
+                    text: "",
                     semanticsLabel: 'semanticsLabel',
-                    textAlign: TextAlign.center,
-                    softWrap: true,
-                    textDirection: TextDirection.rtl,
-                  ),
-                ],
-              ));
+                    style: TextStyle(
+                        fontFamily: 'alquran',
+                        fontSize: 23,
+                        fontWeight: FontWeight.bold),
+                    children: ayatList.map((e) {
+                      return TextSpan(
+                          style: _playingAyahId == e.number
+                              ? TextStyle(
+                                  backgroundColor: Theme.of(context)
+                                      .primaryColor
+                                      .withAlpha(100))
+                              : null,
+                          text:
+                              "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
+                          semanticsLabel: 'semanticsLabel',
+                          recognizer: DoubleTapGestureRecognizer()
+                            ..onDoubleTapDown = (tapDown) {});
+                    }).toList()),
+                semanticsLabel: 'semanticsLabel',
+                textAlign: TextAlign.justify,
+                softWrap: true,
+              ),
+            ],
+          ));
         },
-        itemCount: surah.values.length,
+        itemCount: ayatByPage.values.length,
       ),
     );
   }
+}
 
-  getTitle(index) {
-    return widget.surahList[index].name;
+class SurahTitleWidget extends StatelessWidget {
+  final String surah;
+
+  const SurahTitleWidget({Key key, this.surah}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        SvgPicture.asset('assets/images/surah_name_title.svg'),
+        Text(
+          surah,
+          style: TextStyle(
+              color: Color(0xffFD9434),
+              fontSize: 22,
+              fontFamily: 'Al-QuranAlKareem'),
+        )
+      ],
+    );
   }
 }
-*/
