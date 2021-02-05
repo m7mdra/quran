@@ -23,32 +23,35 @@ class Ayah {
   int rukuId;
   int suratId;
   String text;
+  String surahName;
 
-  Ayah({
-      this.editionId, 
-      this.hizbQuarterId, 
-      this.id, 
-      this.juzId, 
-      this.manzilId, 
-      this.number, 
-      this.numberInSurah, 
-      this.pageId, 
-      this.rukuId, 
+  Ayah(
+      {this.editionId,
+      this.hizbQuarterId,
+      this.id,
+      this.juzId,
+      this.manzilId,
+      this.surahName,
+      this.number,
+      this.numberInSurah,
+      this.pageId,
+      this.rukuId,
       this.suratId,
       this.text});
 
-  Ayah.fromMap(dynamic json) {
-    editionId = json["edition_id"];
-    hizbQuarterId = json["hizbQuarter_id"];
-    id = json["id"];
-    juzId = json["juz_id"];
-    manzilId = json["manzil_id"];
-    number = json["number"];
-    numberInSurah = json["numberinsurat"];
-    pageId = json["page_id"];
-    rukuId = json["ruku_id"];
-    suratId = json["surat_id"];
-    text = json["text"];
+  Ayah.fromMap(dynamic map) {
+    editionId = map["edition_id"];
+    hizbQuarterId = map["hizbQuarter_id"];
+    id = map["id"];
+    juzId = map["juz_id"];
+    manzilId = map["manzil_id"];
+    number = map["number"];
+    numberInSurah = map["numberinsurat"];
+    pageId = map["page_id"];
+    rukuId = map["ruku_id"];
+    suratId = map["surat_id"];
+    text = map["text"];
+    surahName = map['surat_name'];
   }
 
   Map<String, dynamic> toMap() {
@@ -64,6 +67,8 @@ class Ayah {
     map["ruku_id"] = rukuId;
     map["surat_id"] = suratId;
     map["text"] = text;
+    map['surat_name'] = surahName;
+
     return map;
   }
 

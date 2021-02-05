@@ -77,7 +77,19 @@ class QuranDatabase {
   Future<List<Ayah>> ayat([int editionId = 82]) async {
     var db = await database;
     var query = await db
-        .rawQuery('SELECT * FROM ayat WHERE edition_id =?', [editionId]);
+        .rawQuery(""" 
+       SELECT ayat.id,
+       ayat.surat_id,
+       ayat.edition_id,
+       ayat.number,
+       ayat.text,
+       ayat.numberinsurat,
+       ayat.page_id,
+       surat.name AS surat_name
+       FROM ayat
+       LEFT JOIN surat
+       ON surat.id = ayat.surat_id
+       WHERE  edition_id = ? """, [editionId]);
     return query.map((e) => Ayah.fromMap(e)).toList();
   }
 
@@ -85,7 +97,7 @@ class QuranDatabase {
     var db = await database;
 
     var queries = List.generate(30, (index) => index).map((e) => db.rawQuery("""
-        SELECT ayat.surat_id,ayat.juz_id, ayat.id, ayat.numberinsurat ,ayat.text, surat.name
+        SELECT ayat.surat_id,ayat.juz_id, ayat.id, ayat.numberinsurat ,ayat.text, surat.name,ayat.page_id
         FROM ayat 
         LEFT OUTER JOIN surat
         on ayat.surat_id = surat.id
