@@ -30,7 +30,19 @@ class QuranDatabase {
 
   Future<List<Surah>> surat() async {
     var db = await database;
-    var query = await db.rawQuery('SELECT * FROM surat');
+    var query = await db.rawQuery("""
+    SELECT surat.id,
+    surat.name,
+    surat.englishname,
+    surat.englishtranslation,
+    surat.revelationCity,
+    surat.numberOfAyats,
+    ayat.page_id
+    FROM   surat
+    LEFT JOIN ayat
+    ON surat.id = ayat.surat_id
+    GROUP  BY surat.id  
+    """);
     return query.map((e) => Surah.fromMap(e)).toList();
   }
 
@@ -76,8 +88,7 @@ class QuranDatabase {
 
   Future<List<Ayah>> ayat([int editionId = 82]) async {
     var db = await database;
-    var query = await db
-        .rawQuery(""" 
+    var query = await db.rawQuery(""" 
        SELECT ayat.id,
        ayat.surat_id,
        ayat.edition_id,

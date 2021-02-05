@@ -7,7 +7,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quran/data/local/database_file.dart';
 import 'package:quran/data/local/model/ayah.dart';
-import 'package:quran/data/local/model/surah.dart';
 import 'package:quran/data/local/quran_database.dart';
 import 'package:quran/di.dart';
 import 'package:quran/islamic_app_bar.dart';
@@ -63,8 +62,7 @@ class _SurahsPageState extends State<SurahsPage>
                         context,
                         MaterialPageRoute(
                             builder: (context) => TestWidget(
-
-                                  page: surah.number - 1,
+                                  page: surah.page-1,
                                 )));
                   },
                   leading: Text("﴿${surah.number}﴾",
@@ -106,7 +104,6 @@ class _SurahsPageState extends State<SurahsPage>
 }
 
 class TestWidget extends StatefulWidget {
-
   final int page;
 
   const TestWidget({Key key, this.page}) : super(key: key);
@@ -148,44 +145,42 @@ class _TestWidgetState extends State<TestWidget> {
         itemBuilder: (context, index) {
           var ayatList = ayatByPage.values.toList()[index];
 
-
           return SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-
-              SizedBox(
-                height: 16,
-              ),
-              Text.rich(
-                TextSpan(
-                    text: "",
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Text.rich(
+                    TextSpan(
+                        text: "",
+                        semanticsLabel: 'semanticsLabel',
+                        style: TextStyle(
+                            fontFamily: 'alquran',
+                            fontSize: 23,
+                            fontWeight: FontWeight.bold),
+                        children: ayatList.map((e) {
+                          return TextSpan(
+                              style: _playingAyahId == e.number
+                                  ? TextStyle(
+                                      backgroundColor: Theme.of(context)
+                                          .primaryColor
+                                          .withAlpha(100))
+                                  : null,
+                              text:
+                                  "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
+                              semanticsLabel: 'semanticsLabel',
+                              recognizer: DoubleTapGestureRecognizer()
+                                ..onDoubleTapDown = (tapDown) {});
+                        }).toList()),
                     semanticsLabel: 'semanticsLabel',
-                    style: TextStyle(
-                        fontFamily: 'alquran',
-                        fontSize: 23,
-                        fontWeight: FontWeight.bold),
-                    children: ayatList.map((e) {
-                      return TextSpan(
-                          style: _playingAyahId == e.number
-                              ? TextStyle(
-                                  backgroundColor: Theme.of(context)
-                                      .primaryColor
-                                      .withAlpha(100))
-                              : null,
-                          text:
-                              "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
-                          semanticsLabel: 'semanticsLabel',
-                          recognizer: DoubleTapGestureRecognizer()
-                            ..onDoubleTapDown = (tapDown) {});
-                    }).toList()),
-                semanticsLabel: 'semanticsLabel',
-                textAlign: TextAlign.justify,
-                softWrap: true,
-              ),
-            ],
-          ));
+                    textAlign: TextAlign.justify,
+                    softWrap: true,
+                  ),
+                ],
+              ));
         },
         itemCount: ayatByPage.values.length,
       ),
