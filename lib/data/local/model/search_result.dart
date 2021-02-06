@@ -12,4 +12,9 @@ class SearchResult{
     ayah = Ayah.fromMap(map);
     surah = Surah.fromMap(map);
   }
+  @override
+  String toString() {
+    // TODO: implement toString
+    return "SearchResult(ayah: $ayah, surah:$surah)";
+  }
 }

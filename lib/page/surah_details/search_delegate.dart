@@ -1,13 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/data/local/model/search_result.dart';
+import 'package:quran/data/local/quran_database.dart';
 import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/model/quran.dart';
 import '../../data/local/normalization.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class AyahSearchDelegate extends SearchDelegate<AyahSearchResult> {
+class AyahSearchDelegate extends SearchDelegate<SearchResult> {
   final SearchBloc _searchBloc;
 
   AyahSearchDelegate(this._searchBloc)
@@ -98,10 +100,9 @@ class AyahSearchResult {
 }
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  final QuranProvider _provider;
-  List<Surah> _cache;
+  final QuranDatabase _quranDatabase;
 
-  SearchBloc(this._provider) : super(SearchIdleState());
+  SearchBloc(this._quranDatabase) : super(SearchIdleState());
 
   @override
   Stream<Transition<SearchEvent, SearchState>> transformEvents(
@@ -116,23 +117,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       if (event.query.isEmpty) return;
       try {
         yield SearchLoadingState();
-        if (_cache == null) {
-          _cache = await _provider.loadSurahList();
-        }
-        var result = await Future.microtask(() async {
-          await Future.delayed(Duration(seconds: 1));
-          List<AyahSearchResult> result = [];
-          _cache.forEach((element) {
-            var queryResult = element.ayahs.where((element) => element.text
-                .replaceAll("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيم", "")
-                .normalize()
-                .contains(event.query));
-            if (queryResult.isNotEmpty) {
-              result.add(AyahSearchResult(element, queryResult.first));
-            }
-          });
-          return result;
-        });
+       var result =await  _quranDatabase.search(event.query);
 
         if (result.isNotEmpty) {
           yield SearchSuccessState(result);
@@ -157,7 +142,7 @@ class SearchErrorState extends SearchState {}
 class SearchIdleState extends SearchState {}
 
 class SearchSuccessState extends SearchState {
-  final List<AyahSearchResult> result;
+  final List<SearchResult> result;
 
   SearchSuccessState(this.result);
 
