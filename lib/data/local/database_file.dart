@@ -25,7 +25,7 @@ class DatabaseFile {
     if (file.existsSync()) file.deleteSync();
   }
 
-  Future<bool> extractDatabaseFile( ) async {
+  Future<bool> extractDatabaseFile() async {
     var path = await filePath();
     var databasesPath = await getDatabasesPath();
     var databaseFile = File(path);

@@ -117,7 +117,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       if (event.query.isEmpty) return;
       try {
         yield SearchLoadingState();
-       var result =await  _quranDatabase.search(event.query);
+        var result = await _quranDatabase.search(event.query);
 
         if (result.isNotEmpty) {
           yield SearchSuccessState(result);

@@ -14,7 +14,6 @@ import '../../islamic_app_bar.dart';
 import 'bloc/readers/readers_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class QuranReaderPage extends StatefulWidget {
   final List<Surah> surahs;
   final int index;

@@ -8,13 +8,12 @@ class ExpandablePageView extends StatefulWidget {
     @required this.children,
   }) : super(key: key);
 
-
-
   @override
   _ExpandablePageViewState createState() => _ExpandablePageViewState();
 }
 
-class _ExpandablePageViewState extends State<ExpandablePageView> with TickerProviderStateMixin {
+class _ExpandablePageViewState extends State<ExpandablePageView>
+    with TickerProviderStateMixin {
   PageController _pageController;
   List<double> _heights;
   int _currentPage = 0;
@@ -59,19 +58,20 @@ class _ExpandablePageViewState extends State<ExpandablePageView> with TickerProv
       .asMap() //
       .map(
         (index, child) => MapEntry(
-      index,
-      OverflowBox(
-        //needed, so that parent won't impose its constraints on the children, thus skewing the measurement results.
-        minHeight: 0,
-        maxHeight: double.infinity,
-        alignment: Alignment.topCenter,
-        child: SizeReportingWidget(
-          onSizeChange: (size) => setState(() => _heights[index] = size?.height ?? 0),
-          child: child,
+          index,
+          OverflowBox(
+            //needed, so that parent won't impose its constraints on the children, thus skewing the measurement results.
+            minHeight: 0,
+            maxHeight: double.infinity,
+            alignment: Alignment.topCenter,
+            child: SizeReportingWidget(
+              onSizeChange: (size) =>
+                  setState(() => _heights[index] = size?.height ?? 0),
+              child: child,
+            ),
+          ),
         ),
-      ),
-    ),
-  )
+      )
       .values
       .toList();
 }

@@ -41,7 +41,6 @@ class JuzReference {
     map["name"] = surahName;
     map["page_id"] = page;
 
-
     return map;
   }
 
