@@ -24,7 +24,6 @@ class QuranApi {
   Future<bool> downloadDatabase(String path, ProgressCallback progressCallback,
       CancelToken cancelToken) async {
     try {
-
       var fileResponse = await _client.download(dbUrl, path,
           onReceiveProgress: progressCallback, cancelToken: cancelToken);
 

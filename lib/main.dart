@@ -35,7 +35,7 @@ main() async {
     await quranDatabase.initDb();
     quranDatabase.juz().then((value) {
       print(value);
-    }).catchError((error,stack){
+    }).catchError((error, stack) {
       print(error);
       print(stack);
     });

@@ -48,14 +48,12 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
                   onTap: () {
                     var page = juz.first.page;
                     print("JUMPING TO PAGE: $page");
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) {
-                              return TestWidget(
-                                  page: page-1,
-                                );
-                            }));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return TestWidget(
+                        page: page - 1,
+                      );
+                    }));
                   },
                   leading: Text("﴿${index + 1}﴾",
                       style: TextStyle(

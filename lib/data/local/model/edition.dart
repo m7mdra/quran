@@ -15,13 +15,13 @@ class Edition {
   String type;
   String direction;
 
-  Edition({
-      this.identifier, 
-      this.language, 
-      this.name, 
-      this.englishName, 
-      this.format, 
-      this.type, 
+  Edition(
+      {this.identifier,
+      this.language,
+      this.name,
+      this.englishName,
+      this.format,
+      this.type,
       this.direction});
 
   Edition.fromMap(dynamic json) {
@@ -45,7 +45,8 @@ class Edition {
     map["direction"] = direction;
     return map;
   }
-@override
+
+  @override
   String toString() {
     return '$identifier:$type';
   }

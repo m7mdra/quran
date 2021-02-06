@@ -73,6 +73,7 @@ class Preference {
   bool didDatabaseDownloadSuccess() {
     return _sharedPreferences.getBool("dbdd") ?? false;
   }
+
   bool didExtractDatabaseDownloadSuccess() {
     return _sharedPreferences.getBool("dbde") ?? false;
   }

@@ -27,12 +27,14 @@ class _SurahsJuzesPageState extends State<SurahsJuzesPage>
     _tabController = TabController(length: 2, vsync: this);
     _pageController = PageController(keepPage: true);
   }
+
   @override
   void dispose() {
     super.dispose();
     _tabController.dispose();
     _pageController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,12 +43,8 @@ class _SurahsJuzesPageState extends State<SurahsJuzesPage>
         onPageChanged: (index) {
           _tabController.animateTo(index,
               duration: Duration(milliseconds: 200), curve: Curves.linear);
-
         },
-        children: [
-          SurahsPage(),
-          JuzPage()
-        ],
+        children: [SurahsPage(), JuzPage()],
       ),
       appBar: IslamicAppBar(
         context: context,
