@@ -117,7 +117,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
         IconButton(
           icon: Icon(Icons.search),
           onPressed: () async {
-            var result = await showSearch<AyahSearchResult>(
+            /*var result = await showSearch<AyahSearchResult>(
                 context: context,
                 delegate: AyahSearchDelegate(
                     SearchBloc(DependencyProvider.provide())));
@@ -128,7 +128,7 @@ class _QuranReaderPageState extends State<QuranReaderPage>
               var indexOfSurah = widget.surahs.indexOf(query.surah);
               if (indexOfSurah != -1)
                 itemScrollController.jumpTo(index: indexOfSurah, alignment: 0);
-            }
+            }*/
           },
         ),
         IconButton(

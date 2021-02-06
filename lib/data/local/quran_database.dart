@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 import 'model/ayah.dart';
 import 'model/edition.dart';
 import 'model/juz.dart';
+import 'model/search_result.dart';
 import 'model/surah.dart';
 
 class QuranDatabase {
@@ -125,14 +126,14 @@ class QuranDatabase {
     return juzes;
   }
 
-  Future<List<Ayah>> search(String keyword) async {
+  Future<List<SearchResult>> search(String keyword) async {
     var db = await database;
     var query = await db.rawQuery("""
     SELECT *  FROM ayat
     LEFT  OUTER JOIN  surat
     ON ayat.surat_id = surat.id
     WHERE  ayat.edition_id = 78 AND text LIKE '%$keyword%' """);
-    return query.map((e) => Ayah.fromMap(e)).toList();
+    return query.map((e) => SearchResult.fromMap(e)).toList();
   }
 
   Future<List<Ayah>> singleTafseer(

@@ -44,7 +44,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
+        padding: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [

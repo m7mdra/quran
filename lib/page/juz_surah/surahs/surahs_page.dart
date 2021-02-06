@@ -2,15 +2,21 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quran/data/local/database_file.dart';
 import 'package:quran/data/local/model/ayah.dart';
+import 'package:quran/data/local/model/search_result.dart';
 import 'package:quran/data/local/quran_database.dart';
 import 'package:quran/di.dart';
 import 'package:quran/islamic_app_bar.dart';
 import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
+import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
+import 'package:quran/page/surah_details/quran_controls_modal_widget.dart';
+import 'package:quran/page/surah_details/search_delegate.dart';
+import 'package:quran/page/surah_details/surah_player.dart';
 
 import 'bloc/bloc.dart';
 
@@ -62,7 +68,7 @@ class _SurahsPageState extends State<SurahsPage>
                         context,
                         MaterialPageRoute(
                             builder: (context) => TestWidget(
-                                  page: surah.page-1,
+                                  page: surah.page - 1,
                                 )));
                   },
                   leading: Text("﴿${surah.number}﴾",
@@ -117,11 +123,35 @@ class _TestWidgetState extends State<TestWidget> {
   Map<int, List<Ayah>> ayatByPage = {};
   var _playingAyahId = 0;
   PageController pageController;
+  bool _isVisible = true;
+  ScrollController scrollController;
+  ReadersBloc readersBloc;
+  SurahPlayer surahPlayer;
 
   @override
   void initState() {
     super.initState();
     pageController = PageController();
+    scrollController = ScrollController();
+    readersBloc =
+        ReadersBloc(DependencyProvider.provide(), DependencyProvider.provide());
+    surahPlayer = SurahPlayer(readersBloc, DependencyProvider.provide());
+    scrollController.addListener(() {
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        if (_isVisible)
+          setState(() {
+            _isVisible = false;
+          });
+      }
+      if (scrollController.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        if (!_isVisible)
+          setState(() {
+            _isVisible = true;
+          });
+      }
+    });
     quranDatabase.ayat().then((value) {
       setState(() {
         ayatByPage = groupBy(value, (ayah) => ayah.pageId);
@@ -133,58 +163,101 @@ class _TestWidgetState extends State<TestWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: IslamicAppBar(
-        title: 'Hello',
+      bottomSheet: AnimatedContainer(
+        child: QuranControlsModal(
+          player: surahPlayer,
+        ),
+        height: _isVisible ? 120 : 0,
+        width: MediaQuery.of(context).size.width,
+        duration: Duration(milliseconds: 200),
       ),
-      body: PageView.builder(
-        clipBehavior: Clip.antiAlias,
-        onPageChanged: (page) {
-          print(page);
-        },
-        controller: pageController,
-        itemBuilder: (context, index) {
-          var ayatList = ayatByPage.values.toList()[index];
-
-          return SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Text.rich(
-                    TextSpan(
-                        text: "",
-                        semanticsLabel: 'semanticsLabel',
-                        style: TextStyle(
-                            fontFamily: 'alquran',
-                            fontSize: 23,
-                            fontWeight: FontWeight.bold),
-                        children: ayatList.map((e) {
-                          return TextSpan(
-                              style: _playingAyahId == e.number
-                                  ? TextStyle(
-                                      backgroundColor: Theme.of(context)
-                                          .primaryColor
-                                          .withAlpha(100))
-                                  : null,
-                              text:
-                                  "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
+      appBar: PreferredSize(
+        preferredSize: Size(MediaQuery.of(context).size.width, 60),
+        child: AnimatedContainer(
+          height: _isVisible ? 60 : 0,
+          duration: Duration(milliseconds: 200),
+          child: IslamicAppBar(
+            title: 'Hello',
+            actions: [
+              IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () async {
+                    SearchResult result = await showSearch<SearchResult>(
+                        context: context,
+                        delegate: AyahSearchDelegate(
+                            SearchBloc(DependencyProvider.provide())));
+                    if (result != null) {
+                      var ayah = result.ayah;
+                      print(ayah);
+                      pageController.jumpToPage(ayah.pageId - 1);
+                      setState(() {
+                        _playingAyahId = ayah.number;
+                      });
+                    }
+                  })
+            ],
+          ),
+        ),
+      ),
+      body: SafeArea(
+        maintainBottomViewPadding: true,
+        top: true,
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              _isVisible = !_isVisible;
+            });
+          },
+          child: PageView.builder(
+            clipBehavior: Clip.antiAlias,
+            onPageChanged: (page) {
+              print(page);
+            },
+            controller: pageController,
+            itemBuilder: (context, index) {
+              var ayatList = ayatByPage.values.toList()[index];
+              return SingleChildScrollView(
+                  controller: scrollController,
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(height: 16),
+                      Text.rich(
+                          TextSpan(
+                              text: "",
                               semanticsLabel: 'semanticsLabel',
-                              recognizer: DoubleTapGestureRecognizer()
-                                ..onDoubleTapDown = (tapDown) {});
-                        }).toList()),
-                    semanticsLabel: 'semanticsLabel',
-                    textAlign: TextAlign.justify,
-                    softWrap: true,
-                  ),
-                ],
-              ));
-        },
-        itemCount: ayatByPage.values.length,
+                              style: TextStyle(
+                                  fontFamily: 'alquran',
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold),
+                              children: ayatList.map((e) {
+                                return buildAyahTextSpan(e, context);
+                              }).toList()),
+                          semanticsLabel: 'semanticsLabel',
+                          textAlign: TextAlign.center,
+                          softWrap: true),
+                    ],
+                  ));
+            },
+            itemCount: ayatByPage.values.length,
+          ),
+        ),
       ),
     );
+  }
+
+  TextSpan buildAyahTextSpan(Ayah e, BuildContext context) {
+    return TextSpan(
+        style: _playingAyahId == e.number
+            ? TextStyle(
+                backgroundColor: Theme.of(context).primaryColor.withAlpha(100))
+            : null,
+        text:
+            "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
+        semanticsLabel: 'semanticsLabel',
+        recognizer: DoubleTapGestureRecognizer()
+          ..onDoubleTapDown = (tapDown) {});
   }
 }
 

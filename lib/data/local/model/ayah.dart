@@ -74,6 +74,6 @@ class Ayah {
 
   @override
   String toString() {
-    return 'Ayah{id: $id, juzId: $juzId, numberInSurah: $numberInSurah, text: $text}';
+    return 'Ayah{id: $id, juzId: $juzId,page_id: $pageId,number: $number, numberInSurah: $numberInSurah, text: $text}';
   }
 }
