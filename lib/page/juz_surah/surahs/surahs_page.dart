@@ -33,12 +33,12 @@ class SurahsPage extends StatefulWidget {
 class _SurahsPageState extends State<SurahsPage>
     with AutomaticKeepAliveClientMixin {
   SurahsBloc _bloc;
-  LastReadBloc _quranReaderBloc;
+  LastReadBloc _lastReadBloc;
 
   @override
   void initState() {
     super.initState();
-    _quranReaderBloc = context.bloc();
+    _lastReadBloc = context.bloc();
     _bloc = SurahsBloc(DependencyProvider.provide());
     _bloc.add(LoadSurahListEvent());
   }
@@ -69,10 +69,13 @@ class _SurahsPageState extends State<SurahsPage>
                 return ListTile(
                   dense: true,
                   onTap: () {
+                    _lastReadBloc.add(
+                        SaveReadingSurah(surah.name, surah.page, 0));
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => TestWidget(
+                            builder: (context) =>
+                                TestWidget(
                                   page: surah.page - 1,
                                 )));
                   },
@@ -104,7 +107,9 @@ class _SurahsPageState extends State<SurahsPage>
             );
           }
           return Center(
-              child: Text(AppLocalizations.of(context).failedToLoadData));
+              child: Text(AppLocalizations
+                  .of(context)
+                  .failedToLoadData));
         },
       ),
     );
@@ -134,22 +139,26 @@ class _TestWidgetState extends State<TestWidget> {
   ReadersBloc _readersBloc;
   var _currentPage;
   BookmarkCubit _bookmarkCubit;
+  LastReadBloc _lastReadBloc;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController();
+    _lastReadBloc = context.bloc();
     _scrollController = ScrollController();
-    _currentPage = widget.page+1;
+    _currentPage = widget.page + 1;
     _bookmarkCubit = BookmarkCubit(DependencyProvider.provide());
     _readersBloc =
         ReadersBloc(DependencyProvider.provide(), DependencyProvider.provide());
-    _player = SurahPlayer(_readersBloc, DependencyProvider.provide(),DependencyProvider.provide());
+    _player = SurahPlayer(_readersBloc, DependencyProvider.provide(),
+        DependencyProvider.provide());
     _player.errorStream.listen((event) {
       if (mounted)
         showDialog(
             context: context,
-            builder: (context) => AlertDialog(
+            builder: (context) =>
+                AlertDialog(
                   title: Text('حصل خطا'),
                   content: Text('فشل تشغيل المقطع, حاول مرة اخرى'),
                 ));
@@ -180,7 +189,6 @@ class _TestWidgetState extends State<TestWidget> {
       setState(() {
         ayatByPage = groupBy(value, (ayah) => ayah.pageId);
         _pageController.jumpToPage(widget.page);
-
       });
     });
   }
@@ -198,18 +206,24 @@ class _TestWidgetState extends State<TestWidget> {
     return Scaffold(
       bottomSheet: AnimatedContainer(
         child: QuranControlsModal(
-          onSaveBookMarkClick: (name){
+          onSaveBookMarkClick: (name) {
             // _bookmarkCubit.saveBookMark(name, surah, position)
           },
           player: _player,
           page: _currentPage,
         ),
         height: _isVisible ? 120 : 0,
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         duration: Duration(milliseconds: 200),
       ),
       appBar: PreferredSize(
-        preferredSize: Size(MediaQuery.of(context).size.width, 60),
+        preferredSize: Size(MediaQuery
+            .of(context)
+            .size
+            .width, 60),
         child: AnimatedContainer(
           height: _isVisible ? 60 : 0,
           duration: Duration(milliseconds: 200),
@@ -249,12 +263,15 @@ class _TestWidgetState extends State<TestWidget> {
             clipBehavior: Clip.antiAlias,
             onPageChanged: (page) {
               setState(() {
+                var firstInPage = getAyahForPage(page).first;
+                _lastReadBloc.add(SaveReadingSurah(
+                    firstInPage.surahName, firstInPage.pageId+1, 0));
                 _currentPage = page + 1;
               });
             },
             controller: _pageController,
-            itemBuilder: (context, index) {
-              var ayatList = ayatByPage.values.toList()[index];
+            itemBuilder: (context, page) {
+              var ayatList = getAyahForPage(page);
               return SingleChildScrollView(
                   controller: _scrollController,
                   padding: const EdgeInsets.all(16),
@@ -286,13 +303,15 @@ class _TestWidgetState extends State<TestWidget> {
     );
   }
 
+  List<Ayah> getAyahForPage(int page) => ayatByPage.values.toList()[page];
+
   TextSpan buildAyahTextSpan(Ayah e, BuildContext context) {
     if (e.numberInSurah == 1)
       return TextSpan(children: [
         WidgetSpan(
             child: SurahTitleWidget(
-          surah: e.surahName,
-        )),
+              surah: e.surahName,
+            )),
         TextSpan(text: "\n"),
         buildAyah(e, context)
       ]);
@@ -304,10 +323,15 @@ class _TestWidgetState extends State<TestWidget> {
     return TextSpan(
         style: _playingAyahId == e.number
             ? TextStyle(
-                backgroundColor: Theme.of(context).primaryColor.withAlpha(100))
+            backgroundColor: Theme
+                .of(context)
+                .primaryColor
+                .withAlpha(100))
             : null,
         text:
-            "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
+        "${e.text.replaceFirst(
+            "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e
+            .numberInSurah}﴾",
         semanticsLabel: 'semanticsLabel',
         recognizer: DoubleTapGestureRecognizer()
           ..onDoubleTapDown = (tapDown) {
@@ -315,8 +339,8 @@ class _TestWidgetState extends State<TestWidget> {
           });
   }
 
-  void showContextMenuAt(
-      TapDownDetails tapDown, BuildContext context, Ayah ayah) {
+  void showContextMenuAt(TapDownDetails tapDown, BuildContext context,
+      Ayah ayah) {
     var rect = Rect.fromCircle(center: tapDown.globalPosition, radius: 0);
     var popMenu = PopupMenu(context: context);
     popMenu.show(

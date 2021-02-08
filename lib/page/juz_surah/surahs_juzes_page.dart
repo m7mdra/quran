@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:quran/di.dart';
 import 'package:quran/page/juz_surah/surahs/surahs_page.dart';
-import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
-import 'package:quran/page/surah_details/search_delegate.dart';
-import 'package:quran/page/surah_details/surah_details.dart';
 
 import '../../islamic_app_bar.dart';
 import 'juzes/juz_page.dart';
@@ -24,7 +19,7 @@ class _SurahsJuzesPageState extends State<SurahsJuzesPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _pageController = PageController(keepPage: true);
   }
 
@@ -44,7 +39,7 @@ class _SurahsJuzesPageState extends State<SurahsJuzesPage>
           _tabController.animateTo(index,
               duration: Duration(milliseconds: 200), curve: Curves.linear);
         },
-        children: [SurahsPage(), JuzPage()],
+        children: [SurahsPage(), JuzPage(), JuzPage()],
       ),
       appBar: IslamicAppBar(
         context: context,
@@ -70,12 +65,9 @@ class _SurahsJuzesPageState extends State<SurahsJuzesPage>
               fontStyle: FontStyle.normal,
               fontSize: 20.0),
           tabs: [
-            Tab(
-              text: 'السور',
-            ),
-            Tab(
-              text: 'الاجزاء',
-            )
+            Tab(text: 'السور'),
+            Tab(text: 'الاجزاء'),
+            Tab(text: 'ربع الحزب'),
           ],
           controller: _tabController,
         ),

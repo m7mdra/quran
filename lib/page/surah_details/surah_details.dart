@@ -53,10 +53,10 @@ class _SurahDetailsState extends State<SurahDetails> {
         DependencyProvider.provide());
     _scrollController = ScrollController(initialScrollOffset: widget.offset);
 
-    _scrollController.addListener(() {
+    /*_scrollController.addListener(() {
       _quranReaderBloc.add(SaveReadingSurah(
           widget.surah, widget.index, _scrollController.offset));
-    });
+    });*/
     _surahPlayer.errorStream.listen((event) {
       if (mounted)
         showDialog(

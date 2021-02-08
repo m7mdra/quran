@@ -3,15 +3,15 @@ part of 'last_read_bloc.dart';
 abstract class LastReadEvent {}
 
 class SaveReadingSurah extends LastReadEvent {
-  final Surah surah;
-  final int index;
+  final String surah;
+  final int page;
   final double position;
 
-  SaveReadingSurah(this.surah, this.index, this.position);
+  SaveReadingSurah(this.surah, this.page, this.position);
 
   @override
   String toString() {
-    return "${surah} $index $position";
+    return "${surah} $page $position";
   }
 }
 
