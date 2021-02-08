@@ -1,3 +1,4 @@
+import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/model/tafseer.dart';
 
 abstract class TafseerState {}
@@ -6,18 +7,13 @@ class TafseerLoadingState extends TafseerState {}
 
 class TafseerErrorState extends TafseerState {}
 
-class TafseerForAyahLoadedState extends TafseerState {
-  final Tafseer tafseer;
 
-  TafseerForAyahLoadedState(this.tafseer);
-}
+class TafseerLoadedState extends TafseerState {
+  final List<Ayah> list;
 
-class TafseerForSurahLoadedState extends TafseerState {
-  final List<Tafseer> list;
-
-  TafseerForSurahLoadedState(this.list);
+  TafseerLoadedState(this.list);
   @override
   String toString() {
-    return "TafseerForSurahLoadedState ${list.length}";
+    return "TafseerLoadedState ${list.length}";
   }
 }

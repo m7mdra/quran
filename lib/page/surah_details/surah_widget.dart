@@ -68,7 +68,7 @@ class _SurahWidgetState extends State<SurahWidget> {
     popMenu.show(
         rect: rect,
         onPlayClick: () async {
-          player.playAyah(ayah);
+          // player.playAyah(ayah);
         },
         onTafseerCallback: () async {
           context.bloc<TafseerBloc>().add(LoadTafseerForAyah(ayah.number));

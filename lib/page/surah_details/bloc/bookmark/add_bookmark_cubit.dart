@@ -9,11 +9,11 @@ class BookmarkCubit extends Cubit<AddBookmarkState> {
 
   BookmarkCubit(this._repository) : super(AddBookmarkInitial());
 
-  Future<void> saveBookMark(String name, int surah, double position) async {
+  Future<void> saveBookMark(String name, int page, double position) async {
     try {
       emit(AddBookmarkSavedLoading());
       var result = await _repository
-          .addBookmark(Bookmark(name: name, surah: surah, position: position));
+          .addBookmark(Bookmark(name: name, surah: page, position: position));
       await Future.delayed(Duration(seconds: 1));
 
       emit(AddBookmarkSavedSuccess());

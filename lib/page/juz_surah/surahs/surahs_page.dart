@@ -12,12 +12,17 @@ import 'package:quran/data/local/model/search_result.dart';
 import 'package:quran/data/local/quran_database.dart';
 import 'package:quran/di.dart';
 import 'package:quran/islamic_app_bar.dart';
+import 'package:quran/page/surah_details/bloc/bookmark/add_bookmark_cubit.dart';
 import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
 import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
+import 'package:quran/page/surah_details/bloc/tafseer/tafseer_bloc.dart';
+import 'package:quran/page/surah_details/bloc/tafseer/tafseer_event.dart';
 import 'package:quran/page/surah_details/quran_controls_modal_widget.dart';
 import 'package:quran/page/surah_details/search_delegate.dart';
 import 'package:quran/page/surah_details/surah_player.dart';
+import 'package:quran/page/surah_details/tafseer_widget.dart';
 
+import '../../../popup_menu.dart';
 import 'bloc/bloc.dart';
 
 class SurahsPage extends StatefulWidget {
@@ -119,45 +124,73 @@ class TestWidget extends StatefulWidget {
 }
 
 class _TestWidgetState extends State<TestWidget> {
-  QuranDatabase quranDatabase = QuranDatabase(DatabaseFile());
+  QuranDatabase _quranDatabase = QuranDatabase(DatabaseFile());
+  SurahPlayer _player;
   Map<int, List<Ayah>> ayatByPage = {};
   var _playingAyahId = 0;
-  PageController pageController;
+  PageController _pageController;
   bool _isVisible = true;
-  ScrollController scrollController;
-  ReadersBloc readersBloc;
-  SurahPlayer surahPlayer;
+  ScrollController _scrollController;
+  ReadersBloc _readersBloc;
+  var _currentPage;
+  BookmarkCubit _bookmarkCubit;
 
   @override
   void initState() {
     super.initState();
-    pageController = PageController();
-    scrollController = ScrollController();
-    readersBloc =
+    _pageController = PageController();
+    _scrollController = ScrollController();
+    _currentPage = widget.page+1;
+    _bookmarkCubit = BookmarkCubit(DependencyProvider.provide());
+    _readersBloc =
         ReadersBloc(DependencyProvider.provide(), DependencyProvider.provide());
-    surahPlayer = SurahPlayer(readersBloc, DependencyProvider.provide());
-    scrollController.addListener(() {
-      if (scrollController.position.userScrollDirection ==
-          ScrollDirection.reverse) {
+    _player = SurahPlayer(_readersBloc, DependencyProvider.provide(),DependencyProvider.provide());
+    _player.errorStream.listen((event) {
+      if (mounted)
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text('حصل خطا'),
+                  content: Text('فشل تشغيل المقطع, حاول مرة اخرى'),
+                ));
+    });
+    _player.currentPlayingIndex.listen((event) {
+      if (mounted)
+        setState(() {
+          _playingAyahId = event;
+        });
+    });
+    _scrollController.addListener(() {
+      var position = _scrollController.position;
+      if (position == null) return;
+      if (position.userScrollDirection == ScrollDirection.reverse) {
         if (_isVisible)
           setState(() {
             _isVisible = false;
           });
       }
-      if (scrollController.position.userScrollDirection ==
-          ScrollDirection.forward) {
+      if (position.userScrollDirection == ScrollDirection.forward) {
         if (!_isVisible)
           setState(() {
             _isVisible = true;
           });
       }
     });
-    quranDatabase.ayat().then((value) {
+    _quranDatabase.ayat().then((value) {
       setState(() {
         ayatByPage = groupBy(value, (ayah) => ayah.pageId);
-        pageController.jumpToPage(widget.page);
+        _pageController.jumpToPage(widget.page);
+
       });
     });
+  }
+
+  @override
+  void dispose() {
+    _player.dispose();
+    _scrollController.dispose();
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -165,7 +198,11 @@ class _TestWidgetState extends State<TestWidget> {
     return Scaffold(
       bottomSheet: AnimatedContainer(
         child: QuranControlsModal(
-          player: surahPlayer,
+          onSaveBookMarkClick: (name){
+            // _bookmarkCubit.saveBookMark(name, surah, position)
+          },
+          player: _player,
+          page: _currentPage,
         ),
         height: _isVisible ? 120 : 0,
         width: MediaQuery.of(context).size.width,
@@ -189,7 +226,7 @@ class _TestWidgetState extends State<TestWidget> {
                     if (result != null) {
                       var ayah = result.ayah;
                       print(ayah);
-                      pageController.jumpToPage(ayah.pageId - 1);
+                      _pageController.jumpToPage(ayah.pageId - 1);
                       setState(() {
                         _playingAyahId = ayah.number;
                       });
@@ -211,13 +248,15 @@ class _TestWidgetState extends State<TestWidget> {
           child: PageView.builder(
             clipBehavior: Clip.antiAlias,
             onPageChanged: (page) {
-              print(page);
+              setState(() {
+                _currentPage = page + 1;
+              });
             },
-            controller: pageController,
+            controller: _pageController,
             itemBuilder: (context, index) {
               var ayatList = ayatByPage.values.toList()[index];
               return SingleChildScrollView(
-                  controller: scrollController,
+                  controller: _scrollController,
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -248,6 +287,20 @@ class _TestWidgetState extends State<TestWidget> {
   }
 
   TextSpan buildAyahTextSpan(Ayah e, BuildContext context) {
+    if (e.numberInSurah == 1)
+      return TextSpan(children: [
+        WidgetSpan(
+            child: SurahTitleWidget(
+          surah: e.surahName,
+        )),
+        TextSpan(text: "\n"),
+        buildAyah(e, context)
+      ]);
+    else
+      return buildAyah(e, context);
+  }
+
+  TextSpan buildAyah(Ayah e, BuildContext context) {
     return TextSpan(
         style: _playingAyahId == e.number
             ? TextStyle(
@@ -257,7 +310,32 @@ class _TestWidgetState extends State<TestWidget> {
             "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
         semanticsLabel: 'semanticsLabel',
         recognizer: DoubleTapGestureRecognizer()
-          ..onDoubleTapDown = (tapDown) {});
+          ..onDoubleTapDown = (tapDown) {
+            showContextMenuAt(tapDown, context, e);
+          });
+  }
+
+  void showContextMenuAt(
+      TapDownDetails tapDown, BuildContext context, Ayah ayah) {
+    var rect = Rect.fromCircle(center: tapDown.globalPosition, radius: 0);
+    var popMenu = PopupMenu(context: context);
+    popMenu.show(
+        rect: rect,
+        onPlayClick: () async {
+          _player.playAyah(ayah);
+        },
+        onTafseerCallback: () async {
+          context.bloc<TafseerBloc>().add(LoadTafseerForAyah(ayah.number));
+          showTafseerDialog();
+        });
+  }
+
+  showTafseerDialog() {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return TafseerWidget();
+        });
   }
 }
 
@@ -268,18 +346,21 @@ class SurahTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        SvgPicture.asset('assets/images/surah_name_title.svg'),
-        Text(
-          surah,
-          style: TextStyle(
-              color: Color(0xffFD9434),
-              fontSize: 22,
-              fontFamily: 'Al-QuranAlKareem'),
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          SvgPicture.asset('assets/images/surah_name_title.svg'),
+          Text(
+            surah,
+            style: TextStyle(
+                color: Color(0xffFD9434),
+                fontSize: 22,
+                fontFamily: 'Al-QuranAlKareem'),
+          )
+        ],
+      ),
     );
   }
 }
