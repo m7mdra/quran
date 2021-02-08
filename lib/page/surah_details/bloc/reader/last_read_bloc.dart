@@ -36,7 +36,7 @@ class LastReadBloc extends Bloc<LastReadEvent, LastReadState> {
     if (event is SaveReadingSurah) {
       print("CALLLLLLLLED ${DateTime.now()}");
       var lastRead = LastRead(
-          surah: event.surah, position: event.position, index: event.index);
+          surah: event.surah, position: event.position, page: event.page);
       await _preferences.saveReading(lastRead);
       yield LastReadLoaded(lastRead);
     }

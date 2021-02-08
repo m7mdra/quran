@@ -120,14 +120,14 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(16)),
                         child: InkWell(
                           onTap: () {
-                            Navigator.push(
+                      /*      Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => SurahDetails(
                                           index: lastRead.index,
                                           surah: lastRead.surah,
                                           offset: lastRead.position,
-                                        )));
+                                        )));*/
                           },
                           borderRadius: BorderRadius.circular(16),
                           child: Row(
@@ -141,11 +141,12 @@ class _HomePageState extends State<HomePage> {
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
                                       )),
-                                  Text(lastRead.surah.name,
+                                  Text(lastRead.surah,
                                       style: TextStyle(
                                         fontFamily: 'Al-QuranAlKareem',
                                         fontSize: 20,
                                       )),
+                                  Text("الصحفة ${lastRead.page}"),
                                   Text(AppLocalizations.of(context).tapToView,
                                       style: TextStyle(
                                         fontFamily: 'Cairo',
