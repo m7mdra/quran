@@ -7,14 +7,12 @@ import 'package:quran/islamics_page.dart';
 import 'package:quran/main/bloc/lang/language_cubit.dart';
 import 'package:quran/main/bloc/theme/theme_cubit.dart';
 import 'package:quran/page/about.dart';
+import 'package:quran/page/juz_surah/surahs/surahs_page.dart';
 import 'package:quran/page/juz_surah/surahs_juzes_page.dart';
 import 'package:quran/page/notes_bookmarks/notes_bookmarks_page.dart';
 import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
-import 'package:quran/page/surah_details/quran_reader_page.dart';
-import 'package:quran/page/surah_details/surah_details.dart';
 
 import 'common.dart';
-import 'page/juz_surah/surahs/bloc/bloc.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,54 +20,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  LastReadBloc _quranReaderBloc;
-
-  SurahsBloc _surahsBloc;
+  LastReadBloc _lastReadBloc;
 
   @override
   void initState() {
     super.initState();
-    _quranReaderBloc = context.bloc<LastReadBloc>();
-    _surahsBloc = context.bloc<SurahsBloc>();
-    _quranReaderBloc.add(LoadLastReadingSurah());
+    _lastReadBloc = context.bloc<LastReadBloc>();
+    _lastReadBloc.add(LoadLastReadingSurah());
   }
 
   @override
   void dispose() {
-    _surahsBloc.close();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener(
-          listener: (BuildContext context, state) {
-            if (state is SurahsLoadingState) {
-              showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) => AlertDialog(
-                        content: CircularProgressIndicator(),
-                      ));
-            }
-            if (state is SurahsLoadedSuccessState) {
-              /*    Navigator.of(context, rootNavigator: true).pop("dialog");
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => QuranReaderPage(
-                            index: state.index,
-                            surahs: state.surah,
-                          )));*/
-            }
-            if (state is SurahsErrorState) {
-              Navigator.of(context, rootNavigator: true).pop("dialog");
-            }
-          },
-          cubit: _surahsBloc,
-          child: buildBody(context)),
+      body: buildBody(context),
       appBar: buildAppBar(),
     );
   }
@@ -110,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.width * 0.35,
                 child: BlocBuilder(
-                  cubit: _quranReaderBloc,
+                  cubit: _lastReadBloc,
                   builder: (BuildContext context, state) {
                     if (state is LastReadLoaded) {
                       var lastRead = state.lastRead;
@@ -120,14 +88,12 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(16)),
                         child: InkWell(
                           onTap: () {
-                      /*      Navigator.push(
+                            Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SurahDetails(
-                                          index: lastRead.index,
-                                          surah: lastRead.surah,
-                                          offset: lastRead.position,
-                                        )));*/
+                                    builder: (context) => TestWidget(
+                                          page: lastRead.page,
+                                        )));
                           },
                           borderRadius: BorderRadius.circular(16),
                           child: Row(
