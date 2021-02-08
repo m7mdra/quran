@@ -6,9 +6,15 @@ class LoadTafseerForAyah extends TafseerEvent {
   LoadTafseerForAyah(this.ayahId);
 }
 
-class LoadTafseerForSurah extends TafseerEvent {
+class LoadTafseerForAyahRange extends TafseerEvent {
   final int start;
   final int end;
 
-  LoadTafseerForSurah(this.start, this.end);
+  LoadTafseerForAyahRange(this.start, this.end);
+}
+
+class LoadPageTafseer extends TafseerEvent{
+  final int page;
+
+  LoadPageTafseer(this.page);
 }

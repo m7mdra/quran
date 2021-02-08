@@ -49,7 +49,8 @@ class _SurahDetailsState extends State<SurahDetails> {
 
     _quranReaderBloc = context.bloc();
     bookmarkCubit = BookmarkCubit(DependencyProvider.provide());
-    _surahPlayer = SurahPlayer(context.bloc(), DependencyProvider.provide());
+    _surahPlayer = SurahPlayer(context.bloc(), DependencyProvider.provide(),
+        DependencyProvider.provide());
     _scrollController = ScrollController(initialScrollOffset: widget.offset);
 
     _scrollController.addListener(() {
@@ -100,7 +101,7 @@ class _SurahDetailsState extends State<SurahDetails> {
     popMenu.show(
         rect: rect,
         onPlayClick: () async {
-          _surahPlayer.playAyah(ayah);
+          // _surahPlayer.playAyah(ayah);
         },
         onTafseerCallback: () async {
           context.bloc<TafseerBloc>().add(LoadTafseerForAyah(ayah.number));

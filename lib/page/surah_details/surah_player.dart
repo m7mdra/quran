@@ -2,8 +2,9 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/local/preference.dart';
-import 'package:quran/data/model/quran.dart';
+import 'package:quran/data/local/quran_database.dart';
 import 'package:quran/data/model/reader.dart';
 import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
 
@@ -13,6 +14,7 @@ class SurahPlayer {
   AudioPlayer _player;
   final ReadersBloc _readersBloc;
   final Preference _preference;
+  final QuranDatabase quranDatabase;
   Reader _currentReader;
   StreamController<int> _currentPlayingIndexController =
       StreamController.broadcast();
@@ -39,7 +41,7 @@ class SurahPlayer {
 
   bool get isPaused => _state == AudioPlayerState.PAUSED;
 
-  SurahPlayer(this._readersBloc, this._preference) {
+  SurahPlayer(this._readersBloc, this._preference, this.quranDatabase) {
     WidgetsFlutterBinding.ensureInitialized();
     _player = AudioPlayer(playerId: "quranId");
     _preference.reader().then((value) => _currentReader = value);
@@ -91,9 +93,10 @@ class SurahPlayer {
     _play();
   }
 
-  void playSurah(Surah surah) {
+  void playPage(int page) async {
+    var ayat = await quranDatabase.page(page);
     clear();
-    _playlist.addAll(surah.ayahs);
+    _playlist.addAll(ayat);
     _play();
   }
 

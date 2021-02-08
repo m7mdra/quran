@@ -16,6 +16,7 @@ import 'bloc/tafseer/tafseer_event.dart';
 
 class QuranControlsModal extends StatefulWidget {
   final Surah surah;
+  final int page;
   final SurahPlayer player;
   final Function(String) onSaveBookMarkClick;
 
@@ -24,6 +25,7 @@ class QuranControlsModal extends StatefulWidget {
     @required this.surah,
     this.player,
     this.onSaveBookMarkClick,
+    this.page,
   }) : super(key: key);
 
   @override
@@ -70,9 +72,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
               title: AppLocalizations.of(context).interpretation,
               image: 'assets/images/tafseer.svg',
               onTap: () {
-                var list = widget.surah.ayahs;
-                context.bloc<TafseerBloc>().add(
-                    LoadTafseerForSurah(list.first.number, list.last.number));
+                context.bloc<TafseerBloc>().add(LoadPageTafseer(widget.page));
                 showDialog(
                     context: context, builder: (context) => TafseerWidget());
               },
@@ -106,7 +106,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
                             if (player.isPlaying) {
                               player.stop();
                             } else {
-                              player.playSurah(widget.surah);
+                              player.playPage(widget.page);
                             }
                           },
                         );

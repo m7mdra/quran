@@ -59,6 +59,13 @@ class QuranDatabase {
     return query.map((e) => Edition.fromMap(e)).toList();
   }
 
+  Future<List<Ayah>> page(int page) async {
+    var db = await database;
+    var query =
+        await db.rawQuery('SELECT * FROM ayat where page_id = ?', [page]);
+    return query.map((e) => Ayah.fromMap(e)).toList();
+  }
+
   Future<List<Edition>> quranEditions() async {
     var db = await database;
     var query =
@@ -137,20 +144,30 @@ class QuranDatabase {
   }
 
   Future<List<Ayah>> singleTafseer(
-      {@required int id, int editionId = 1}) async {
+      {@required int id, int editionId = 103}) async {
     var db = await database;
     var query = await db.rawQuery(
-        'SELECT *  FROM ayat WHERE ayat.id = ? and ayat.edition_id = ?',
+        'SELECT *  FROM ayat WHERE ayat.number = ? and ayat.edition_id = ?',
         [id, editionId]);
     return query.map((e) => Ayah.fromMap(e)).toList();
   }
 
   Future<List<Ayah>> rangedTafseer(
-      {@required int startId, @required int endId, int editionId = 1}) async {
+      {@required int startId, @required int endId, int editionId = 103}) async {
     var db = await database;
     var query = await db.rawQuery(
-        'SELECT *  FROM ayat WHERE ayat.id BETWEEN ? and ? and ayat.edition_id = 1',
+        'SELECT *  FROM ayat WHERE ayat.number BETWEEN ? and ? and ayat.edition_id = ?',
         [startId, endId, editionId]);
+    return query.map((e) => Ayah.fromMap(e)).toList();
+  }
+
+  Future<List<Ayah>> pageTafseer(
+      {@required int page, int editionId = 103}) async {
+    var db = await database;
+    var query = await db.rawQuery(
+        'SELECT * FROM ayat WHERE ayat.page_id = ? and ayat.edition_id = ?',
+        [page, editionId]);
+
     return query.map((e) => Ayah.fromMap(e)).toList();
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/tafseer/tafseer_bloc.dart';
 import 'bloc/tafseer/tafseer_state.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TafseerWidget extends StatelessWidget {
   const TafseerWidget({
@@ -19,7 +19,7 @@ class TafseerWidget extends StatelessWidget {
         child: BlocBuilder(
           cubit: context.bloc<TafseerBloc>(),
           builder: (context, state) {
-            if (state is TafseerForSurahLoadedState) {
+            if (state is TafseerLoadedState) {
               return Column(
                 children: [
                   Padding(
@@ -39,7 +39,7 @@ class TafseerWidget extends StatelessWidget {
                         var tafseer = state.list[index];
                         return ListTile(
                           dense: true,
-                          title: Text(tafseer.ayaInfo,
+                          title: Text(tafseer.text,
                               style: TextStyle(
                                 fontFamily: 'alquran',
                                 fontSize: 20,
@@ -63,36 +63,7 @@ class TafseerWidget extends StatelessWidget {
                 ],
               );
             }
-            if (state is TafseerForAyahLoadedState) {
-              return SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(AppLocalizations.of(context).interpretation,
-                        style: TextStyle(
-                            fontFamily: 'Cairo',
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal)),
-                    Divider(),
-                    Text(state.tafseer.ayaInfo,
-                        style: TextStyle(
-                          fontFamily: 'Cairo',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                        )),
-                    FlatButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text('اغلاق'),
-                    )
-                  ],
-                ),
-              );
-            } else if (state is TafseerErrorState) {
+            if (state is TafseerErrorState) {
               return Padding(
                 padding: const EdgeInsets.all(48.0),
                 child: Text(

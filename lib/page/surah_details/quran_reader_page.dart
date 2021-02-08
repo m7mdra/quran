@@ -41,8 +41,8 @@ class _QuranReaderPageState extends State<QuranReaderPage>
       print(_controller.offset);
     });
     _quranReaderBloc = context.bloc<LastReadBloc>();
-    _surahPlayer =
-        SurahPlayer(context.bloc<ReadersBloc>(), DependencyProvider.provide());
+/*    _surahPlayer =
+        SurahPlayer(context.bloc<ReadersBloc>(), DependencyProvider.provide());*/
     _surahPlayer.errorStream.listen((event) {
       showDialog(
           context: context,
