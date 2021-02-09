@@ -75,7 +75,7 @@ class _SurahsPageState extends State<SurahsPage>
                         context,
                         MaterialPageRoute(
                             builder: (context) => TestWidget(
-                                  page: surah.page,
+                                  page: surah.page-1,
                                 )));
                   },
                   leading: Text("﴿${surah.number}﴾",
@@ -184,7 +184,7 @@ class _TestWidgetState extends State<TestWidget> {
     _quranDatabase.ayat().then((value) {
       setState(() {
         ayatByPage = groupBy(value, (ayah) => ayah.pageId);
-        _pageController.jumpToPage(widget.page-1);
+        _pageController.jumpToPage(widget.page);
       });
     });
   }
@@ -203,7 +203,7 @@ class _TestWidgetState extends State<TestWidget> {
       bottomSheet: AnimatedContainer(
         child: QuranControlsModal(
           onSaveBookMarkClick: (name) {
-            // _bookmarkCubit.saveBookMark(name, surah, position)
+            _bookmarkCubit.saveBookMark(name, _currentPage);
           },
           player: _player,
           page: _currentPage,
@@ -255,8 +255,8 @@ class _TestWidgetState extends State<TestWidget> {
               setState(() {
                 var firstInPage = getAyahForPage(page).first;
                 _lastReadBloc.add(SaveReadingSurah(
-                    firstInPage.surahName, firstInPage.pageId, 0));
-                _currentPage = page ;
+                    firstInPage.surahName, firstInPage.pageId - 1, 0));
+                _currentPage = page;
               });
             },
             controller: _pageController,

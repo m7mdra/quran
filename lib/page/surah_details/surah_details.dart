@@ -116,8 +116,8 @@ class _SurahDetailsState extends State<SurahDetails> {
         onSaveBookMarkClick: (name) {
           print(_scrollController.offset);
 
-          bookmarkCubit.saveBookMark(
-              name, widget.surah.number, _scrollController.offset);
+         /* bookmarkCubit.saveBookMark(
+              name, widget.surah.number, _scrollController.offset);*/
         },
         surah: widget.surah,
         player: _surahPlayer,

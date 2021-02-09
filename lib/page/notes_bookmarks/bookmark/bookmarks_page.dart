@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quran/data/local/quran_provider.dart';
-import 'package:quran/di.dart';
-import 'package:quran/page/notes_bookmarks/bookmark/bloc/get_bookmarks_cubit.dart';
-import 'package:quran/page/surah_details/surah_details.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:quran/di.dart';
+import 'package:quran/page/juz_surah/surahs/surahs_page.dart';
+import 'package:quran/page/notes_bookmarks/bookmark/bloc/get_bookmarks_cubit.dart';
 
 import 'bookmark_widget.dart';
 import 'empty_bookmarks_widget.dart';
@@ -20,8 +19,7 @@ class _BookmarksPageState extends State<BookmarksPage>
 
   @override
   void initState() {
-    _getBookmarkCubit = GetBookmarkCubit(
-        DependencyProvider.provide(), DependencyProvider.provide());
+    _getBookmarkCubit = GetBookmarkCubit(DependencyProvider.provide());
     super.initState();
     _getBookmarkCubit.loadBookmarks();
   }
@@ -63,12 +61,7 @@ class _BookmarksPageState extends State<BookmarksPage>
                       onTap: (bookmark) async {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          var surah = bookmark.getSurah;
-                          return SurahDetails(
-                            surah: surah,
-                            index: surah.number - 1,
-                            offset: bookmark.position,
-                          );
+                          return TestWidget(page: bookmark.page-1);
                         }));
                       },
                       bookmark: bookmark,

@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => TestWidget(
-                                          page: lastRead.page,
+                                          page: lastRead.page-1,
                                         )));
                           },
                           borderRadius: BorderRadius.circular(16),

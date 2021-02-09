@@ -22,8 +22,12 @@ class QuranMetaDatabase implements NoteRepository, BookmarkRepository {
   initDb() async {
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'meta.db');
+    return await openDatabase(path,
+        version: 3,
+        onCreate: _onCreate,
+        onUpgrade: (database, newVersion, oldVersion) {
 
-    return await openDatabase(path, version: 2, onCreate: _onCreate);
+        });
   }
 
   void _onCreate(Database db, int newVersion) async {
@@ -35,8 +39,7 @@ class QuranMetaDatabase implements NoteRepository, BookmarkRepository {
 
     await db.execute('CREATE TABLE ${BookmarkColumns.table}'
         '(${BookmarkColumns.columnId} INTEGER PRIMARY KEY,'
-        ' ${BookmarkColumns.columnSurah} INTEGER,'
-        ' ${BookmarkColumns.columnPosition} DOUBLE,'
+        ' ${BookmarkColumns.columnPage} INTEGER,'
         ' ${BookmarkColumns.columnName} TEXT,'
         ' ${BookmarkColumns.columnDate} INTEGER)');
 

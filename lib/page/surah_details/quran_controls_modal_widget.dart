@@ -83,7 +83,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
               onTap: () async {
                 var name = await showDialog<String>(
                     context: context,
-                    builder: (context) => _showSaveBookmarkDialog());
+                    builder: (context) => _showSaveBookmarkDialog(context));
                 if (name != null) {
                   widget.onSaveBookMarkClick(name);
                 }
@@ -128,7 +128,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
     );
   }
 
-  AlertDialog _showSaveBookmarkDialog() {
+  AlertDialog _showSaveBookmarkDialog(BuildContext context) {
     TextEditingController textEditingController = TextEditingController();
     return AlertDialog(
       title: Text(AppLocalizations.of(context).saveBookmarkDialogTitle),
@@ -158,7 +158,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
                 onPressed: () {
                   var text = textEditingController.text;
                   if (text.isNotEmpty) {
-                    Navigator.pop(context, text);
+                    Navigator.of(context,rootNavigator: true).pop(text);
                   }
                 },
                 child: Text(AppLocalizations.of(context).save),

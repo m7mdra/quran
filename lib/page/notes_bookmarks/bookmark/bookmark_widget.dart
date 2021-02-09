@@ -55,7 +55,7 @@ class BookmarkWidget extends StatelessWidget {
             fontWeight: FontWeight.w600,
             fontStyle: FontStyle.normal,
           )),
-      subtitle: Text(bookmark.getSurah.name,
+      subtitle: Text("صحفة رقم ${bookmark.page}",
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w300,

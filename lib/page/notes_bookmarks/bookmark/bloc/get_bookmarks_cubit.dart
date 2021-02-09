@@ -8,9 +8,8 @@ part 'get_bookmarks_state.dart';
 
 class GetBookmarkCubit extends Cubit<BookmarkState> {
   final BookmarkRepository _repository;
-  final QuranProvider _provider;
 
-  GetBookmarkCubit(this._repository, this._provider)
+  GetBookmarkCubit(this._repository)
       : super(GetBookmarksInitial());
 
   void loadBookmarks() async {
@@ -20,11 +19,7 @@ class GetBookmarkCubit extends Cubit<BookmarkState> {
       if (bookmarks.isNotEmpty) {
         bookmarks
             .sort((first, second) => second.dateTime.compareTo(first.dateTime));
-        var surahList = await _provider.loadSurahList();
-        bookmarks = bookmarks.map((e) {
-          e.setSurah = surahList[e.surah - 1];
-          return e;
-        }).toList();
+
         emit(GetBookmarksSuccess(bookmarks));
       } else {
         emit(GetBookmarksEmpty());
