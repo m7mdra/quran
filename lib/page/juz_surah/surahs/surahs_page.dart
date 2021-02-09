@@ -69,13 +69,12 @@ class _SurahsPageState extends State<SurahsPage>
                 return ListTile(
                   dense: true,
                   onTap: () {
-                    _lastReadBloc.add(
-                        SaveReadingSurah(surah.name, surah.page, 0));
+                    _lastReadBloc
+                        .add(SaveReadingSurah(surah.name, surah.page, 0));
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                TestWidget(
+                            builder: (context) => TestWidget(
                                   page: surah.page - 1,
                                 )));
                   },
@@ -107,9 +106,7 @@ class _SurahsPageState extends State<SurahsPage>
             );
           }
           return Center(
-              child: Text(AppLocalizations
-                  .of(context)
-                  .failedToLoadData));
+              child: Text(AppLocalizations.of(context).failedToLoadData));
         },
       ),
     );
@@ -157,8 +154,7 @@ class _TestWidgetState extends State<TestWidget> {
       if (mounted)
         showDialog(
             context: context,
-            builder: (context) =>
-                AlertDialog(
+            builder: (context) => AlertDialog(
                   title: Text('حصل خطا'),
                   content: Text('فشل تشغيل المقطع, حاول مرة اخرى'),
                 ));
@@ -213,17 +209,11 @@ class _TestWidgetState extends State<TestWidget> {
           page: _currentPage,
         ),
         height: _isVisible ? 120 : 0,
-        width: MediaQuery
-            .of(context)
-            .size
-            .width,
+        width: MediaQuery.of(context).size.width,
         duration: Duration(milliseconds: 200),
       ),
       appBar: PreferredSize(
-        preferredSize: Size(MediaQuery
-            .of(context)
-            .size
-            .width, 60),
+        preferredSize: Size(MediaQuery.of(context).size.width, 60),
         child: AnimatedContainer(
           height: _isVisible ? 60 : 0,
           duration: Duration(milliseconds: 200),
@@ -265,7 +255,7 @@ class _TestWidgetState extends State<TestWidget> {
               setState(() {
                 var firstInPage = getAyahForPage(page).first;
                 _lastReadBloc.add(SaveReadingSurah(
-                    firstInPage.surahName, firstInPage.pageId+1, 0));
+                    firstInPage.surahName, firstInPage.pageId + 1, 0));
                 _currentPage = page + 1;
               });
             },
@@ -310,8 +300,8 @@ class _TestWidgetState extends State<TestWidget> {
       return TextSpan(children: [
         WidgetSpan(
             child: SurahTitleWidget(
-              surah: e.surahName,
-            )),
+          surah: e.surahName,
+        )),
         TextSpan(text: "\n"),
         buildAyah(e, context)
       ]);
@@ -323,15 +313,10 @@ class _TestWidgetState extends State<TestWidget> {
     return TextSpan(
         style: _playingAyahId == e.number
             ? TextStyle(
-            backgroundColor: Theme
-                .of(context)
-                .primaryColor
-                .withAlpha(100))
+                backgroundColor: Theme.of(context).primaryColor.withAlpha(100))
             : null,
         text:
-        "${e.text.replaceFirst(
-            "بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e
-            .numberInSurah}﴾",
+            "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
         semanticsLabel: 'semanticsLabel',
         recognizer: DoubleTapGestureRecognizer()
           ..onDoubleTapDown = (tapDown) {
@@ -339,8 +324,8 @@ class _TestWidgetState extends State<TestWidget> {
           });
   }
 
-  void showContextMenuAt(TapDownDetails tapDown, BuildContext context,
-      Ayah ayah) {
+  void showContextMenuAt(
+      TapDownDetails tapDown, BuildContext context, Ayah ayah) {
     var rect = Rect.fromCircle(center: tapDown.globalPosition, radius: 0);
     var popMenu = PopupMenu(context: context);
     popMenu.show(

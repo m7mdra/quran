@@ -12,8 +12,6 @@ class JuzReference {
   String surahName;
   int page;
 
-
-
   JuzReference(
       {this.suratId,
       this.juzId,

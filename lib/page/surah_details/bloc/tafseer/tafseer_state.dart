@@ -7,7 +7,6 @@ class TafseerLoadingState extends TafseerState {}
 
 class TafseerErrorState extends TafseerState {}
 
-
 class TafseerLoadedState extends TafseerState {
   final List<Ayah> list;
 

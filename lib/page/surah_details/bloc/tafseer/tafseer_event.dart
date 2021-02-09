@@ -13,7 +13,7 @@ class LoadTafseerForAyahRange extends TafseerEvent {
   LoadTafseerForAyahRange(this.start, this.end);
 }
 
-class LoadPageTafseer extends TafseerEvent{
+class LoadPageTafseer extends TafseerEvent {
   final int page;
 
   LoadPageTafseer(this.page);
