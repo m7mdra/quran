@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quran/di.dart';
 import 'package:quran/page/juz_surah/surahs/surahs_page.dart';
 import 'package:quran/page/notes_bookmarks/bookmark/bloc/get_bookmarks_cubit.dart';
+import 'package:quran/page/quran_reader/quran_reader_page.dart';
 
 import 'bookmark_widget.dart';
 import 'empty_bookmarks_widget.dart';
@@ -61,7 +62,7 @@ class _BookmarksPageState extends State<BookmarksPage>
                       onTap: (bookmark) async {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return TestWidget(page: bookmark.page-1);
+                          return QuranReaderPage(page: bookmark.page-1);
                         }));
                       },
                       bookmark: bookmark,

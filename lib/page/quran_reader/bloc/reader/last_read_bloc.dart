@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:quran/data/local/preference.dart';
 import 'package:quran/data/model/last_read.dart';
-import 'package:quran/data/model/quran.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'last_read_event.dart';

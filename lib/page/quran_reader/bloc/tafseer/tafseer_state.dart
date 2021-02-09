@@ -1,5 +1,4 @@
 import 'package:quran/data/local/model/ayah.dart';
-import 'package:quran/data/model/tafseer.dart';
 
 abstract class TafseerState {}
 

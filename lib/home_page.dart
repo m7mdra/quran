@@ -10,7 +10,8 @@ import 'package:quran/page/about.dart';
 import 'package:quran/page/juz_surah/surahs/surahs_page.dart';
 import 'package:quran/page/juz_surah/surahs_juzes_page.dart';
 import 'package:quran/page/notes_bookmarks/notes_bookmarks_page.dart';
-import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
+import 'package:quran/page/quran_reader/bloc/reader/last_read_bloc.dart';
+import 'package:quran/page/quran_reader/quran_reader_page.dart';
 
 import 'common.dart';
 
@@ -91,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => TestWidget(
+                                    builder: (context) => QuranReaderPage(
                                           page: lastRead.page-1,
                                         )));
                           },

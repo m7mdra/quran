@@ -1,10 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/local/model/search_result.dart';
+import 'package:quran/data/local/model/surah.dart';
 import 'package:quran/data/local/quran_database.dart';
-import 'package:quran/data/local/quran_provider.dart';
-import 'package:quran/data/model/quran.dart';
+
 import '../../data/local/normalization.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

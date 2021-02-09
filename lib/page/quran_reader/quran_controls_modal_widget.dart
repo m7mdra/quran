@@ -4,9 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:quran/common.dart';
-import 'package:quran/data/model/quran.dart';
-import 'package:quran/page/surah_details/surah_player.dart';
-import 'package:quran/page/surah_details/tafseer_widget.dart';
+import 'package:quran/page/quran_reader/surah_player.dart';
+import 'package:quran/page/quran_reader/tafseer_widget.dart';
 
 import 'bloc/readers/readers_bloc.dart';
 import 'bloc/readers/readers_event.dart';
@@ -15,14 +14,12 @@ import 'bloc/tafseer/tafseer_bloc.dart';
 import 'bloc/tafseer/tafseer_event.dart';
 
 class QuranControlsModal extends StatefulWidget {
-  final Surah surah;
   final int page;
   final SurahPlayer player;
   final Function(String) onSaveBookMarkClick;
 
   const QuranControlsModal({
     Key key,
-    @required this.surah,
     this.player,
     this.onSaveBookMarkClick,
     this.page,
@@ -34,6 +31,12 @@ class QuranControlsModal extends StatefulWidget {
 
 class _QuranModalWidgetState extends State<QuranControlsModal> {
   SurahPlayer player;
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    print("Page: ${widget.page}");
+  }
 
   @override
   void initState() {
@@ -72,7 +75,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
               title: AppLocalizations.of(context).interpretation,
               image: 'assets/images/tafseer.svg',
               onTap: () {
-                context.bloc<TafseerBloc>().add(LoadPageTafseer(widget.page));
+                context.bloc<TafseerBloc>().add(LoadPageTafseer(widget.page+1));
                 showDialog(
                     context: context, builder: (context) => TafseerWidget());
               },
@@ -106,7 +109,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
                             if (player.isPlaying) {
                               player.stop();
                             } else {
-                              player.playPage(widget.page);
+                              player.playPage(widget.page+1);
                             }
                           },
                         );

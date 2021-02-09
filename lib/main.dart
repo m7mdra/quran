@@ -11,15 +11,14 @@ import 'package:quran/data/local/database_file.dart';
 import 'package:quran/data/local/preference.dart';
 import 'package:quran/data/local/quran_database.dart';
 import 'package:quran/data/local/quran_meta_database.dart';
-import 'package:quran/data/local/tafseer_database_client.dart';
 import 'package:quran/di.dart';
 import 'package:quran/main/bloc/lang/language_cubit.dart';
 import 'package:quran/main/bloc/theme/theme_cubit.dart';
 import 'package:quran/page/juz_surah/surahs/bloc/surahs_bloc.dart';
+import 'package:quran/page/quran_reader/bloc/reader/last_read_bloc.dart';
+import 'package:quran/page/quran_reader/bloc/readers/readers_bloc.dart';
+import 'package:quran/page/quran_reader/bloc/tafseer/tafseer_bloc.dart';
 import 'package:quran/page/splash/splash_page.dart';
-import 'package:quran/page/surah_details/bloc/reader/last_read_bloc.dart';
-import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
-import 'package:quran/page/surah_details/bloc/tafseer/tafseer_bloc.dart';
 import 'package:quran/theme.dart';
 
 import 'main/bloc_observer.dart';
@@ -40,7 +39,6 @@ main() async {
       print(stack);
     });
   }
-  await DependencyProvider.provide<TafseerDataBaseClient>().initDatabase();
 
   var noteDatabase = DependencyProvider.provide<QuranMetaDatabase>();
   await noteDatabase.initDb();

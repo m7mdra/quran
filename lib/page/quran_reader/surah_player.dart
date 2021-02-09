@@ -6,8 +6,8 @@ import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/local/preference.dart';
 import 'package:quran/data/local/quran_database.dart';
 import 'package:quran/data/model/reader.dart';
-import 'package:quran/page/surah_details/bloc/readers/readers_bloc.dart';
 
+import 'bloc/readers/readers_bloc.dart';
 import 'bloc/readers/readers_state.dart';
 
 class SurahPlayer {

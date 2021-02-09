@@ -5,10 +5,8 @@ import 'package:quran/data/local/database_file.dart';
 import 'package:quran/data/local/husn_proivder.dart';
 import 'package:quran/data/local/note_repository.dart';
 import 'package:quran/data/local/preference.dart';
-import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/local/readers_provider.dart';
 import 'package:quran/data/local/riyadh_file.dart';
-import 'package:quran/data/local/tafseer_database_client.dart';
 import 'package:quran/data/local/zerk_provider.dart';
 import 'package:quran/data/network/quran_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,7 +15,6 @@ import 'data/local/dua_mathor_provider.dart';
 import 'data/local/husn_chapter_provider.dart';
 import 'data/local/quran_database.dart';
 import 'data/local/quran_meta_database.dart';
-import 'data/local/tafseer_repository.dart';
 
 var _registrar = GetIt.instance;
 
@@ -56,19 +53,16 @@ class DependencyProvider {
     _registrar.registerSingleton(QuranDatabase(databaseFile));
     _registrar.registerSingleton<NoteRepository>(quranDb);
     _registrar.registerSingleton<BookmarkRepository>(quranDb);
-    _registrar.registerSingleton<TafseerRepository>(TafseerDataBaseClient());
     _registrar.registerSingletonAsync(() => SharedPreferences.getInstance());
     _registrar.registerSingleton<ReadersProvider>(readersProvider);
     _registrar.registerSingleton<ZekrProvider>(ZekrProvider());
     _registrar.registerSingleton<DuaMathorProvider>(DuaMathorProvider());
     _registrar.registerSingleton<HusnProvider>(HusnProvider());
-    _registrar.registerSingleton<QuranProvider>(QuranProvider());
     _registrar.registerSingleton<HusnChapterProvider>(HusnChapterProvider());
     _registrar.registerSingleton<Preference>(
         Preference(sharePreference, readersProvider));
 
-    _registrar
-        .registerSingleton<TafseerDataBaseClient>(TafseerDataBaseClient());
+
   }
 
   static T provide<T>() {

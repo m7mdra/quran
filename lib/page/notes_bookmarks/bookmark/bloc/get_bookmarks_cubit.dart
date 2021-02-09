@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:quran/data/local/bookmark_repository.dart';
-import 'package:quran/data/local/quran_provider.dart';
 import 'package:quran/data/model/bookmark.dart';
 
 part 'get_bookmarks_state.dart';

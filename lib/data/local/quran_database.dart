@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:quran/common.dart';
 import 'package:quran/data/local/database_file.dart';
-import 'package:quran/data/local/quran_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'model/ayah.dart';

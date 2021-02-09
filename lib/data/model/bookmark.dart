@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:quran/data/model/quran.dart';
 
 class BookmarkColumns {
   static String table = 'bookmark';
