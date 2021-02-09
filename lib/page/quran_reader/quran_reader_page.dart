@@ -165,46 +165,50 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
               _isVisible = !_isVisible;
             });
           },
-          child: PageView.builder(
-            clipBehavior: Clip.antiAlias,
-            onPageChanged: (page) {
-              setState(() {
-                var firstInPage = getAyahForPage(page).first;
-                _lastReadBloc.add(SaveReadingSurah(
-                    firstInPage.surahName, firstInPage.pageId - 1, 0));
-                _currentPage = page;
-              });
-            },
-            controller: _pageController,
-            itemBuilder: (context, page) {
-              var ayatList = getAyahForPage(page);
-              return SingleChildScrollView(
-                  controller: _scrollController,
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(height: 16),
-                      Text.rich(
-                        TextSpan(
-                            text: "",
-                            semanticsLabel: 'semanticsLabel',
-                            style: TextStyle(
-                                fontFamily: 'alquran',
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold),
-                            children: ayatList.map((e) {
-                              return buildAyahTextSpan(e, context);
-                            }).toList()),
-                        semanticsLabel: 'semanticsLabel',
-                        textAlign: TextAlign.center,
-                        softWrap: true,
-                        textScaleFactor: _scaleFactor,
-                      ),
-                    ],
-                  ));
-            },
-            itemCount: ayatByPage.values.length,
+          child: Directionality(
+            textDirection: TextDirection.rtl,
+            child: PageView.builder(
+              clipBehavior: Clip.antiAlias,
+              onPageChanged: (page) {
+                setState(() {
+                  var firstInPage = getAyahForPage(page).first;
+                  _lastReadBloc.add(SaveReadingSurah(
+                      firstInPage.surahName, firstInPage.pageId - 1, 0));
+                  _currentPage = page;
+                });
+              },
+              controller: _pageController,
+              itemBuilder: (context, page) {
+                var ayatList = getAyahForPage(page);
+                return SingleChildScrollView(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(height: 16),
+                        Text.rich(
+                          TextSpan(
+                              text: "",
+                              semanticsLabel: 'semanticsLabel',
+                              style: TextStyle(
+                                  fontFamily: 'alquran',
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold),
+                              children: ayatList.map((e) {
+                                return buildAyahTextSpan(e, context);
+                              }).toList()),
+                          semanticsLabel: 'semanticsLabel',
+                          textAlign: TextAlign.justify,
+                          softWrap: true,
+                          textDirection: TextDirection.rtl,
+                          textScaleFactor: _scaleFactor,
+                        ),
+                      ],
+                    ));
+              },
+              itemCount: ayatByPage.values.length,
+            ),
           ),
         ),
       ),
