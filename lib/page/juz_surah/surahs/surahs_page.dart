@@ -75,7 +75,7 @@ class _SurahsPageState extends State<SurahsPage>
                         context,
                         MaterialPageRoute(
                             builder: (context) => TestWidget(
-                                  page: surah.page - 1,
+                                  page: surah.page,
                                 )));
                   },
                   leading: Text("﴿${surah.number}﴾",
@@ -184,7 +184,7 @@ class _TestWidgetState extends State<TestWidget> {
     _quranDatabase.ayat().then((value) {
       setState(() {
         ayatByPage = groupBy(value, (ayah) => ayah.pageId);
-        _pageController.jumpToPage(widget.page);
+        _pageController.jumpToPage(widget.page-1);
       });
     });
   }
@@ -255,8 +255,8 @@ class _TestWidgetState extends State<TestWidget> {
               setState(() {
                 var firstInPage = getAyahForPage(page).first;
                 _lastReadBloc.add(SaveReadingSurah(
-                    firstInPage.surahName, firstInPage.pageId + 1, 0));
-                _currentPage = page + 1;
+                    firstInPage.surahName, firstInPage.pageId, 0));
+                _currentPage = page ;
               });
             },
             controller: _pageController,
