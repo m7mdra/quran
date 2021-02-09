@@ -75,7 +75,9 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
               title: AppLocalizations.of(context).interpretation,
               image: 'assets/images/tafseer.svg',
               onTap: () {
-                context.bloc<TafseerBloc>().add(LoadPageTafseer(widget.page+1));
+                context
+                    .bloc<TafseerBloc>()
+                    .add(LoadPageTafseer(widget.page + 1));
                 showDialog(
                     context: context, builder: (context) => TafseerWidget());
               },
@@ -109,7 +111,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
                             if (player.isPlaying) {
                               player.stop();
                             } else {
-                              player.playPage(widget.page+1);
+                              player.playPage(widget.page + 1);
                             }
                           },
                         );
@@ -161,7 +163,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
                 onPressed: () {
                   var text = textEditingController.text;
                   if (text.isNotEmpty) {
-                    Navigator.of(context,rootNavigator: true).pop(text);
+                    Navigator.of(context, rootNavigator: true).pop(text);
                   }
                 },
                 child: Text(AppLocalizations.of(context).save),

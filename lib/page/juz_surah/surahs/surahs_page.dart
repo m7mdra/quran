@@ -102,4 +102,3 @@ class _SurahsPageState extends State<SurahsPage>
   @override
   bool get wantKeepAlive => true;
 }
-

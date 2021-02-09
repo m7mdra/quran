@@ -8,8 +8,7 @@ part 'get_bookmarks_state.dart';
 class GetBookmarkCubit extends Cubit<BookmarkState> {
   final BookmarkRepository _repository;
 
-  GetBookmarkCubit(this._repository)
-      : super(GetBookmarksInitial());
+  GetBookmarkCubit(this._repository) : super(GetBookmarksInitial());
 
   void loadBookmarks() async {
     try {

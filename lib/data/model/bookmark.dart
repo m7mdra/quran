@@ -22,12 +22,13 @@ class Bookmark {
   int page;
   int id = Random().nextInt(10000000);
   DateTime dateTime = DateTime.now();
-  
+
   String name;
 
- 
-  Bookmark(
-      {@required this.page, @required this.name,});
+  Bookmark({
+    @required this.page,
+    @required this.name,
+  });
 
   Map<String, dynamic> toMap() {
     return {

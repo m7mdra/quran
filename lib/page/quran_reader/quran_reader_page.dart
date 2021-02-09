@@ -21,6 +21,7 @@ import 'package:collection/collection.dart';
 
 import 'bloc/tafseer/tafseer_bloc.dart';
 import 'bloc/tafseer/tafseer_event.dart';
+
 class QuranReaderPage extends StatefulWidget {
   final int page;
 
@@ -62,9 +63,9 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-              title: Text('حصل خطا'),
-              content: Text('فشل تشغيل المقطع, حاول مرة اخرى'),
-            ));
+                  title: Text('حصل خطا'),
+                  content: Text('فشل تشغيل المقطع, حاول مرة اخرى'),
+                ));
     });
     _player.currentPlayingIndex.listen((event) {
       if (mounted)
@@ -217,8 +218,8 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
       return TextSpan(children: [
         WidgetSpan(
             child: SurahTitleWidget(
-              surah: e.surahName,
-            )),
+          surah: e.surahName,
+        )),
         TextSpan(text: "\n"),
         buildAyah(e, context)
       ]);
@@ -230,10 +231,10 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
     return TextSpan(
         style: _playingAyahId == e.number
             ? TextStyle(
-            backgroundColor: Theme.of(context).primaryColor.withAlpha(100))
+                backgroundColor: Theme.of(context).primaryColor.withAlpha(100))
             : null,
         text:
-        "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
+            "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
         semanticsLabel: 'semanticsLabel',
         recognizer: DoubleTapGestureRecognizer()
           ..onDoubleTapDown = (tapDown) {

@@ -12,8 +12,8 @@ class BookmarkCubit extends Cubit<AddBookmarkState> {
   Future<void> saveBookMark(String name, int page) async {
     try {
       emit(AddBookmarkSavedLoading());
-      var result = await _repository
-          .addBookmark(Bookmark(name: name, page: page));
+      var result =
+          await _repository.addBookmark(Bookmark(name: name, page: page));
       await Future.delayed(Duration(seconds: 1));
       emit(AddBookmarkSavedSuccess());
     } catch (error) {

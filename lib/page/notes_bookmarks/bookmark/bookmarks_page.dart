@@ -62,7 +62,7 @@ class _BookmarksPageState extends State<BookmarksPage>
                       onTap: (bookmark) async {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
-                          return QuranReaderPage(page: bookmark.page-1);
+                          return QuranReaderPage(page: bookmark.page - 1);
                         }));
                       },
                       bookmark: bookmark,

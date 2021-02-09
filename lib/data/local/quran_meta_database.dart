@@ -25,9 +25,7 @@ class QuranMetaDatabase implements NoteRepository, BookmarkRepository {
     return await openDatabase(path,
         version: 3,
         onCreate: _onCreate,
-        onUpgrade: (database, newVersion, oldVersion) {
-
-        });
+        onUpgrade: (database, newVersion, oldVersion) {});
   }
 
   void _onCreate(Database db, int newVersion) async {

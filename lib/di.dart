@@ -61,8 +61,6 @@ class DependencyProvider {
     _registrar.registerSingleton<HusnChapterProvider>(HusnChapterProvider());
     _registrar.registerSingleton<Preference>(
         Preference(sharePreference, readersProvider));
-
-
   }
 
   static T provide<T>() {

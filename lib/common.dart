@@ -5,6 +5,5 @@ bool isDarkMode(BuildContext context) =>
 
 bool isArabic(context) => Localizations.localeOf(context).languageCode == 'ar';
 
-
 List<T> flatten<T>(Iterable<Iterable<T>> list) =>
     [for (var sublist in list) ...sublist].toList();

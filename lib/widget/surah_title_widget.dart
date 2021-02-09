@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -14,7 +13,9 @@ class SurahTitleWidget extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          SvgPicture.asset('assets/images/surah_name_title.svg',),
+          SvgPicture.asset(
+            'assets/images/surah_name_title.svg',
+          ),
           Text(
             surah,
             style: TextStyle(
