@@ -5,12 +5,16 @@ enum FontOptions { normal, bold, large }
 class ToggleableFontOptions extends StatelessWidget {
   final FontOptions option;
   final bool isSelected;
+  final VoidCallback onTap;
 
-  ToggleableFontOptions.normal(this.isSelected) : option = FontOptions.normal;
+  ToggleableFontOptions.normal(this.isSelected, [this.onTap])
+      : option = FontOptions.normal;
 
-  ToggleableFontOptions.bold(this.isSelected) : option = FontOptions.bold;
+  ToggleableFontOptions.bold(this.isSelected, [this.onTap])
+      : option = FontOptions.bold;
 
-  ToggleableFontOptions.large(this.isSelected) : option = FontOptions.large;
+  ToggleableFontOptions.large(this.isSelected, [this.onTap])
+      : option = FontOptions.large;
 
   String get _text {
     switch (option) {
@@ -71,7 +75,9 @@ class ToggleableFontOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        onTap?.call();
+      },
       child: Container(
         width: 30,
         height: 30,

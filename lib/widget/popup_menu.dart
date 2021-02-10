@@ -245,7 +245,7 @@ class PopupMenu {
                                       width: 1,
                                     ),
                                   ),
-                                  ToggleableFontOptions.normal(false),
+                                  ToggleableFontOptions.normal(true),
                                   ToggleableFontOptions.large(true),
                                   ToggleableFontOptions.bold(true)
                                 ],
