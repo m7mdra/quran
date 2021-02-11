@@ -21,7 +21,7 @@ var _registrar = GetIt.instance;
 class DependencyProvider {
   DependencyProvider._();
 
-  static build() async {
+  static Future<void> build() async {
     var options = BaseOptions(
         baseUrl: "http://api.alquran.cloud/v1/",
         headers: {

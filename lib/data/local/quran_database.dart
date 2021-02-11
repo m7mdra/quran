@@ -95,7 +95,7 @@ class QuranDatabase {
     return query.map((e) => Edition.fromMap(e)).toList();
   }
 
-  Future<List<Ayah>> ayat([int editionId = 82]) async {
+  Future<Map<int, List<Ayah>>> ayat([int editionId = 82]) async {
     var db = await database;
     var query = await db.rawQuery(""" 
        SELECT ayat.id,
@@ -110,7 +110,9 @@ class QuranDatabase {
        LEFT JOIN surat
        ON surat.id = ayat.surat_id
        WHERE  edition_id = ? """, [editionId]);
-    return query.map((e) => Ayah.fromMap(e)).toList();
+    var list = query.map((e) => Ayah.fromMap(e)).toList();
+    var ayatByPage = groupBy(list, (ayah) => ayah.pageId).map((key, value) => MapEntry(key as int, value));
+    return ayatByPage;
   }
 
   Future<Map<int, List<JuzReference>>> juz() async {

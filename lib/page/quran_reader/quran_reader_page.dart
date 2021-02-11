@@ -18,6 +18,7 @@ import 'package:share/share.dart';
 
 import '../../widget/islamic_app_bar.dart';
 import 'bloc/bookmark/add_bookmark_cubit.dart';
+import 'bloc/quran/quran_cubit.dart';
 import 'bloc/reader/last_read_bloc.dart';
 import 'bloc/readers/readers_bloc.dart';
 import 'bloc/tafseer/tafseer_bloc.dart';
@@ -33,13 +34,12 @@ class QuranReaderPage extends StatefulWidget {
 }
 
 class _QuranReaderPageState extends State<QuranReaderPage> {
-  QuranDatabase _quranDatabase = QuranDatabase(DatabaseFile());
   SurahPlayer _player;
-  Map<int, List<Ayah>> ayatByPage = {};
   var _playingAyahId = 0;
   PageController _pageController;
   bool _isVisible = true;
   ScrollController _scrollController;
+  QuranCubit _quranCubit;
   ReadersBloc _readersBloc;
   var _currentPage;
   BookmarkCubit _bookmarkCubit;
@@ -50,6 +50,8 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   @override
   void initState() {
     super.initState();
+    _quranCubit = QuranCubit(DependencyProvider.provide());
+    _quranCubit.loadData();
     _pageController = PageController();
     _lastReadBloc = context.bloc();
     _scrollController = ScrollController();
@@ -90,12 +92,6 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           });
       }
     });
-    _quranDatabase.ayat().then((value) {
-      setState(() {
-        ayatByPage = groupBy(value, (ayah) => ayah.pageId);
-        _pageController.jumpToPage(widget.page);
-      });
-    });
   }
 
   @override
@@ -133,9 +129,26 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
         ),
       ),
       body: SafeArea(
-        maintainBottomViewPadding: true,
-        top: true,
-        child: GestureDetector(
+        
+        child: BlocBuilder(
+          cubit: _quranCubit,
+          builder: (context,state){
+            if(state is QuranLoadingState){
+              return Center(child: CircularProgressIndicator(),);
+            }
+            if(state is QuranSuccessState){
+              return quranPageView(state.ayat);
+            }
+            return Container();
+          },
+
+        ),
+      ),
+    );
+  }
+
+  GestureDetector quranPageView(Map<int, List<Ayah>> ayat) {
+    return GestureDetector(
           onScaleStart: (details) {
             _baseScaleFactor = _scaleFactor;
           },
@@ -155,15 +168,15 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
               clipBehavior: Clip.antiAlias,
               onPageChanged: (page) {
                 setState(() {
-                  var firstInPage = getAyahForPage(page).first;
+               /*   var firstInPage = getAyahForPage(page).first;
                   _lastReadBloc.add(SaveReadingSurah(
-                      firstInPage.surahName, firstInPage.pageId - 1, 0));
+                      firstInPage.surahName, firstInPage.pageId - 1, 0));*/
                   _currentPage = page;
                 });
               },
               controller: _pageController,
               itemBuilder: (context, page) {
-                var ayatList = getAyahForPage(page);
+                var ayatList = ayat[page+1];
                 return SingleChildScrollView(
                     controller: _scrollController,
                     padding: const EdgeInsets.all(16),
@@ -190,12 +203,10 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
                       ],
                     ));
               },
-              itemCount: ayatByPage.values.length,
+              itemCount: ayat.keys.length,
             ),
           ),
-        ),
-      ),
-    );
+        );
   }
 
   actions(BuildContext context) {
@@ -224,7 +235,8 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
     ];
   }
 
-  List<Ayah> getAyahForPage(int page) => ayatByPage.values.toList()[page];
+//TODO : fix fix
+  List<Ayah> getAyahForPage(int page) => [];
 
   TextSpan buildAyahTextSpan(Ayah e, BuildContext context) {
     if (e.numberInSurah == 1)
