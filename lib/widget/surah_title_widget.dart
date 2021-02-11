@@ -19,9 +19,10 @@ class SurahTitleWidget extends StatelessWidget {
           Text(
             surah,
             style: TextStyle(
-                color: Color(0xffFD9434),
-                fontSize: 24,
-                fontFamily: 'alquran',),
+              color: Color(0xffFD9434),
+              fontSize: 24,
+              fontFamily: 'alquran',
+            ),
           )
         ],
       ),

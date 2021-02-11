@@ -107,11 +107,7 @@ class PopupMenu {
 
     _entry = OverlayEntry(builder: (context) {
       return buildPopupMenuLayout(
-        _offset,
-        onPlayClick,
-        onTafseerCallback,
-        onShareClick
-      );
+          _offset, onPlayClick, onTafseerCallback, onShareClick);
     });
 
     Overlay.of(PopupMenu.context).insert(_entry);
