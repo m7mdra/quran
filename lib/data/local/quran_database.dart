@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:quran/common.dart';
 import 'package:quran/data/local/database_file.dart';
+import 'package:quran/data/local/model/hizb_quarter.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'model/ayah.dart';
@@ -131,6 +132,22 @@ class QuranDatabase {
     var juzes = groupBy<JuzReference, int>(list, (juz) => juz.juzId);
 
     return juzes;
+  }
+
+  Future<List<HizbQuarter>> hizbQuarter() async {
+    var db = await database;
+
+    var query = await db.rawQuery("""
+        SELECT  ayat.hizbQuarter_id,ayat.page_id from ayat 
+        LEFT JOIN hizb_quarter
+        ON ayat.hizbQuarter_id = hizb_quarter.id
+        LEFT JOIN  surat
+        ON ayat.surat_id = surat.id
+        WHERE ayat.edition_id = 78
+        GROUP BY ayat.hizbQuarter_id
+        """);
+
+    return query.map((e) => HizbQuarter.fromMap(e)).toList();
   }
 
   Future<List<SearchResult>> search(String keyword) async {

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:quran/data/local/model/hizb_quarter.dart';
+import 'package:quran/page/juz_surah/hizb_quarter/hizb_quarter_page.dart';
 import 'package:quran/page/juz_surah/surahs/surahs_page.dart';
 
 import '../../widget/islamic_app_bar.dart';
@@ -39,7 +41,7 @@ class _SurahsJuzesPageState extends State<SurahsJuzesPage>
           _tabController.animateTo(index,
               duration: Duration(milliseconds: 200), curve: Curves.linear);
         },
-        children: [SurahsPage(), JuzPage(), JuzPage()],
+        children: [SurahsPage(), JuzPage(), HizbQuarterPage()],
       ),
       appBar: IslamicAppBar(
         context: context,

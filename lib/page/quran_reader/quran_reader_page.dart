@@ -170,7 +170,6 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        SizedBox(height: 16),
                         Text.rich(
                           TextSpan(
                               text: "",
@@ -230,6 +229,8 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   TextSpan buildAyahTextSpan(Ayah e, BuildContext context) {
     if (e.numberInSurah == 1)
       return TextSpan(children: [
+        TextSpan(text: "\n"),
+
         WidgetSpan(
             child: SurahTitleWidget(
           surah: e.surahName,
@@ -247,8 +248,9 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
             ? TextStyle(
                 backgroundColor: Theme.of(context).primaryColor.withAlpha(100))
             : null,
-        text:
-            "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
+        text: e.number == 1
+            ? "${e.text} ﴿${e.numberInSurah}﴾"
+            : "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
         semanticsLabel: 'semanticsLabel',
         recognizer: DoubleTapGestureRecognizer()
           ..onDoubleTapDown = (tapDown) {

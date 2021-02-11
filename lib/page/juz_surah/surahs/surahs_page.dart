@@ -49,7 +49,7 @@ class _SurahsPageState extends State<SurahsPage>
             );
           }
           if (state is SurahsLoadedSuccessState) {
-            return ListView.builder(
+            return ListView.separated(
               itemBuilder: (context, index) {
                 var surah = state.surah[index];
 
@@ -89,7 +89,9 @@ class _SurahsPageState extends State<SurahsPage>
                       )),
                 );
               },
-              itemCount: state.surah.length,
+              itemCount: state.surah.length, separatorBuilder: (BuildContext context, int index) {
+                return Divider(height: 1);
+            },
             );
           }
           return Center(
