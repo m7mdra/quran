@@ -6,7 +6,7 @@ import 'package:quran/main.dart';
 import 'package:quran/page/night_zekr/bloc/bloc.dart';
 
 import '../../di.dart';
-import '../../islamic_app_bar.dart';
+import '../../widget/islamic_app_bar.dart';
 import 'bloc/zekr_event.dart';
 
 class NightZekrPage extends StatefulWidget {

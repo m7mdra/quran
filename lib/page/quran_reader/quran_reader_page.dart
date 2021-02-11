@@ -1,6 +1,8 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/local/database_file.dart';
 import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/local/model/search_result.dart';
@@ -9,16 +11,15 @@ import 'package:quran/di.dart';
 import 'package:quran/page/quran_reader/quran_controls_modal_widget.dart';
 import 'package:quran/page/quran_reader/search_delegate.dart';
 import 'package:quran/page/quran_reader/surah_player.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/page/quran_reader/tafseer_widget.dart';
 import 'package:quran/widget/popup_menu.dart';
 import 'package:quran/widget/surah_title_widget.dart';
-import '../../islamic_app_bar.dart';
+import 'package:share/share.dart';
+
+import '../../widget/islamic_app_bar.dart';
 import 'bloc/bookmark/add_bookmark_cubit.dart';
 import 'bloc/reader/last_read_bloc.dart';
 import 'bloc/readers/readers_bloc.dart';
-import 'package:collection/collection.dart';
-
 import 'bloc/tafseer/tafseer_bloc.dart';
 import 'bloc/tafseer/tafseer_event.dart';
 
@@ -127,24 +128,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           duration: Duration(milliseconds: 200),
           child: IslamicAppBar(
             title: 'Hello',
-            actions: [
-              IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () async {
-                    SearchResult result = await showSearch<SearchResult>(
-                        context: context,
-                        delegate: AyahSearchDelegate(
-                            SearchBloc(DependencyProvider.provide())));
-                    if (result != null) {
-                      var ayah = result.ayah;
-                      print(ayah);
-                      _pageController.jumpToPage(ayah.pageId - 1);
-                      setState(() {
-                        _playingAyahId = ayah.number;
-                      });
-                    }
-                  })
-            ],
+            actions: actions(context),
           ),
         ),
       ),
@@ -215,6 +199,32 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
     );
   }
 
+  actions(BuildContext context) {
+    return [
+      IconButton(
+          icon: Icon(Icons.share),
+          onPressed: () async {
+            sharePage();
+          }),
+      IconButton(
+          icon: Icon(Icons.search),
+          onPressed: () async {
+            SearchResult result = await showSearch<SearchResult>(
+                context: context,
+                delegate: AyahSearchDelegate(
+                    SearchBloc(DependencyProvider.provide())));
+            if (result != null) {
+              var ayah = result.ayah;
+              print(ayah);
+              _pageController.jumpToPage(ayah.pageId - 1);
+              setState(() {
+                _playingAyahId = ayah.number;
+              });
+            }
+          }),
+    ];
+  }
+
   List<Ayah> getAyahForPage(int page) => ayatByPage.values.toList()[page];
 
   TextSpan buildAyahTextSpan(Ayah e, BuildContext context) {
@@ -258,6 +268,9 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
         onTafseerCallback: () async {
           context.bloc<TafseerBloc>().add(LoadTafseerForAyah(ayah.number));
           showTafseerDialog();
+        },
+        onShareClick: () {
+          Share.share(ayah.text);
         });
   }
 
@@ -267,5 +280,15 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
         builder: (context) {
           return TafseerWidget();
         });
+  }
+
+  void sharePage() {
+    var page = getAyahForPage(_currentPage);
+    String shareText = "";
+    groupBy(page, (p) => p.surahName).forEach((key, value) {
+      shareText +=
+          key.toString() + "\n" + value.map((e) => e.text).join("\n") + "\n";
+    });
+    Share.share(shareText);
   }
 }

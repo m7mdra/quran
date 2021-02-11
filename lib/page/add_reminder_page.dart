@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quran/islamic_app_bar.dart';
+import 'package:quran/widget/islamic_app_bar.dart';
 
 class AddReminderPage extends StatefulWidget {
   @override

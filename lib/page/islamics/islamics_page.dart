@@ -10,7 +10,7 @@ import 'package:quran/page/post_prayer_zekr/post_prayer_zekr_page.dart';
 import 'package:quran/page/qiblaa/qiblaa_page.dart';
 import 'package:quran/page/riyadh/riyadh_book_page.dart';
 
-import 'islamic_app_bar.dart';
+import '../../widget/islamic_app_bar.dart';
 
 class IslamicsPage extends StatefulWidget {
   @override

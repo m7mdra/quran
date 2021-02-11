@@ -6,7 +6,7 @@ import 'package:quran/page/husn_muslim/bloc/husn_muslim/bloc.dart';
 import 'package:quran/page/husn_muslim/husn_reader_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../islamic_app_bar.dart';
+import '../../widget/islamic_app_bar.dart';
 import 'bloc/husn_muslim/bloc.dart';
 
 class HusnMuslimPage extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'dart:core';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'toggleable_font_options.dart';
+
 import 'triangle_painter.dart';
 
 abstract class MenuItemProvider {
@@ -92,7 +92,8 @@ class PopupMenu {
       {Rect rect,
       GlobalKey widgetKey,
       VoidCallback onPlayClick,
-      VoidCallback onTafseerCallback}) {
+      VoidCallback onTafseerCallback,
+      VoidCallback onShareClick}) {
     if (rect == null && widgetKey == null) {
       print("'rect' and 'key' can't be both null");
       return;
@@ -105,7 +106,12 @@ class PopupMenu {
     _calculatePosition(PopupMenu.context);
 
     _entry = OverlayEntry(builder: (context) {
-      return buildPopupMenuLayout(_offset, onPlayClick, onTafseerCallback);
+      return buildPopupMenuLayout(
+        _offset,
+        onPlayClick,
+        onTafseerCallback,
+        onShareClick
+      );
     });
 
     Overlay.of(PopupMenu.context).insert(_entry);
@@ -151,7 +157,7 @@ class PopupMenu {
   }
 
   double menuWidth() {
-    return MediaQuery.of(context).size.width - 100;
+    return MediaQuery.of(context).size.width - 180;
   }
 
   // This height exclude the arrow
@@ -159,8 +165,8 @@ class PopupMenu {
     return 70;
   }
 
-  Widget buildPopupMenuLayout(
-      Offset offset, VoidCallback onPlayClick, VoidCallback onTafseerCallback) {
+  Widget buildPopupMenuLayout(Offset offset, VoidCallback onPlayClick,
+      VoidCallback onTafseerCallback, VoidCallback onShareClick) {
     return Material(
       color: Colors.black26,
       child: LayoutBuilder(builder: (context, constraints) {
@@ -229,6 +235,7 @@ class PopupMenu {
                                       onTafseerCallback();
                                     },
                                   ),
+                                  verticalDivider(),
                                   IconButton(
                                     iconSize: 31,
                                     color: Theme.of(context).primaryColor,
@@ -238,16 +245,16 @@ class PopupMenu {
                                       onPlayClick();
                                     },
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8, bottom: 8),
-                                    child: VerticalDivider(
-                                      width: 1,
-                                    ),
+                                  verticalDivider(),
+                                  IconButton(
+                                    iconSize: 31,
+                                    color: Color(0xfffd9434),
+                                    icon: Icon(Icons.share),
+                                    onPressed: () {
+                                      dismiss();
+                                      onShareClick?.call();
+                                    },
                                   ),
-                                  ToggleableFontOptions.normal(true),
-                                  ToggleableFontOptions.large(true),
-                                  ToggleableFontOptions.bold(true)
                                 ],
                               ),
                             )),
@@ -260,6 +267,13 @@ class PopupMenu {
           ),
         );
       }),
+    );
+  }
+
+  Padding verticalDivider() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8, bottom: 8),
+      child: VerticalDivider(width: 1),
     );
   }
 

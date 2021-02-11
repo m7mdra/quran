@@ -3,7 +3,7 @@ import 'package:quran/common.dart';
 import 'package:quran/page/notes_bookmarks/bookmark/bookmarks_page.dart';
 import 'package:quran/page/notes_bookmarks/note/notes_page.dart';
 
-import '../../islamic_app_bar.dart';
+import '../../widget/islamic_app_bar.dart';
 import '../../main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

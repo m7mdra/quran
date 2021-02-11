@@ -6,7 +6,7 @@ import 'package:quran/page/night_zekr/bloc/bloc.dart';
 import 'package:quran/page/night_zekr/night_zekr_page.dart';
 
 import '../../di.dart';
-import '../../islamic_app_bar.dart';
+import '../../widget/islamic_app_bar.dart';
 
 class MorningZekrPage extends StatefulWidget {
   @override

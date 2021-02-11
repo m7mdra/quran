@@ -6,7 +6,7 @@ import 'package:quran/di.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../islamic_app_bar.dart';
+import '../../widget/islamic_app_bar.dart';
 
 class CounterCubit extends Cubit<int> {
   final SharedPreferences _sharedPreferences;

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Add this line
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:quran/islamics_page.dart';
+import 'package:quran/page/islamics/islamics_page.dart';
 import 'package:quran/main/bloc/lang/language_cubit.dart';
 import 'package:quran/main/bloc/theme/theme_cubit.dart';
 import 'package:quran/page/about.dart';
@@ -13,7 +13,7 @@ import 'package:quran/page/notes_bookmarks/notes_bookmarks_page.dart';
 import 'package:quran/page/quran_reader/bloc/reader/last_read_bloc.dart';
 import 'package:quran/page/quran_reader/quran_reader_page.dart';
 
-import 'common.dart';
+import '../../common.dart';
 
 class HomePage extends StatefulWidget {
   @override

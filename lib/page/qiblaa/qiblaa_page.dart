@@ -11,7 +11,7 @@ import 'package:quran/common.dart';
 import 'package:quran/main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../islamic_app_bar.dart';
+import '../../widget/islamic_app_bar.dart';
 
 class QiblaaPage extends StatefulWidget {
   @override

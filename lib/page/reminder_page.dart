@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:quran/data/local/quran_meta_database.dart';
 import 'package:quran/data/model/reminder.dart';
 import 'package:quran/di.dart';
-import 'package:quran/islamic_app_bar.dart';
+import 'package:quran/widget/islamic_app_bar.dart';
 
 import 'add_reminder_page.dart';
 
