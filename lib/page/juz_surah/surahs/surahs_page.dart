@@ -89,9 +89,10 @@ class _SurahsPageState extends State<SurahsPage>
                       )),
                 );
               },
-              itemCount: state.surah.length, separatorBuilder: (BuildContext context, int index) {
+              itemCount: state.surah.length,
+              separatorBuilder: (BuildContext context, int index) {
                 return Divider(height: 1);
-            },
+              },
             );
           }
           return Center(

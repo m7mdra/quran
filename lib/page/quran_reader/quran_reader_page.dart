@@ -230,7 +230,6 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
     if (e.numberInSurah == 1)
       return TextSpan(children: [
         TextSpan(text: "\n"),
-
         WidgetSpan(
             child: SurahTitleWidget(
           surah: e.surahName,

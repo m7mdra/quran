@@ -49,8 +49,8 @@ class _HizbQuarterPageState extends State<HizbQuarterPage>
                       context,
                       MaterialPageRoute(
                           builder: (context) => QuranReaderPage(
-                            page: quarter.pageId - 1,
-                          )));
+                                page: quarter.pageId - 1,
+                              )));
                 },
                 title: Text(
                   "ربع الحزب ${quarter.hizbQuarterId}",
@@ -100,26 +100,25 @@ class HizbIcon extends StatelessWidget {
         Container(
             height: 30,
             width: 30,
-            decoration: BoxDecoration(border: Border.all(width: 1, color: Theme
-                .of(context)
-                .primaryColor))),
+            decoration: BoxDecoration(
+                border: Border.all(
+                    width: 1, color: Theme.of(context).primaryColor))),
         RotationTransition(
           turns: AlwaysStoppedAnimation(45 / 360),
           child: Container(
               height: 30,
               width: 30,
               decoration: BoxDecoration(
-                  border: Border.all(width: 1, color: Theme
-                      .of(context)
-                      .primaryColor))),
+                  border: Border.all(
+                      width: 1, color: Theme.of(context).primaryColor))),
         ),
         Container(
             height: 10,
             width: 10,
-            decoration: BoxDecoration(border: Border.all(width: 1, color: Theme
-                .of(context)
-                .primaryColor), shape: BoxShape.circle)),
-
+            decoration: BoxDecoration(
+                border:
+                    Border.all(width: 1, color: Theme.of(context).primaryColor),
+                shape: BoxShape.circle)),
       ],
     );
   }

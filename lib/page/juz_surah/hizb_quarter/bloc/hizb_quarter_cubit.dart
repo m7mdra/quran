@@ -15,8 +15,7 @@ class HizbQuarterCubit extends Cubit<HizbQuarterState> {
       emit(HizbQuarterLoading());
       var data = await _quranDatabase.hizbQuarter();
       emit(HizbQuarterSuccess(data));
-
-    }catch(error){
+    } catch (error) {
       emit(HizbQuarterError());
     }
   }
