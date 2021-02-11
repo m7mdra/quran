@@ -129,19 +129,19 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
         ),
       ),
       body: SafeArea(
-        
         child: BlocBuilder(
           cubit: _quranCubit,
-          builder: (context,state){
-            if(state is QuranLoadingState){
-              return Center(child: CircularProgressIndicator(),);
+          builder: (context, state) {
+            if (state is QuranLoadingState) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             }
-            if(state is QuranSuccessState){
+            if (state is QuranSuccessState) {
               return quranPageView(state.ayat);
             }
             return Container();
           },
-
         ),
       ),
     );
@@ -149,64 +149,64 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
 
   GestureDetector quranPageView(Map<int, List<Ayah>> ayat) {
     return GestureDetector(
-          onScaleStart: (details) {
-            _baseScaleFactor = _scaleFactor;
-          },
-          onScaleUpdate: (details) {
+      onScaleStart: (details) {
+        _baseScaleFactor = _scaleFactor;
+      },
+      onScaleUpdate: (details) {
+        setState(() {
+          _scaleFactor = _baseScaleFactor * details.scale;
+        });
+      },
+      onTap: () {
+        setState(() {
+          _isVisible = !_isVisible;
+        });
+      },
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: PageView.builder(
+          clipBehavior: Clip.antiAlias,
+          onPageChanged: (page) {
             setState(() {
-              _scaleFactor = _baseScaleFactor * details.scale;
-            });
-          },
-          onTap: () {
-            setState(() {
-              _isVisible = !_isVisible;
-            });
-          },
-          child: Directionality(
-            textDirection: TextDirection.rtl,
-            child: PageView.builder(
-              clipBehavior: Clip.antiAlias,
-              onPageChanged: (page) {
-                setState(() {
-               /*   var firstInPage = getAyahForPage(page).first;
+              /*   var firstInPage = getAyahForPage(page).first;
                   _lastReadBloc.add(SaveReadingSurah(
                       firstInPage.surahName, firstInPage.pageId - 1, 0));*/
-                  _currentPage = page;
-                });
-              },
-              controller: _pageController,
-              itemBuilder: (context, page) {
-                var ayatList = ayat[page+1];
-                return SingleChildScrollView(
-                    controller: _scrollController,
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text.rich(
-                          TextSpan(
-                              text: "",
-                              semanticsLabel: 'semanticsLabel',
-                              style: TextStyle(
-                                  fontFamily: 'alquran',
-                                  fontSize: 23,
-                                  fontWeight: FontWeight.bold),
-                              children: ayatList.map((e) {
-                                return buildAyahTextSpan(e, context);
-                              }).toList()),
+              _currentPage = page;
+            });
+          },
+          controller: _pageController,
+          itemBuilder: (context, page) {
+            var ayatList = ayat[page + 1];
+            return SingleChildScrollView(
+                controller: _scrollController,
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text.rich(
+                      TextSpan(
+                          text: "",
                           semanticsLabel: 'semanticsLabel',
-                          textAlign: TextAlign.justify,
-                          softWrap: true,
-                          textDirection: TextDirection.rtl,
-                          textScaleFactor: _scaleFactor,
-                        ),
-                      ],
-                    ));
-              },
-              itemCount: ayat.keys.length,
-            ),
-          ),
-        );
+                          style: TextStyle(
+                              fontFamily: 'alquran',
+                              fontSize: 23,
+                              fontWeight: FontWeight.bold),
+                          children: ayatList.map((e) {
+                            return buildAyahTextSpan(e, context);
+                          }).toList()),
+                      semanticsLabel: 'semanticsLabel',
+                      textAlign: TextAlign.justify,
+                      softWrap: true,
+                      textDirection: TextDirection.rtl,
+                      textScaleFactor: _scaleFactor,
+                    ),
+                  ],
+                ));
+          },
+          itemCount: ayat.keys.length,
+        ),
+      ),
+    );
   }
 
   actions(BuildContext context) {

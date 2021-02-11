@@ -4,8 +4,10 @@ part of 'quran_cubit.dart';
 abstract class QuranState {}
 
 class QuranInitialState extends QuranState {}
-class QuranLoadingState extends QuranState{}
-class QuranSuccessState extends QuranState{
+
+class QuranLoadingState extends QuranState {}
+
+class QuranSuccessState extends QuranState {
   final Map<int, List<Ayah>> ayat;
 
   QuranSuccessState(this.ayat);
@@ -15,5 +17,5 @@ class QuranSuccessState extends QuranState{
     return 'QuranSuccessState{ayat: ${ayat.length}}';
   }
 }
-class QuranErrorState extends QuranState{}
 
+class QuranErrorState extends QuranState {}

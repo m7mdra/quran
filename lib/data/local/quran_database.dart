@@ -111,7 +111,8 @@ class QuranDatabase {
        ON surat.id = ayat.surat_id
        WHERE  edition_id = ? """, [editionId]);
     var list = query.map((e) => Ayah.fromMap(e)).toList();
-    var ayatByPage = groupBy(list, (ayah) => ayah.pageId).map((key, value) => MapEntry(key as int, value));
+    var ayatByPage = groupBy(list, (ayah) => ayah.pageId)
+        .map((key, value) => MapEntry(key as int, value));
     return ayatByPage;
   }
 
