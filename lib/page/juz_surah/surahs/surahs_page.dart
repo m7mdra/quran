@@ -74,7 +74,7 @@ class _SurahsPageState extends State<SurahsPage>
                       )),
                   title: Text(surah.name,
                       style: TextStyle(
-                        fontFamily: 'quran',
+                        fontFamily: 'trado',
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,

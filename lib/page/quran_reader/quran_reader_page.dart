@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/data/local/database_file.dart';
 import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/local/model/search_result.dart';
@@ -105,6 +106,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffFFFDF5),
       bottomSheet: AnimatedContainer(
         child: QuranControlsModal(
           onSaveBookMarkClick: (name) {
@@ -188,15 +190,16 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
                           text: "",
                           semanticsLabel: 'semanticsLabel',
                           style: TextStyle(
-                              fontFamily: 'quran',
-                              fontSize: 23,
-                              fontWeight: FontWeight.bold),
+                              fontFamily: 'trado',
+                              fontSize: 30,
+                              color: Color(0xff534508)),
                           children: ayatList.map((e) {
                             return buildAyahTextSpan(e, context);
                           }).toList()),
                       semanticsLabel: 'semanticsLabel',
                       textAlign: TextAlign.center,
                       softWrap: true,
+
                       textDirection: TextDirection.rtl,
                       textScaleFactor: _scaleFactor,
                     ),

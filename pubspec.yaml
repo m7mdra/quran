@@ -104,6 +104,9 @@ flutter:
     - family: quran
       fonts:
         - asset: assets/fonts/quran.ttf
+    - family: trado
+      fonts:
+        - asset: assets/fonts/trado.ttf
 
     - family: QQMajeed
       fonts:

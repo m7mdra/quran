@@ -70,7 +70,7 @@ class QuranDatabase {
   Future<List<Edition>> quranEditions() async {
     var db = await database;
     var query =
-        await db.rawQuery('SELECT * FROM edition WHERE type =?', ['quran']);
+        await db.rawQuery('SELECT * FROM edition WHERE type =?', ['trado']);
     return query.map((e) => Edition.fromMap(e)).toList();
   }
 

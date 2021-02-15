@@ -68,7 +68,7 @@ class AyahSearchDelegate extends SearchDelegate<SearchResult> {
                   leading: Text('﴿${ayah.numberInSurah}﴾',
                       style: TextStyle(fontFamily: 'Al-QuranAlKareem')),
                   title: Text(ayah.text,
-                      style: TextStyle(fontFamily: 'quran', fontSize: 21)));
+                      style: TextStyle(fontFamily: 'trado', fontSize: 21)));
             },
             itemCount: result.length,
             separatorBuilder: (BuildContext context, int index) {

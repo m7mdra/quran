@@ -65,7 +65,7 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
                       )),
                   title: Text("الجزء ${index + 1}",
                       style: TextStyle(
-                        fontFamily: 'quran',
+                        fontFamily: 'trado',
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
                         fontStyle: FontStyle.normal,

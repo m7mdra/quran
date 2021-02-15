@@ -41,7 +41,7 @@ class TafseerWidget extends StatelessWidget {
                           dense: true,
                           title: Text(tafseer.text,
                               style: TextStyle(
-                                fontFamily: 'quran',
+                                fontFamily: 'trado',
                                 fontSize: 20,
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.normal,

@@ -158,7 +158,7 @@ class _HusnChapterWidgetState extends State<HusnChapterWidget> {
                     return Text(data.arabicText,
                         textAlign: TextAlign.justify,
                         style: TextStyle(
-                          fontFamily: 'quran',
+                          fontFamily: 'trado',
                           fontSize: 21,
                           fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal,

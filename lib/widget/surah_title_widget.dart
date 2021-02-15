@@ -14,14 +14,14 @@ class SurahTitleWidget extends StatelessWidget {
         alignment: Alignment.center,
         children: [
           SvgPicture.asset(
-            'assets/images/surah_name_title.svg',
+            'assets/images/surah_title.svg',
           ),
           Text(
             surah,
             style: TextStyle(
-              color: Color(0xffFD9434),
-              fontSize: 24,
-              fontFamily: 'quran',
+              color: Color(0xff534508),
+              fontSize: 30,
+              fontFamily: 'trado',
             ),
           )
         ],
