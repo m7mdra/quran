@@ -1,15 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_svg/svg.dart';
-
 import 'package:quran/di.dart';
 import 'package:quran/page/quran_reader/bloc/reader/last_read_bloc.dart';
 import 'package:quran/page/quran_reader/quran_reader_page.dart';
 
-import '../../../widget/popup_menu.dart';
 import 'bloc/bloc.dart';
 
 class SurahsPage extends StatefulWidget {

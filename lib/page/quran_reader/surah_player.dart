@@ -94,7 +94,7 @@ class SurahPlayer {
   }
 
   void playPage(int page) async {
-    var ayat = await quranDatabase.page(page);
+    var ayat = await quranDatabase.ayatInPage(page);
     clear();
     _playlist.addAll(ayat);
     _play();

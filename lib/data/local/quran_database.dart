@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:quran/common.dart';
 import 'package:quran/data/local/database_file.dart';
 import 'package:quran/data/local/model/hizb_quarter.dart';
+import 'package:quran/data/model/surat_in_page.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'model/ayah.dart';
@@ -48,10 +49,31 @@ class QuranDatabase {
     return query.map((e) => Surah.fromMap(e)).toList();
   }
 
+  Future<List<SuratInPage>> suratInPage(int page) async {
+    var db = await database;
+    var query = await db.rawQuery("""
+    SELECT surat.name,ayat.page_id from ayat 
+LEFT JOIN  surat
+ON ayat.surat_id = surat.id
+WHERE ayat.edition_id=78 AND ayat.page_id = ?
+GROUP BY surat.id
+
+""", [page]);
+    return query.map((e) => SuratInPage.fromMap(e)).toList();
+  }
   Future<List<Surah>> surahById(int id) async {
     var db = await database;
     var query = await db.rawQuery('SELECT * FROM surat where id = ?', [id]);
     return query.map((e) => Surah.fromMap(e)).toList();
+  }
+  Future<List<Ayah>> ayatInPage(int page)async{
+    var db = await database;
+    var query =
+        await db.rawQuery("""
+        SELECT *  FROM ayat
+        WHERE ayat.edition_id=82 
+        AND ayat.page_id=? """, [page]);
+    return query.map((e) => Ayah.fromMap(e)).toList();
   }
 
   Future<List<Edition>> editions() async {
@@ -60,12 +82,7 @@ class QuranDatabase {
     return query.map((e) => Edition.fromMap(e)).toList();
   }
 
-  Future<List<Ayah>> page(int page) async {
-    var db = await database;
-    var query =
-        await db.rawQuery('SELECT * FROM ayat where page_id = ?', [page]);
-    return query.map((e) => Ayah.fromMap(e)).toList();
-  }
+
 
   Future<List<Edition>> quranEditions() async {
     var db = await database;
@@ -115,6 +132,8 @@ class QuranDatabase {
         .map((key, value) => MapEntry(key as int, value));
     return ayatByPage;
   }
+
+
 
   Future<Map<int, List<JuzReference>>> juz() async {
     var db = await database;

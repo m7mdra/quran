@@ -1,13 +1,9 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:quran/data/local/database_file.dart';
 import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/local/model/search_result.dart';
-import 'package:quran/data/local/quran_database.dart';
 import 'package:quran/di.dart';
 import 'package:quran/page/quran_reader/quran_controls_modal_widget.dart';
 import 'package:quran/page/quran_reader/search_delegate.dart';
@@ -51,10 +47,10 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   @override
   void initState() {
     super.initState();
-    _quranCubit = QuranCubit(DependencyProvider.provide());
+    _lastReadBloc = context.bloc();
+    _quranCubit = QuranCubit(DependencyProvider.provide(), _lastReadBloc);
     _quranCubit.loadData();
     _pageController = PageController();
-    _lastReadBloc = context.bloc();
     _scrollController = ScrollController();
     _currentPage = widget.page + 1;
     _bookmarkCubit = BookmarkCubit(DependencyProvider.provide());
@@ -100,6 +96,8 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
     _player.dispose();
     _scrollController.dispose();
     _pageController.dispose();
+    _quranCubit.close();
+    _readersBloc.close();
     super.dispose();
   }
 
@@ -131,19 +129,38 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
         ),
       ),
       body: SafeArea(
-        child: BlocBuilder(
+        child: BlocListener(
           cubit: _quranCubit,
-          builder: (context, state) {
-            if (state is QuranLoadingState) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+          listener: (context, state) {
             if (state is QuranSuccessState) {
-              return quranPageView(state.ayat);
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                _pageController.jumpToPage(widget.page);
+              });
             }
-            return Container();
+            if (state is OnSharePage) {
+              Share.share(state.page);
+            }
           },
+          listenWhen: (previous, current) {
+            return current is! QuranSuccessState || current is! OnSharePage;
+          },
+          child: BlocBuilder(
+            buildWhen: (pre, current) {
+              return current is! OnSharePage;
+            },
+            cubit: _quranCubit,
+            builder: (context, state) {
+              if (state is QuranLoadingState) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (state is QuranSuccessState) {
+                return quranPageView(state.ayat);
+              }
+              return Container();
+            },
+          ),
         ),
       ),
     );
@@ -169,10 +186,8 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
         child: PageView.builder(
           clipBehavior: Clip.antiAlias,
           onPageChanged: (page) {
+            _quranCubit.pageChanged(page + 1);
             setState(() {
-              /*   var firstInPage = getAyahForPage(page).first;
-                  _lastReadBloc.add(SaveReadingSurah(
-                      firstInPage.surahName, firstInPage.pageId - 1, 0));*/
               _currentPage = page;
             });
           },
@@ -199,7 +214,6 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
                       semanticsLabel: 'semanticsLabel',
                       textAlign: TextAlign.center,
                       softWrap: true,
-
                       textDirection: TextDirection.rtl,
                       textScaleFactor: _scaleFactor,
                     ),
@@ -237,9 +251,6 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           }),
     ];
   }
-
-//TODO : fix fix
-  List<Ayah> getAyahForPage(int page) => [];
 
   TextSpan buildAyahTextSpan(Ayah e, BuildContext context) {
     if (e.numberInSurah == 1)
@@ -299,13 +310,6 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   }
 
   void sharePage() {
-    var page = getAyahForPage(_currentPage);
-    String shareText = "";
-    groupBy(page, (p) => p.surahName).forEach((key, value) {
-      shareText +=
-          key.toString() + "\n" + value.map((e) => e.text).join("\n") + "\n";
-    });
-
-    Share.share(shareText);
+    _quranCubit.sharePage(_currentPage + 1);
   }
 }

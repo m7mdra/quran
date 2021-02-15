@@ -19,3 +19,9 @@ class QuranSuccessState extends QuranState {
 }
 
 class QuranErrorState extends QuranState {}
+
+class OnSharePage extends QuranState {
+  final String page;
+
+  OnSharePage(this.page);
+}
