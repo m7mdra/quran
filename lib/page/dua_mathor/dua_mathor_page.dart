@@ -51,7 +51,7 @@ class _DuaMathorPageState extends State<DuaMathorPage> {
                     toolbarOptions: ToolbarOptions(
                         copy: true, cut: true, selectAll: true, paste: true),
                     textAlign: TextAlign.justify,
-                    style: TextStyle(fontSize: 21, fontFamily: 'alquran'),
+                    style: TextStyle(fontSize: 21, fontFamily: 'quran'),
                   ),
                 );
               },

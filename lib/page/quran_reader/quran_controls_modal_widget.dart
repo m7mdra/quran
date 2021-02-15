@@ -31,12 +31,7 @@ class QuranControlsModal extends StatefulWidget {
 
 class _QuranModalWidgetState extends State<QuranControlsModal> {
   SurahPlayer player;
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    print("Page: ${widget.page}");
-  }
+
 
   @override
   void initState() {

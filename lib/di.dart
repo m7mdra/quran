@@ -23,7 +23,7 @@ class DependencyProvider {
 
   static Future<void> build() async {
     var options = BaseOptions(
-        baseUrl: "http://api.alquran.cloud/v1/",
+        baseUrl: "http://api.quran.cloud/v1/",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',

@@ -13,7 +13,6 @@ class SearchResult {
   }
   @override
   String toString() {
-    // TODO: implement toString
     return "SearchResult(ayah: $ayah, surah:$surah)";
   }
 }

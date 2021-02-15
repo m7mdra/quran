@@ -188,14 +188,14 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
                           text: "",
                           semanticsLabel: 'semanticsLabel',
                           style: TextStyle(
-                              fontFamily: 'alquran',
+                              fontFamily: 'quran',
                               fontSize: 23,
                               fontWeight: FontWeight.bold),
                           children: ayatList.map((e) {
                             return buildAyahTextSpan(e, context);
                           }).toList()),
                       semanticsLabel: 'semanticsLabel',
-                      textAlign: TextAlign.justify,
+                      textAlign: TextAlign.center,
                       softWrap: true,
                       textDirection: TextDirection.rtl,
                       textScaleFactor: _scaleFactor,
@@ -302,6 +302,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
       shareText +=
           key.toString() + "\n" + value.map((e) => e.text).join("\n") + "\n";
     });
+
     Share.share(shareText);
   }
 }
