@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/local/model/search_result.dart';
 import 'package:quran/di.dart';
@@ -194,36 +195,42 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           controller: _pageController,
           itemBuilder: (context, page) {
             var ayatList = ayat[page + 1];
-            return SingleChildScrollView(
-                controller: _scrollController,
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text.rich(
-                      TextSpan(
-                          text: "",
-                          semanticsLabel: 'semanticsLabel',
-                          style: TextStyle(
-                              fontFamily: 'trado',
-                              fontSize: 30,
-                              color: Color(0xff534508)),
-                          children: ayatList.map((e) {
-                            return buildAyahTextSpan(e, context);
-                          }).toList()),
-                      semanticsLabel: 'semanticsLabel',
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      textDirection: TextDirection.rtl,
-                      textScaleFactor: _scaleFactor,
-                    ),
-                  ],
-                ));
+            return Stack(
+              children: [
+                SvgPicture.asset("assets/images/page_border.svg",
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    fit: BoxFit.fill),
+                ayatScrollView(ayatList, context),
+              ],
+            );
           },
           itemCount: ayat.keys.length,
         ),
       ),
     );
+  }
+
+  Widget ayatScrollView(
+      List<Ayah> ayatList, BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    return SingleChildScrollView(
+        controller: _scrollController,
+        padding: const EdgeInsets.all(16),
+        child: Text.rich(
+          TextSpan(
+              text: "",
+              semanticsLabel: 'semanticsLabel',
+              style: TextStyle(
+                  fontFamily: 'trado', fontSize: 30, color: Color(0xff534508)),
+              children: ayatList.map((e) {
+                return buildAyahTextSpan(e, context);
+              }).toList()),
+          semanticsLabel: 'semanticsLabel',
+          textAlign: TextAlign.center,
+          textDirection: TextDirection.rtl,
+          textScaleFactor: _scaleFactor,
+        ));
   }
 
   actions(BuildContext context) {
