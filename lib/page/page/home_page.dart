@@ -71,9 +71,11 @@ class _HomePageState extends State<HomePage> {
         Align(
           alignment: AlignmentDirectional(0.0, 0.0),
           child: ListView(
+            physics: ClampingScrollPhysics(),
             primary: true,
             shrinkWrap: true,
             children: [
+              SvgPicture.asset("assets/images/logo.svg",height: MediaQuery.of(context).size.height*0.12,),
               Container(
                 padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
                 width: MediaQuery.of(context).size.width,

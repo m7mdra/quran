@@ -105,7 +105,6 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffFFFDF5),
       bottomSheet: AnimatedContainer(
         child: QuranControlsModal(
           onSaveBookMarkClick: (name) {
@@ -195,15 +194,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           controller: _pageController,
           itemBuilder: (context, page) {
             var ayatList = ayat[page + 1];
-            return Stack(
-              children: [
-                SvgPicture.asset("assets/images/page_border.svg",
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    fit: BoxFit.fill),
-                ayatScrollView(ayatList, context),
-              ],
-            );
+            return ayatScrollView(ayatList, context);
           },
           itemCount: ayat.keys.length,
         ),
@@ -222,7 +213,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
               text: "",
               semanticsLabel: 'semanticsLabel',
               style: TextStyle(
-                  fontFamily: 'trado', fontSize: 30, color: Color(0xff534508)),
+                  fontFamily: 'trado', fontSize: 30),
               children: ayatList.map((e) {
                 return buildAyahTextSpan(e, context);
               }).toList()),
