@@ -5,9 +5,7 @@ class SuratInPage {
   String name;
   int pageId;
 
-  SuratInPage({
-      this.name, 
-      this.pageId});
+  SuratInPage({this.name, this.pageId});
 
   SuratInPage.fromMap(dynamic json) {
     name = json["name"];
@@ -20,5 +18,4 @@ class SuratInPage {
     map["page_id"] = pageId;
     return map;
   }
-
 }

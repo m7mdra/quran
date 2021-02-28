@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quran/di.dart';
-import 'package:quran/page/juz_surah/surahs/surahs_page.dart';
 import 'package:quran/page/notes_bookmarks/bookmark/bloc/get_bookmarks_cubit.dart';
 import 'package:quran/page/quran_reader/quran_reader_page.dart';
 

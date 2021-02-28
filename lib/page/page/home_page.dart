@@ -7,7 +7,6 @@ import 'package:quran/page/islamics/islamics_page.dart';
 import 'package:quran/main/bloc/lang/language_cubit.dart';
 import 'package:quran/main/bloc/theme/theme_cubit.dart';
 import 'package:quran/page/about.dart';
-import 'package:quran/page/juz_surah/surahs/surahs_page.dart';
 import 'package:quran/page/juz_surah/surahs_juzes_page.dart';
 import 'package:quran/page/notes_bookmarks/notes_bookmarks_page.dart';
 import 'package:quran/page/quran_reader/bloc/reader/last_read_bloc.dart';
@@ -75,7 +74,10 @@ class _HomePageState extends State<HomePage> {
             primary: true,
             shrinkWrap: true,
             children: [
-              SvgPicture.asset("assets/images/logo.svg",height: MediaQuery.of(context).size.height*0.12,),
+              SvgPicture.asset(
+                "assets/images/logo.svg",
+                height: MediaQuery.of(context).size.height * 0.12,
+              ),
               Container(
                 padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
                 width: MediaQuery.of(context).size.width,

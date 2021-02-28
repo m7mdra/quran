@@ -81,7 +81,7 @@ class _MusbahaPageState extends State<MusbahaPage> {
               Row(
                 children: [
                   Expanded(
-                    child: RaisedButton(
+                    child: MaterialButton(
                       elevation: 0,
                       hoverElevation: 0,
                       highlightElevation: 0,
@@ -128,13 +128,13 @@ class _MusbahaPageState extends State<MusbahaPage> {
               textAlign: TextAlign.right,
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
                   child: Text(
                       MaterialLocalizations.of(context).cancelButtonLabel)),
-              FlatButton(
+              TextButton(
                 onPressed: () async {
                   Navigator.pop(context);
                   await _counterCubit.zero();

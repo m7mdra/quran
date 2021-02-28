@@ -29,6 +29,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
     }
     if (event is AddNewNote) {
       try {
+        // ignore: unused_local_variable
         var notes = await _repository.add(event.note);
         add(LoadNotes());
       } catch (error) {

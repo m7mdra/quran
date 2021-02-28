@@ -11,7 +11,7 @@ class SaveReadingSurah extends LastReadEvent {
 
   @override
   String toString() {
-    return "${surah} $page $position";
+    return "$surah $page $position";
   }
 }
 

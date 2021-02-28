@@ -32,7 +32,6 @@ class QuranControlsModal extends StatefulWidget {
 class _QuranModalWidgetState extends State<QuranControlsModal> {
   SurahPlayer player;
 
-
   @override
   void initState() {
     super.initState();
@@ -154,7 +153,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              RaisedButton(
+              MaterialButton(
                 onPressed: () {
                   var text = textEditingController.text;
                   if (text.isNotEmpty) {
@@ -170,7 +169,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
                 textColor: Colors.white,
                 color: Theme.of(context).primaryColor,
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },

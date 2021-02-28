@@ -69,7 +69,7 @@ class _RiyadhBookPageState extends State<RiyadhBookPage> {
                     SizedBox(
                       height: 8,
                     ),
-                    RaisedButton(
+                    MaterialButton(
                       onPressed: () {
                         _bookBloc.add(DownloadBookEvent());
                       },
@@ -144,7 +144,7 @@ class BookNotFoundWidget extends StatelessWidget {
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width - 100,
-              child: RaisedButton(
+              child: MaterialButton(
                 elevation: 0,
                 focusElevation: 0,
                 highlightElevation: 0,

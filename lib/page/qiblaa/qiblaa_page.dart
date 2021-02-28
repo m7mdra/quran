@@ -8,7 +8,6 @@ import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:quran/common.dart';
-import 'package:quran/main.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../widget/islamic_app_bar.dart';
@@ -246,7 +245,7 @@ class LocationErrorWidget extends StatelessWidget {
               style: TextStyle(color: errorColor, fontWeight: FontWeight.bold),
             ),
             box,
-            RaisedButton(
+            ElevatedButton(
               child: Text(AppLocalizations.of(context).retry),
               onPressed: () {
                 if (callback != null) callback();

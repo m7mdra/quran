@@ -4,10 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'
-    as l10n; // Add this line
+import 'package:flutter_gen/gen_l10n/app_localizations.dart' as l10n;
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:quran/data/local/database_file.dart';
 import 'package:quran/data/local/preference.dart';
 import 'package:quran/data/local/quran_database.dart';
 import 'package:quran/data/local/quran_meta_database.dart';

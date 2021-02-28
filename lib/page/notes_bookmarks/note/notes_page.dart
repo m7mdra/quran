@@ -189,7 +189,7 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
               Row(
                 children: [
                   Expanded(
-                      child: RaisedButton(
+                      child: MaterialButton(
                           elevation: 0,
                           hoverElevation: 0,
                           highlightElevation: 0,
@@ -214,7 +214,7 @@ class _AddNoteWidgetState extends State<AddNoteWidget> {
                       flex: 2),
                   SizedBox(width: 8),
                   Expanded(
-                      child: RaisedButton(
+                      child: MaterialButton(
                           elevation: 0,
                           hoverElevation: 0,
                           highlightElevation: 0,

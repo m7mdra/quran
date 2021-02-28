@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/page/riyadh/bloc/bloc.dart';
 import 'package:quran/page/splash/bloc/bloc.dart';
@@ -105,7 +106,7 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
         Text('يمكنك الان ان تبدا باستخدام التطبيق بكل خواصه المتاحة',
             textAlign: TextAlign.center),
         size16(),
-        RaisedButton(
+        MaterialButton(
             onPressed: () {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => SplashPage()));
@@ -134,7 +135,7 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
             'لقد حصل خطا اثناء محاولة تحميل البيانات تاكد من وجود اتصال انترنت نشط على الجهاز',
             textAlign: TextAlign.center),
         size16(),
-        RaisedButton(
+        MaterialButton(
             onPressed: () {
               _databaseBloc.add(StartDownloadDatabaseEvent());
             },
@@ -159,7 +160,7 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
         Text('لقد حصل خطا اثناء محاولة معالجة البيانات',
             textAlign: TextAlign.center),
         size16(),
-        RaisedButton(
+        MaterialButton(
             onPressed: () {
               _databaseBloc.add(CheckDatabaseExistence());
             },
@@ -245,7 +246,7 @@ class DatabaseNotFound extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         SizedBox(height: 16),
-        RaisedButton(
+        MaterialButton(
             onPressed: () {
               _databaseBloc.add(StartDownloadDatabaseEvent());
             },
@@ -258,9 +259,9 @@ class DatabaseNotFound extends StatelessWidget {
             highlightElevation: 0,
             hoverElevation: 0),
         SizedBox(height: 8),
-        RaisedButton(
+        MaterialButton(
             onPressed: () {
-              //TODO
+              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
             },
             child: Text('تحميل لاحقا'),
             color: Theme.of(context).disabledColor,

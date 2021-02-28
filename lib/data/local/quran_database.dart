@@ -61,15 +61,16 @@ GROUP BY surat.id
 """, [page]);
     return query.map((e) => SuratInPage.fromMap(e)).toList();
   }
+
   Future<List<Surah>> surahById(int id) async {
     var db = await database;
     var query = await db.rawQuery('SELECT * FROM surat where id = ?', [id]);
     return query.map((e) => Surah.fromMap(e)).toList();
   }
-  Future<List<Ayah>> ayatInPage(int page)async{
+
+  Future<List<Ayah>> ayatInPage(int page) async {
     var db = await database;
-    var query =
-        await db.rawQuery("""
+    var query = await db.rawQuery("""
         SELECT *  FROM ayat
         WHERE ayat.edition_id=82 
         AND ayat.page_id=? """, [page]);
@@ -81,8 +82,6 @@ GROUP BY surat.id
     var query = await db.rawQuery('SELECT * FROM edition');
     return query.map((e) => Edition.fromMap(e)).toList();
   }
-
-
 
   Future<List<Edition>> quranEditions() async {
     var db = await database;
@@ -132,8 +131,6 @@ GROUP BY surat.id
         .map((key, value) => MapEntry(key as int, value));
     return ayatByPage;
   }
-
-
 
   Future<Map<int, List<JuzReference>>> juz() async {
     var db = await database;

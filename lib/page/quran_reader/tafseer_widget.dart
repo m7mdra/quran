@@ -53,7 +53,7 @@ class TafseerWidget extends StatelessWidget {
                       },
                     ),
                   ),
-                  FlatButton(
+                  TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },

@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/local/model/search_result.dart';
 import 'package:quran/di.dart';
@@ -202,9 +201,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
     );
   }
 
-  Widget ayatScrollView(
-      List<Ayah> ayatList, BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
+  Widget ayatScrollView(List<Ayah> ayatList, BuildContext context) {
     return SingleChildScrollView(
         controller: _scrollController,
         padding: const EdgeInsets.all(16),
@@ -212,8 +209,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           TextSpan(
               text: "",
               semanticsLabel: 'semanticsLabel',
-              style: TextStyle(
-                  fontFamily: 'trado', fontSize: 30),
+              style: TextStyle(fontFamily: 'trado', fontSize: 30),
               children: ayatList.map((e) {
                 return buildAyahTextSpan(e, context);
               }).toList()),

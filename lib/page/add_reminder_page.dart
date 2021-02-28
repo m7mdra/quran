@@ -69,7 +69,7 @@ class _AddReminderPageState extends State<AddReminderPage> {
                       })),
             ),
             SizedBox(height: 16),
-            RaisedButton(
+            MaterialButton(
               child: Text(
                 'Save',
                 style: TextStyle(fontWeight: FontWeight.bold),
