@@ -38,7 +38,6 @@ dependencies:
   audioplayers: ^0.17.0
   flutter_pdfview: ^1.0.4
   flutter_qiblah: ^1.0.3+2
-  geolocator: ^6.2.1
   timeago: ^3.0.1
   sqflite: ^2.0.0
   flutter_archive: ^3.0.0
