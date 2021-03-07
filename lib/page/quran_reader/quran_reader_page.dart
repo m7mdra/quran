@@ -133,7 +133,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           listener: (context, state) {
             if (state is QuranSuccessState) {
               WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                _pageController.jumpToPage(widget.page);
+                _pageController.jumpToPage(widget.page-1);
               });
             }
             if (state is OnSharePage) {
