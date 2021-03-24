@@ -5,7 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/common.dart';
 import 'package:quran/di.dart';
-import 'package:quran/page/page/home_page.dart';
+import 'package:quran/page/home/home_page.dart';
 import 'package:quran/page/riyadh/bloc/riyadh_book_bloc.dart';
 import 'package:quran/page/splash/bloc/bloc.dart';
 import 'package:quran/page/splash/database_downloader_page.dart';
