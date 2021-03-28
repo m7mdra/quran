@@ -100,7 +100,7 @@ class QuranDatabase {
   Future<List<Edition>> translationEditions() async {
     var db = await database;
     var query = await db
-        .rawQuery("SELECT * FROM edition WHERE type =? AND format = 'text' ", ['translation']);
+        .rawQuery("SELECT * FROM edition WHERE type ='translation' AND format = 'text'");
     return query.map((e) => Edition.fromMap(e)).toList();
   }
 

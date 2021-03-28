@@ -9,12 +9,18 @@
 class Edition {
   String identifier;
   String language;
+  int id;
   String name;
   String englishName;
   String format;
   String type;
   String direction;
   String media;
+  bool selected = false;
+
+  bool isSelected(int editionId) => editionId == id;
+
+  void setSelected(bool isEqual) => selected = isEqual;
 
   Edition(
       {this.identifier,
@@ -26,21 +32,24 @@ class Edition {
       this.direction,
       this.media});
 
-  Edition.fromMap(dynamic json) {
-    identifier = json["identifier"];
-    language = json["language"];
-    name = json["name"];
-    englishName = json["englishname"];
-    format = json["format"];
-    type = json["type"];
-    direction = json["direction"];
-    media = json['media'] ?? "";
+  Edition.fromMap(dynamic map) {
+    identifier = map["identifier"];
+    id = map["id"];
+    language = map["language"];
+    name = map["name"];
+    englishName = map["englishname"];
+    format = map["format"];
+    type = map["type"];
+    direction = map["direction"];
+    media = map['media'] ?? "";
   }
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};
     map["identifier"] = identifier;
     map["language"] = language;
+    map["id"] = id;
+
     map["name"] = name;
     map["englishname"] = englishName;
     map["format"] = format;
@@ -102,6 +111,40 @@ class Edition {
         return 'Albanian';
       case 'sv':
         return 'Swedish';
+      case 'vw':
+        return 'Swahili';
+      case 'ta':
+        return 'Tamil';
+      case 'tg':
+        return 'Tajik';
+      case 'th':
+        return 'Thai';
+      case 'tr':
+        return 'Turkish';
+      case 'ug':
+        return 'Uighur';
+      case 'ur':
+        return 'Urdu';
+      case 'uz':
+        return 'Uzbek';
+      case 'en':
+        return 'English';
+      case 'es':
+        return 'Spanish';
+      case 'ms':
+        return 'Malay';
+      case 'zh':
+        return 'Chinese';
+      case 'bs':
+        return 'Bosnian';
+      case 'si':
+        return 'Sinhala';
+      case 'ar':
+        return 'Arabic';
+      case 'sw':
+        return 'Swahili';
+      case 'tt':
+        return 'Tatar';
 
       default:
         return '';

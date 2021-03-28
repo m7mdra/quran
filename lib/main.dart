@@ -123,7 +123,7 @@ class _MyAppState extends State<MyApp> {
                           LastReadBloc(DependencyProvider.provide())),
                   BlocProvider(
                       create: (context) =>
-                          TafseerBloc(DependencyProvider.provide())),
+                          TafseerBloc(DependencyProvider.provide(),DependencyProvider.provide())),
                 ], child: widget);
               },
               title: 'Flutter Demo',

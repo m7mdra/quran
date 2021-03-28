@@ -16,7 +16,8 @@ class _TranslationsPageState extends State<TranslationsPage> {
   @override
   void initState() {
     super.initState();
-    _cubit = TranslationsCubit(DependencyProvider.provide());
+    _cubit = TranslationsCubit(
+        DependencyProvider.provide(), DependencyProvider.provide());
     _cubit.loadData();
   }
 
@@ -43,10 +44,18 @@ class _TranslationsPageState extends State<TranslationsPage> {
             return ListView.separated(
               itemBuilder: (context, index) {
                 var edition = list[index];
+                if (edition.selected)
+                  return CheckboxListTile(value: true, onChanged: (value) {},
+                      title: Text("${edition.englishName}"),
+                      subtitle: Text(edition.languageFromCode())
+                  );
                 return ListTile(
-                  title: Text(edition.englishName),
-                  subtitle: Text(edition.name),
-                  leading: Text(edition.languageFromCode(),style: TextStyle(fontWeight: FontWeight.bold),),
+                  onTap: () {
+                    _cubit.saveSelection(edition.id);
+                  },
+                  selected: edition.selected,
+                  title: Text("${edition.englishName}"),
+                  subtitle: Text(edition.languageFromCode()),
                 );
               },
               itemCount: list.length,

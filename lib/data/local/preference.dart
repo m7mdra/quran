@@ -89,4 +89,12 @@ class Preference {
       return Reader.fromJson(jsonDecode(json));
     }
   }
+
+  Future saveTranslation(int id) async {
+    await _sharedPreferences.setInt("trans", id);
+  }
+
+  int translation() {
+    return _sharedPreferences.getInt("trans");
+  }
 }

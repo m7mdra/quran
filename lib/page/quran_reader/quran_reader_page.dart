@@ -119,10 +119,10 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
       appBar: PreferredSize(
         preferredSize: Size(MediaQuery.of(context).size.width, 70),
         child: AnimatedContainer(
-          height: _isVisible ? 70 : 0,
+          height: _isVisible ? 80 : 0,
           duration: Duration(milliseconds: 200),
           child: IslamicAppBar(
-            title: 'Hello',
+            title: 'قارئ القران',
             actions: actions(context),
           ),
         ),
