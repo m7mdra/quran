@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:quran/page/translations/translations_page.dart';
 
 import 'bloc/tafseer/tafseer_bloc.dart';
 import 'bloc/tafseer/tafseer_state.dart';
@@ -31,8 +32,36 @@ class TafseerWidget extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal)),
                   ),
+                  Divider(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16, right: 16),
+                    child: Row(
+                      children: [
+                        Flexible(
+                            child: Text(
+                          "التفسير متوفرة بترجمات مختلفة و ٤٢ لغة",
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w600),
+                        )),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TranslationsPage()));
+                          },
+                          child: Text("تغيير",
+                              style: TextStyle(
+                                  color: Theme.of(context).accentColor)),
+                        )
+                      ],
+                    ),
+                  ),
+                  Divider(),
                   Expanded(
                     child: ListView.separated(
+                      padding: const EdgeInsets.all(16.0),
                       shrinkWrap: true,
                       itemCount: state.list.length,
                       itemBuilder: (BuildContext context, int index) {

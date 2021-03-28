@@ -50,7 +50,13 @@ class DependencyProvider {
     var databaseFile = DatabaseFile();
     _registrar.registerSingleton(databaseFile);
     _registrar.registerSingleton(quranDb);
-    _registrar.registerSingleton(QuranDatabase(databaseFile));
+    var quranDatabase = QuranDatabase(databaseFile);
+    quranDatabase.translationEditions().then((value){
+      value.forEach((element) {
+        print(element.toMap());
+      });
+    });
+    _registrar.registerSingleton(quranDatabase);
     _registrar.registerSingleton<NoteRepository>(quranDb);
     _registrar.registerSingleton<BookmarkRepository>(quranDb);
     _registrar.registerSingletonAsync(() => SharedPreferences.getInstance());

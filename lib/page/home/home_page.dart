@@ -221,9 +221,12 @@ class _HomePageState extends State<HomePage> {
                 ? 'assets/images/ic_settings_dark.svg'
                 : 'assets/images/ic_settings.svg'),
             onPressed: () {
-
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SettingsPage()));
+              var themeCubit = context.bloc<ThemeCubit>();
+              if (isDarkMode(context)) {
+                themeCubit.light();
+              } else {
+                themeCubit.dark();
+              }
             },
             splashRadius: 20,
             iconSize: 40),

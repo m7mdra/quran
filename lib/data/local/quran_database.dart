@@ -52,13 +52,13 @@ class QuranDatabase {
   Future<List<SuratInPage>> suratInPage(int page) async {
     var db = await database;
     var query = await db.rawQuery("""
-    SELECT surat.name,ayat.page_id from ayat 
-LEFT JOIN  surat
-ON ayat.surat_id = surat.id
-WHERE ayat.edition_id=78 AND ayat.page_id = ?
-GROUP BY surat.id
+            SELECT surat.name,ayat.page_id from ayat 
+            LEFT JOIN  surat
+            ON ayat.surat_id = surat.id
+            WHERE ayat.edition_id=78 AND ayat.page_id = ?
+            GROUP BY surat.id
 
-""", [page]);
+                                 """, [page]);
     return query.map((e) => SuratInPage.fromMap(e)).toList();
   }
 
@@ -100,7 +100,7 @@ GROUP BY surat.id
   Future<List<Edition>> translationEditions() async {
     var db = await database;
     var query = await db
-        .rawQuery('SELECT * FROM edition WHERE type =?', ['translation']);
+        .rawQuery("SELECT * FROM edition WHERE type =? AND format = 'text' ", ['translation']);
     return query.map((e) => Edition.fromMap(e)).toList();
   }
 
