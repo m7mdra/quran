@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/local/model/search_result.dart';
 import 'package:quran/di.dart';
@@ -133,7 +134,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           listener: (context, state) {
             if (state is QuranSuccessState) {
               WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                _pageController.jumpToPage(widget.page-1);
+                _pageController.jumpToPage(widget.page - 1);
               });
             }
             if (state is OnSharePage) {
@@ -193,10 +194,52 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           controller: _pageController,
           itemBuilder: (context, page) {
             var ayatList = ayat[page + 1];
-            return ayatScrollView(ayatList, context);
+            if (page == 0) {
+              return specialSurahPage(ayatList, context);
+            } else if (page == 1) {
+              return specialSurahPage(ayatList, context);
+            } else {
+              return Column(
+                children: [
+                  Expanded(child: ayatScrollView(ayatList, context)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text("الجزء ${ayatList.first.juzId}",style: TextStyle(fontSize: 16)),
+                      Text("الصفحة ${page+1}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
+                      Text("ربع الحزب ${ayatList.first.hizbQuarterId}",style: TextStyle(fontSize: 16)),
+                    ],
+                  )
+                ],
+              );
+            }
           },
           itemCount: ayat.keys.length,
         ),
+      ),
+    );
+  }
+
+  Padding specialSurahPage(List<Ayah> ayatList, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Stack(
+        alignment: Alignment(0,-0.8),
+        children: [
+          SvgPicture.asset("assets/images/page_border.svg"),
+          Align(
+            alignment: Alignment(0, -0.8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ayatScrollView(ayatList, context),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }

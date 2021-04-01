@@ -119,6 +119,8 @@ class QuranDatabase {
        ayat.edition_id,
        ayat.number,
        ayat.text,
+       ayat.hizbQuarter_id,
+       ayat.juz_id,
        ayat.numberinsurat,
        ayat.page_id,
        surat.name AS surat_name
