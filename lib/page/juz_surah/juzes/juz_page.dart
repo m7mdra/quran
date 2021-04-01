@@ -50,9 +50,7 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
                     print("JUMPING TO PAGE: $page");
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return QuranReaderPage(
-                        page: page - 1,
-                      );
+                      return QuranReaderPage(page: page);
                     }));
                   },
                   leading: Text("﴿${index + 1}﴾",

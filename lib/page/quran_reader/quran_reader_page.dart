@@ -39,7 +39,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   ScrollController _scrollController;
   QuranCubit _quranCubit;
   ReadersBloc _readersBloc;
-  var _currentPage;
+  int _currentPage;
   BookmarkCubit _bookmarkCubit;
   LastReadBloc _lastReadBloc;
   double _scaleFactor = 1.0;
@@ -53,7 +53,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
     _quranCubit.loadData();
     _pageController = PageController();
     _scrollController = ScrollController();
-    _currentPage = widget.page + 1;
+    _currentPage = widget.page;
     _bookmarkCubit = BookmarkCubit(DependencyProvider.provide());
     _readersBloc =
         ReadersBloc(DependencyProvider.provide(), DependencyProvider.provide());
@@ -188,7 +188,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           onPageChanged: (page) {
             _quranCubit.pageChanged(page + 1);
             setState(() {
-              _currentPage = page;
+              _currentPage = page + 1;
             });
           },
           controller: _pageController,
@@ -205,9 +205,15 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text("الجزء ${ayatList.first.juzId}",style: TextStyle(fontSize: 16)),
-                      Text("الصفحة ${page+1}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
-                      Text("ربع الحزب ${ayatList.first.hizbQuarterId}",style: TextStyle(fontSize: 16)),
+                      Text("الجزء ${ayatList.first.juzId}",
+                          style: TextStyle(fontSize: 16)),
+                      Text(
+                        "الصفحة ${page + 1}",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w600),
+                      ),
+                      Text("ربع الحزب ${ayatList.first.hizbQuarterId}",
+                          style: TextStyle(fontSize: 16)),
                     ],
                   )
                 ],
@@ -224,7 +230,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Stack(
-        alignment: Alignment(0,-0.8),
+        alignment: Alignment(0, -0.8),
         children: [
           SvgPicture.asset("assets/images/page_border.svg"),
           Align(

@@ -44,6 +44,7 @@ class SurahPlayer {
   SurahPlayer(this._readersBloc, this._preference, this.quranDatabase) {
     WidgetsFlutterBinding.ensureInitialized();
     _player = AudioPlayer(playerId: "quranId");
+
     _preference.reader().then((value) => _currentReader = value);
     _readersBloc.listen((state) {
       if (state is DefaultReaderLoadedState) {
@@ -55,7 +56,6 @@ class SurahPlayer {
         _errorController.sink.add(event);
       })
       ..onPlayerStateChanged.listen((event) {
-        print("onPlayerStateChanged $event");
         if (!_playerStateChanged.isClosed) _playerStateChanged.sink.add(event);
       })
       ..onPlayerCompletion.listen(onCompletion);
@@ -94,7 +94,9 @@ class SurahPlayer {
   }
 
   void playPage(int page) async {
+    print("loading ayat in page $page");
     var ayat = await quranDatabase.ayatInPage(page);
+
     clear();
     _playlist.addAll(ayat);
     _play();
@@ -126,8 +128,6 @@ class SurahPlayer {
   }
 
   void onCompletion(void event) {
-    print(_playlist);
-    print("onPlayerCompletion ");
 
     if (_playlist.isNotEmpty) {
       _play();

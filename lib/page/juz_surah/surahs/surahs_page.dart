@@ -57,9 +57,8 @@ class _SurahsPageState extends State<SurahsPage>
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => QuranReaderPage(
-                                  page: surah.page ,
-                                )));
+                            builder: (context) =>
+                                QuranReaderPage(page: surah.page)));
                   },
                   leading: Text("﴿${surah.number}﴾",
                       style: TextStyle(

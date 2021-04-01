@@ -11,7 +11,6 @@ import 'package:quran/page/juz_surah/surahs_juzes_page.dart';
 import 'package:quran/page/notes_bookmarks/notes_bookmarks_page.dart';
 import 'package:quran/page/quran_reader/bloc/reader/last_read_bloc.dart';
 import 'package:quran/page/quran_reader/quran_reader_page.dart';
-import 'package:quran/page/settings/settings_page.dart';
 
 import '../../common.dart';
 
@@ -56,10 +55,7 @@ class _HomePageState extends State<HomePage> {
               : AlignmentDirectional.bottomStart,
           child: Image.asset(
             'assets/images/left_bubble.png',
-            width: MediaQuery
-                .of(context)
-                .size
-                .width * 0.25,
+            width: MediaQuery.of(context).size.width * 0.25,
           ),
         ),
         Align(
@@ -68,10 +64,7 @@ class _HomePageState extends State<HomePage> {
               : AlignmentDirectional.bottomEnd,
           child: Image.asset(
             'assets/images/right_bubble.png',
-            width: MediaQuery
-                .of(context)
-                .size
-                .width * 0.28,
+            width: MediaQuery.of(context).size.width * 0.28,
           ),
         ),
         Align(
@@ -111,9 +104,8 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => QuranReaderPage(
-                                    page: lastRead.page,
-                                  )));
+                              builder: (context) =>
+                                  QuranReaderPage(page: lastRead.page)));
                     },
                     borderRadius: BorderRadius.circular(16),
                     child: Padding(
@@ -192,7 +184,6 @@ class _HomePageState extends State<HomePage> {
             staggeredTileBuilder: (int index) => StaggeredTile.fit(1))
       ],
     );
-
   }
 
   AppBar buildAppBar() {
@@ -206,9 +197,7 @@ class _HomePageState extends State<HomePage> {
                 : 'assets/images/ic_lang.svg'),
             onPressed: () {
               var langCubit = context.bloc<LanguageCubit>();
-              if (Localizations
-                  .localeOf(context)
-                  .languageCode == 'ar') {
+              if (Localizations.localeOf(context).languageCode == 'ar') {
                 langCubit.en();
               } else {
                 langCubit.ar();
@@ -279,9 +268,7 @@ class HomeMenuItem extends StatelessWidget {
               Padding(
                 padding: const EdgeInsetsDirectional.only(start: 16, end: 16),
                 child: Text(
-                    Localizations
-                        .localeOf(context)
-                        .languageCode == 'ar'
+                    Localizations.localeOf(context).languageCode == 'ar'
                         ? item.title
                         : item.titleEn,
                     style: TextStyle(
@@ -295,9 +282,7 @@ class HomeMenuItem extends StatelessWidget {
                 padding: const EdgeInsetsDirectional.only(
                     start: 16, end: 16, bottom: 16),
                 child: Text(
-                    Localizations
-                        .localeOf(context)
-                        .languageCode == 'ar'
+                    Localizations.localeOf(context).languageCode == 'ar'
                         ? item.subtitle
                         : item.subtitleEn,
                     style: TextStyle(
@@ -351,12 +336,14 @@ final homeMenuDataList = [
       subtitle: 'الأدعية ، الأذكار و حصن المسلم'),
 ];
 
-class LastReadingSliverDelegate extends SliverPersistentHeaderDelegate{
-final  LastReadBloc _lastReadBloc;
+class LastReadingSliverDelegate extends SliverPersistentHeaderDelegate {
+  final LastReadBloc _lastReadBloc;
 
   LastReadingSliverDelegate(this._lastReadBloc);
+
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return BlocBuilder(
       cubit: _lastReadBloc,
       builder: (BuildContext context, state) {
@@ -364,16 +351,15 @@ final  LastReadBloc _lastReadBloc;
           var lastRead = state.lastRead;
           return Card(
             elevation: 6,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: InkWell(
               onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => QuranReaderPage(
-                          page: lastRead.page,
-                        )));
+                        builder: (context) =>
+                            QuranReaderPage(page: lastRead.page)));
               },
               borderRadius: BorderRadius.circular(16),
               child: Padding(
@@ -395,7 +381,6 @@ final  LastReadBloc _lastReadBloc;
                               fontSize: 20,
                             )),
                         Text("الصحفة ${lastRead.page}"),
-
                       ],
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -420,14 +405,14 @@ final  LastReadBloc _lastReadBloc;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-return true;
+    return true;
   }
-
 }
+
 class SliverLogoDelegate extends SliverPersistentHeaderDelegate {
   @override
-  Widget build(BuildContext context, double shrinkOffset,
-      bool overlapsContent) {
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Image.asset(
       isDarkMode(context)
           ? 'assets/images/logo_dark.png'
@@ -448,5 +433,4 @@ class SliverLogoDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
     return true;
   }
-
 }

@@ -48,9 +48,8 @@ class _HizbQuarterPageState extends State<HizbQuarterPage>
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => QuranReaderPage(
-                                page: quarter.pageId - 1,
-                              )));
+                          builder: (context) =>
+                              QuranReaderPage(page: quarter.pageId)));
                 },
                 title: Text(
                   "ربع الحزب ${quarter.hizbQuarterId}",
