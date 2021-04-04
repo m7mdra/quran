@@ -66,9 +66,9 @@ class _SurahsJuzesPageState extends State<SurahsJuzesPage>
               fontStyle: FontStyle.normal,
               fontSize: 20.0),
           tabs: [
-            Tab(text: 'السور'),
-            Tab(text: 'الاجزاء'),
-            Tab(text: 'ربع الحزب'),
+            Tab(text: AppLocalizations.of(context).surah),
+            Tab(text: AppLocalizations.of(context).juz),
+            Tab(text: AppLocalizations.of(context).hizbQurater),
           ],
           controller: _tabController,
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/local/model/search_result.dart';
@@ -63,10 +64,8 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
       if (mounted)
         showDialog(
             context: context,
-            builder: (context) => AlertDialog(
-                  title: Text('حصل خطا'),
-                  content: Text('فشل تشغيل المقطع, حاول مرة اخرى'),
-                ));
+            builder: (context) =>
+                AlertDialog(title: Text(AppLocalizations.of(context).error)));
     });
     _player.currentPlayingIndex.listen((event) {
       if (mounted)
@@ -123,7 +122,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           height: _isVisible ? 80 : 0,
           duration: Duration(milliseconds: 200),
           child: IslamicAppBar(
-            title: 'قارئ القران',
+            title: AppLocalizations.of(context).quranReader,
             actions: actions(context),
           ),
         ),
@@ -205,14 +204,16 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Text("الجزء ${ayatList.first.juzId}",
+                      Text(
+                          "${AppLocalizations.of(context).juz} ${ayatList.first.juzId}",
                           style: TextStyle(fontSize: 16)),
                       Text(
-                        "الصفحة ${page + 1}",
+                        "${AppLocalizations.of(context).page} ${page + 1}",
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w600),
                       ),
-                      Text("ربع الحزب ${ayatList.first.hizbQuarterId}",
+                      Text(
+                          "${AppLocalizations.of(context).hizbQurater} ${ayatList.first.hizbQuarterId}",
                           style: TextStyle(fontSize: 16)),
                     ],
                   )

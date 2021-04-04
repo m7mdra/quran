@@ -220,9 +220,27 @@
 	"startDownloadButton":"Ok, start downloading",
 	"@startDownloadButton":{
 		"description": ""
+	},
+	"juz":"Juz",
+	"@juz":{
+		"description": ""
+	},
+	"page":"Page",
+	"@page":{
+		"description": ""
+	},
+	"hizbQurater":"Hizb Quarter",
+	"@hizbQurater":{
+		"description": ""
+	},
+	"quranReader":"Quran reader",
+	"@quranReader":{
+		"description": ""
+	},
+	"surah":"Surah",
+	"@quranReader":{
+		"description": ""
 	}
-
-
 
 
 }

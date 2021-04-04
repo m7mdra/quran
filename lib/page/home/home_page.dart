@@ -126,7 +126,7 @@ class _HomePageState extends State<HomePage> {
                                     fontFamily: 'Al-QuranAlKareem',
                                     fontSize: 20,
                                   )),
-                              Text("الصحفة ${lastRead.page}"),
+                              Text("${AppLocalizations.of(context).page} ${lastRead.page}"),
                             ],
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,

@@ -32,30 +32,7 @@ class QuranControlsModal extends StatefulWidget {
 class _QuranModalWidgetState extends State<QuranControlsModal> {
   SurahPlayer player;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    print("didChangeDependencies".toUpperCase());
-    print("didChangeDependencies".toUpperCase());
-    print("didChangeDependencies".toUpperCase());
-    print("didChangeDependencies".toUpperCase());
-    print(widget.page);
-    print("didChangeDependencies".toUpperCase());
-    print("didChangeDependencies".toUpperCase());
-    print("didChangeDependencies".toUpperCase());
-    print("didChangeDependencies".toUpperCase());
-  }
-  @override
-  void didUpdateWidget(covariant QuranControlsModal oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    print("didUpdateWidget".toUpperCase());
-    print("didUpdateWidget".toUpperCase());
-    print("didUpdateWidget".toUpperCase());
-    print(widget.page);
-    print("didUpdateWidget".toUpperCase());
-    print("didUpdateWidget".toUpperCase());
-    print("didUpdateWidget".toUpperCase());
-  }
+
 
   @override
   void initState() {

@@ -32,7 +32,7 @@ class TafseerWidget extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                             fontStyle: FontStyle.normal)),
                   ),
-                  Divider(),
+             /*     Divider(),
                   Padding(
                     padding: const EdgeInsets.only(left: 16, right: 16),
                     child: Row(
@@ -58,7 +58,7 @@ class TafseerWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Divider(),
+                  Divider(),*/
                   Expanded(
                     child: ListView.separated(
                       padding: const EdgeInsets.all(16.0),

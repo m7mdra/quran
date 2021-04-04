@@ -36,7 +36,7 @@ class _AboutPageState extends State<AboutPage> {
                 SizedBox(
                   height: 150,
                 ),
-                Text('القران الكريم',
+                Text(AppLocalizations.of(context).quranReader,
                     style: TextStyle(
                       fontFamily: 'Cairo',
                       fontSize: 30,

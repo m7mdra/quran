@@ -223,6 +223,26 @@
 	"startDownloadButton":"حسنا , ابدا التحميل",
 	"@startDownloadButton":{
 		"description": ""
+	},
+	"juz":"الجزء",
+	"@juz":{
+		"description": ""
+	},
+	"page":"الصفحة",
+	"@page":{
+		"description": ""
+	},
+	"hizbQurater":"ربع الحزب",
+	"@hizbQurater":{
+		"description": ""
+	},
+	"quranReader":"قارئ القران",
+	"@quranReader":{
+		"description": ""
+	},
+	"surah":"السور",
+	"@quranReader":{
+		"description": ""
 	}
 
 
