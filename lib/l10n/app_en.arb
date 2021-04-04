@@ -1,186 +1,226 @@
 {
-  "splashLoadingTitle": "Loading quran data...",
-  "@splashLoadingTitle": {
-    "description": ""
-  },
-  "applicationSponsor": "Application Sponsor : Wado Tech",
-  "@applicationSponsor": {
-    "description": ""
-  },
-  "lastReading": "Last reading",
-  "@lastReading": {
-    "description": ""
-  },
-  "tapToView": "Tap to view",
-  "@tapToView": {
-    "description": ""
-  },
-  "suarAlquran": "Suar Alquran",
-  "@suarAlquran": {
-    "description": ""
-  },
-  "reader": "Reader",
-  "@reader": {
-    "description": ""
-  },
-  "interpretation": "Interpretation",
-  "@interpretation": {
-    "description": ""
-  },
-  "save": "Save",
-  "@save": {
-    "description": ""
-  },
-  "play": "Play",
-  "@play": {
-    "description": ""
-  },
-  "saveBookmarkDialogTitle": "Save bookmark",
-  "@saveBookmarkDialogTitle": {
-    "description": ""
-  },
-  "saveBookmarkDialogMessage": "Write the name of the Bookmark so that you can refer to it later",
-  "@saveBookmarkDialogMessage": {
-    "description": ""
-  },
-  "saveBookmarkDialogFieldHint": "Example: Surat Al-Baqarah verse 10",
-  "@saveBookmarkDialogFieldHint": {
-    "description": ""
-  },
-  "save": "Save",
-  "@save": {
-    "description": ""
-  },
-  "cancel": "Cancel",
-  "@cancel": {
-    "description": ""
-  },
-  "searchReader": "Search reader by name",
-  "@searchReader": {
-    "description": ""
-  },
-  "searchReaderNotFound": "No readers were found with the search key",
-  "@searchReaderNotFound": {
-    "description": ""
-  },
-  "failedToLoadData": "Failed to load data.",
-  "@failedToLoadData": {
-    "description": ""
-  },
-  "error": "There was an error.",
-  "@error": {
-    "description": ""
-  },
-  "bookmarkSaveError": "Failed to save bookmark",
-  "@bookmarkSaveError": {
-    "description": ""
-  },
-  "bookmarkSaveSuccess": "Bookmark save successfully.",
-  "@bookmarkSaveSuccess": {
-    "description": ""
-  } ,
-   "contents": "Contents",
-  "@contents": {
-    "description": ""
-  },
-   "times": "times",
-  "@times": {
-    "description": ""
-  },
-   "praise": "Praise",
-  "@praise": {
-    "description": ""
-  },
-   "resetCounter": "Reset the counter",
-  "@resetCounter": {
-    "description": ""
-  },
-   "resetCounterDialogTitle": "Do you want to go back to zero?",
-  "@resetCounterDialogTitle": {
-    "description": ""
-  },
-   "attention": "Attention",
-  "@attention": {
-    "description": ""
-  },
-  "noBookmarks": "No bookmarks saved.",
-  "@noBookmarks": {
-    "description": ""
-  },
-  "addNote": "Add Note",
-  "@addNote": {
-    "description": ""
-  },
-  "noteTitleHint": "Title",
-  "@noteTitleHint": {
-    "description": ""
-  },
-  "noteTitleEmptyError": "Title field is empty",
-  "@noteTitleEmptyError": {
-    "description": ""
-  },
-  "noteDescriptionHint": "Content",
-  "@noteDescriptionHint": {
-    "description": ""
-  },
-  "noteDescriptionEmptyError": "Content field is empty",
-  "@noteDescriptionEmptyError": {
-    "description": ""
-  },
+	"splashLoadingTitle": "Loading quran data...",
+	"@splashLoadingTitle": {
+		"description": ""
+	},
+	"applicationSponsor": "Application Sponsor : Wado Tech",
+	"@applicationSponsor": {
+		"description": ""
+	},
+	"lastReading": "Last reading",
+	"@lastReading": {
+		"description": ""
+	},
+	"tapToView": "Tap to view",
+	"@tapToView": {
+		"description": ""
+	},
+	"suarAlquran": "Suar Alquran",
+	"@suarAlquran": {
+		"description": ""
+	},
+	"reader": "Reader",
+	"@reader": {
+		"description": ""
+	},
+	"interpretation": "Interpretation",
+	"@interpretation": {
+		"description": ""
+	},
 
-   "noNoteSaved": "No notes saved",
-  "@noNoteSaved": {
-    "description": ""
-  },
-  "noNoteSavedContent": "Add a note by clicking the circular button with the plus sign at the bottom",
-  "@noNoteSavedContent": {
-    "description": ""
-  },
-  "permissionDeniedTitle": "Geolocation access has been denied",
-  "@permissionDeniedTitle": {
-    "description": ""
-  },
-  "permissionDeniedMessage": "Press the button below to grant permission and display Qibla direction",
-  "@permissionDeniedMessage": {
-    "description": ""
-  },
-  "grantAccess": "Grant access",
-  "@grantAccess": {
-    "description": ""
-  },
-  "retry": "Retry",
-  "@retry": {
-    "description": ""
-  },
-  "downloadFailed": "Failed to download file, try again",
-  "@downloadFailed": {
-    "description": ""
-  },
-  "downloadingFile": "Downloading book...",
-  "@downloadingFile": {
-    "description": ""
-  },
-  "downloadNotFound": "This file is not available on the device, the device will download it from the Internet so that it is always available",
-  "@downloadNotFound": {
-    "description": ""
-  },
-  "download": "Download",
-  "@download": {
-    "description": ""
-  },
-  "searchPlaceHolder": "Search for Ayah",
-  "@searchPlaceHolder": {
-    "description": ""
-  },
-  "searchFailed": "Failed to find verses matching the search word",
-  "@searchFailed": {
-    "description": ""
-  },
-  "searchEmpty": "No verses were found matching the search word",
-  "@searchEmpty": {
-    "description": ""
-  }
+	"play": "Play",
+	"@play": {
+		"description": ""
+	},
+	"saveBookmarkDialogTitle": "Save bookmark",
+	"@saveBookmarkDialogTitle": {
+		"description": ""
+	},
+	"saveBookmarkDialogMessage": "Write the name of the Bookmark so that you can refer to it later",
+	"@saveBookmarkDialogMessage": {
+		"description": ""
+	},
+	"saveBookmarkDialogFieldHint": "Example: Surat Al-Baqarah verse 10",
+	"@saveBookmarkDialogFieldHint": {
+		"description": ""
+	},
+	"save": "Save",
+	"@save": {
+		"description": ""
+	},
+	"cancel": "Cancel",
+	"@cancel": {
+		"description": ""
+	},
+	"searchReader": "Search reader by name",
+	"@searchReader": {
+		"description": ""
+	},
+	"searchReaderNotFound": "No readers were found with the search key",
+	"@searchReaderNotFound": {
+		"description": ""
+	},
+	"failedToLoadData": "Failed to load data.",
+	"@failedToLoadData": {
+		"description": ""
+	},
+	"error": "There was an error.",
+	"@error": {
+		"description": ""
+	},
+	"bookmarkSaveError": "Failed to save bookmark",
+	"@bookmarkSaveError": {
+		"description": ""
+	},
+	"bookmarkSaveSuccess": "Bookmark save successfully.",
+	"@bookmarkSaveSuccess": {
+		"description": ""
+	},
+	"contents": "Contents",
+	"@contents": {
+		"description": ""
+	},
+	"times": "times",
+	"@times": {
+		"description": ""
+	},
+	"praise": "Praise",
+	"@praise": {
+		"description": ""
+	},
+	"resetCounter": "Reset the counter",
+	"@resetCounter": {
+		"description": ""
+	},
+	"resetCounterDialogTitle": "Do you want to go back to zero?",
+	"@resetCounterDialogTitle": {
+		"description": ""
+	},
+	"attention": "Attention",
+	"@attention": {
+		"description": ""
+	},
+	"noBookmarks": "No bookmarks saved.",
+	"@noBookmarks": {
+		"description": ""
+	},
+	"addNote": "Add Note",
+	"@addNote": {
+		"description": ""
+	},
+	"noteTitleHint": "Title",
+	"@noteTitleHint": {
+		"description": ""
+	},
+	"noteTitleEmptyError": "Title field is empty",
+	"@noteTitleEmptyError": {
+		"description": ""
+	},
+	"noteDescriptionHint": "Content",
+	"@noteDescriptionHint": {
+		"description": ""
+	},
+	"noteDescriptionEmptyError": "Content field is empty",
+	"@noteDescriptionEmptyError": {
+		"description": ""
+	},
 
+	"noNoteSaved": "No notes saved",
+	"@noNoteSaved": {
+		"description": ""
+	},
+	"noNoteSavedContent": "Add a note by clicking the circular button with the plus sign at the bottom",
+	"@noNoteSavedContent": {
+		"description": ""
+	},
+	"permissionDeniedTitle": "Geolocation access has been denied",
+	"@permissionDeniedTitle": {
+		"description": ""
+	},
+	"permissionDeniedMessage": "Press the button below to grant permission and display Qibla direction",
+	"@permissionDeniedMessage": {
+		"description": ""
+	},
+	"grantAccess": "Grant access",
+	"@grantAccess": {
+		"description": ""
+	},
+	"retry": "Retry",
+	"@retry": {
+		"description": ""
+	},
+	"downloadFailed": "Failed to download file, try again",
+	"@downloadFailed": {
+		"description": ""
+	},
+	"downloadingFile": "Downloading book...",
+	"@downloadingFile": {
+		"description": ""
+	},
+	"downloadNotFound": "This file is not available on the device, the device will download it from the Internet so that it is always available",
+	"@downloadNotFound": {
+		"description": ""
+	},
+	"download": "Download",
+	"@download": {
+		"description": ""
+	},
+	"searchPlaceHolder": "Search for Ayah",
+	"@searchPlaceHolder": {
+		"description": ""
+	},
+	"searchFailed": "Failed to find verses matching the search word",
+	"@searchFailed": {
+		"description": ""
+	},
+	"searchEmpty": "No verses were found matching the search word",
+	"@searchEmpty": {
+		"description": ""
+	},
+	"processingData":"The operational data is now being processed",
+	"@processingData":{
+		"description": ""
+	},
+	"processingDataLongTime":"This process may take a long time ...",
+	"@processingDataLongTime":{
+		"description": ""
+	},
+	"processingDataSuccess":"The data has been downloaded and processed successfully",
+	"@processingDataSuccess":{
+		"description": ""
+	},
+	"processingDataSuccessMessage":"You can now start using the application with all the available features",
+	"@processingDataSuccessMessage":{
+		"description": ""
+	},
+	"processingDataSuccessButton":"OK, start using the app",
+	"@processingDataSuccessButton":{
+		"description": ""
+	},
+	"failedToProcessData":"Failed to process data data",
+	"@failedToProcessData":{
+		"description": ""
+	},
+	"failedToProcessDataMessage":"An error has occurred while trying to process data",
+	"@failedToProcessDataMessage":{
+		"description": ""
+	},
+	"downloadingData":"The operational data is now uploaded",
+	"@downloadingData":{
+		"description": ""
+	},
+	"welcomeToQuran":"Welcome to the Quran application",
+	"@welcomeToQuran":{
+		"description": ""
+	},
+	"welcomeToQuranMessage":"Apparently, this is the first time for you to use the application. The application will download 70 MB data via your internet. This data is very important to use all the features of the application and the application cannot work without it.",
+	"@welcomeToQuranMessage":{
+		"description": ""
+	},
+	"startDownloadButton":"Ok, start downloading",
+	"@startDownloadButton":{
+		"description": ""
+	}
 
 
 

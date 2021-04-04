@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; // Add this line
 import 'package:quran/page/riyadh/bloc/bloc.dart';
 import 'package:quran/page/splash/bloc/bloc.dart';
 import 'package:quran/page/splash/splash_page.dart';
@@ -73,7 +73,7 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
         QuranImageWidget(),
         size(),
         Text(
-          'يتم الان معالجة البيانات التشغيلية',
+          AppLocalizations.of(context).processingData,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headline6,
         ),
@@ -85,7 +85,7 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
                 size(),
                 LinearProgressIndicator(value: null),
                 size(),
-                Text('قد تاخد هذه العملية زمنا طويلاً...')
+                Text(AppLocalizations.of(context).processingDataLongTime)
               ],
             );
           },
@@ -100,10 +100,10 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
       children: [
         Icon(Icons.check_circle, color: Colors.green, size: 150),
         size16(),
-        Text('تم تحميل ومعالجة البيانات بنجاح',
+        Text(AppLocalizations.of(context).processingDataSuccess,
             style: Theme.of(context).textTheme.headline6),
         size(),
-        Text('يمكنك الان ان تبدا باستخدام التطبيق بكل خواصه المتاحة',
+        Text(AppLocalizations.of(context).processingDataSuccessMessage,
             textAlign: TextAlign.center),
         size16(),
         MaterialButton(
@@ -111,7 +111,8 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => SplashPage()));
             },
-            child: Text('حسنا , ابدا استخدام التطبيق'),
+            child:
+                Text(AppLocalizations.of(context).processingDataSuccessButton),
             elevation: 0,
             color: Theme.of(context).primaryColor,
             disabledElevation: 0,
@@ -128,18 +129,16 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
       children: [
         Icon(Icons.error, color: Theme.of(context).errorColor, size: 150),
         size16(),
-        Text('فشل تحميل البيانات',
+        Text(AppLocalizations.of(context).failedToLoadData,
             style: Theme.of(context).textTheme.headline6),
         size(),
-        Text(
-            'لقد حصل خطا اثناء محاولة تحميل البيانات تاكد من وجود اتصال انترنت نشط على الجهاز',
-            textAlign: TextAlign.center),
+        Text(AppLocalizations.of(context).error, textAlign: TextAlign.center),
         size16(),
         MaterialButton(
             onPressed: () {
               _databaseBloc.add(StartDownloadDatabaseEvent());
             },
-            child: Text('اعادة المحاولة'),
+            child: Text(AppLocalizations.of(context).retry),
             elevation: 0,
             disabledElevation: 0,
             focusElevation: 0,
@@ -154,17 +153,17 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
       children: [
         Icon(Icons.settings, color: Theme.of(context).errorColor, size: 150),
         size16(),
-        Text('فشل معالجة البيانات البيانات',
+        Text(AppLocalizations.of(context).failedToProcessData,
             style: Theme.of(context).textTheme.headline6),
         size(),
-        Text('لقد حصل خطا اثناء محاولة معالجة البيانات',
+        Text(AppLocalizations.of(context).failedToProcessDataMessage,
             textAlign: TextAlign.center),
         size16(),
         MaterialButton(
             onPressed: () {
               _databaseBloc.add(CheckDatabaseExistence());
             },
-            child: Text('اعادة المحاولة'),
+            child: Text(AppLocalizations.of(context).retry),
             elevation: 0,
             disabledElevation: 0,
             focusElevation: 0,
@@ -179,7 +178,7 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
       children: [
         QuranImageWidget(),
         size(),
-        Text('يتم الان تحميل البيانات التشغيلية',
+        Text(AppLocalizations.of(context).downloadingData,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headline6),
         size16(),
@@ -187,7 +186,7 @@ class _DatabaseDownloadPagerState extends State<DatabaseDownloadPage> {
           builder: (context, state) {
             return Column(
               children: [
-                Text('تم تحميل ${state.toDouble()}% '),
+                Text('${state.toDouble()}%'),
                 size(),
                 LinearProgressIndicator(
                     value: state != 100 || state == 0 ? state * 0.01 : null),
@@ -234,14 +233,12 @@ class DatabaseNotFound extends StatelessWidget {
         QuranImageWidget(),
         SizedBox(height: 8),
         Text(
-          'مرحبا بكم في تطبيق القران',
+          AppLocalizations.of(context).welcomeToQuran,
           style: Theme.of(context).textTheme.headline6,
         ),
         SizedBox(height: 8),
         Text(
-          'على ما يبدو هذه المرة الاولى لك باستخدام التطبيق,'
-          ' سوف يقوم التطبيق بتحميل بيانات حجمها ٧٠ ميجا عبر الانترنت الخاص بك ,'
-          ' هذه البيانات مهمة جدا لاستخدام جميع خواص التطبيق ولا يمكن للتطبيق العمل بدونها.',
+          AppLocalizations.of(context).welcomeToQuranMessage,
           style: Theme.of(context).textTheme.bodyText2,
           textAlign: TextAlign.center,
         ),
@@ -250,7 +247,7 @@ class DatabaseNotFound extends StatelessWidget {
             onPressed: () {
               _databaseBloc.add(StartDownloadDatabaseEvent());
             },
-            child: Text('حسنا , ابدا التحميل'),
+            child: Text(AppLocalizations.of(context).startDownloadButton),
             elevation: 0,
             color: Theme.of(context).primaryColor,
             disabledElevation: 0,
@@ -258,23 +255,6 @@ class DatabaseNotFound extends StatelessWidget {
             focusElevation: 0,
             highlightElevation: 0,
             hoverElevation: 0),
-        SizedBox(height: 8),
-        MaterialButton(
-            onPressed: () {
-              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-            },
-            child: Text('تحميل لاحقا'),
-            color: Theme.of(context).disabledColor,
-            elevation: 0,
-            textColor: Colors.white,
-            disabledElevation: 0,
-            focusElevation: 0,
-            highlightElevation: 0,
-            hoverElevation: 0),
-        Text(
-          'لا يمكنك استخدام التطبيق في هذه الحالة',
-          style: Theme.of(context).textTheme.caption,
-        )
       ]),
     );
   }
