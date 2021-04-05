@@ -51,11 +51,6 @@ class DependencyProvider {
     _registrar.registerSingleton(databaseFile);
     _registrar.registerSingleton(quranDb);
     var quranDatabase = QuranDatabase(databaseFile);
-    quranDatabase.translationEditions().then((value){
-      value.forEach((element) {
-        print(element.toMap());
-      });
-    });
     _registrar.registerSingleton(quranDatabase);
     _registrar.registerSingleton<NoteRepository>(quranDb);
     _registrar.registerSingleton<BookmarkRepository>(quranDb);

@@ -153,9 +153,10 @@ class _HomePageState extends State<HomePage> {
               var item = homeMenuDataList[index];
               return HomeMenuItem(
                 item: item,
-                onTap: () {
+                onTap: () async {
                   print(index);
                   if (index == 0) {
+                   await precachePicture(ExactAssetPicture(SvgPicture.svgStringDecoder, 'assets/images/page_border.svg'),context);
                     Navigator.push(
                         context,
                         MaterialPageRoute(

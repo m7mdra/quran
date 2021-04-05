@@ -58,8 +58,8 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
     _bookmarkCubit = BookmarkCubit(DependencyProvider.provide());
     _readersBloc =
         ReadersBloc(DependencyProvider.provide(), DependencyProvider.provide());
-    _player = SurahPlayer(_readersBloc, DependencyProvider.provide(),
-        DependencyProvider.provide());
+    _player =
+        SurahPlayer(DependencyProvider.provide(), DependencyProvider.provide());
     _player.errorStream.listen((event) {
       if (mounted)
         showDialog(

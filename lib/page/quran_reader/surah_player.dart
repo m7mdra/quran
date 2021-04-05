@@ -7,12 +7,8 @@ import 'package:quran/data/local/preference.dart';
 import 'package:quran/data/local/quran_database.dart';
 import 'package:quran/data/model/reader.dart';
 
-import 'bloc/readers/readers_bloc.dart';
-import 'bloc/readers/readers_state.dart';
-
 class SurahPlayer {
   AudioPlayer _player;
-  final ReadersBloc _readersBloc;
   final Preference _preference;
   final QuranDatabase quranDatabase;
   Reader _currentReader;
@@ -41,22 +37,22 @@ class SurahPlayer {
 
   bool get isPaused => _state == AudioPlayerState.PAUSED;
 
-  SurahPlayer(this._readersBloc, this._preference, this.quranDatabase) {
+  SurahPlayer(this._preference, this.quranDatabase) {
     WidgetsFlutterBinding.ensureInitialized();
     _player = AudioPlayer(playerId: "quranId");
 
     _preference.reader().then((value) => _currentReader = value);
-    _readersBloc.listen((state) {
-      if (state is DefaultReaderLoadedState) {
-        _currentReader = state.reader;
-      }
-    });
+
     _player
       ..onPlayerError.listen((event) {
-        _errorController.sink.add(event);
+        if (!_errorController.isClosed) {
+          _errorController.sink.add(event);
+        }
       })
       ..onPlayerStateChanged.listen((event) {
-        if (!_playerStateChanged.isClosed) _playerStateChanged.sink.add(event);
+        if (!_playerStateChanged.isClosed) {
+          _playerStateChanged.sink.add(event);
+        }
       })
       ..onPlayerCompletion.listen(onCompletion);
   }
@@ -103,7 +99,7 @@ class SurahPlayer {
   }
 
   void _play() async {
-    var firstAyah = mapAyahToUrl(_playlist.first);
+    var firstAyah = await mapAyahToUrl(_playlist.first);
 
     _currentPlayingIndexController.sink.add(_playlist.first.number);
     var result = await _player.setUrl(firstAyah);
@@ -123,12 +119,12 @@ class SurahPlayer {
     if (!isPaused && !isPlaying) await _player.resume();
   }
 
-  String mapAyahToUrl(Ayah ayah) {
+  Future<String> mapAyahToUrl(Ayah ayah) async {
+    _currentReader = await _preference.reader();
     return 'https://cdn.alquran.cloud/media/audio/ayah/${_currentReader.identifier}/${ayah.number}';
   }
 
   void onCompletion(void event) {
-
     if (_playlist.isNotEmpty) {
       _play();
     } else {

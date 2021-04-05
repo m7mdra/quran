@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,6 @@ import 'main/bloc_observer.dart';
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = BlocTransitionObserver();
-  AudioPlayer.logEnabled = true;
   await DependencyProvider.build();
   if (DependencyProvider.provide<Preference>()
       .didExtractDatabaseDownloadSuccess()) {
