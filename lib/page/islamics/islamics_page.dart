@@ -115,8 +115,8 @@ class _IslamicsPageState extends State<IslamicsPage> {
                           : data.titleEn,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontFamily: 'Cairo',
-                        fontSize: 14,
+                        fontFamily: '',
+                        fontSize: 16,
                       ))
                 ],
               ),

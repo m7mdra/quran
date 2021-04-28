@@ -15,6 +15,7 @@ import 'package:quran/widget/popup_menu.dart';
 import 'package:quran/widget/surah_title_widget.dart';
 import 'package:share/share.dart';
 
+import '../../common.dart';
 import '../../widget/islamic_app_bar.dart';
 import 'bloc/bookmark/add_bookmark_cubit.dart';
 import 'bloc/quran/quran_cubit.dart';
@@ -105,6 +106,8 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: isDarkMode(context) ? Theme.of(context).backgroundColor :Color(0xffFFFDF5),
+
       bottomSheet: AnimatedContainer(
         child: QuranControlsModal(
           onSaveBookMarkClick: (name) {
