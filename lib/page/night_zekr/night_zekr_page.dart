@@ -99,8 +99,8 @@ class ZekrWidget extends StatelessWidget {
                   ),
                   Text(item.zekr,
                       style: TextStyle(
-                        fontFamily: 'Cairo',
-                        fontSize: 18,
+                        fontFamily: 'trado',
+                        fontSize: 30,
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                       )),

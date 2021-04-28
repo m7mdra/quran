@@ -122,7 +122,7 @@ class SurahWidget extends StatelessWidget {
       },
       leading: Text("﴿${surah.number}﴾",
           style: TextStyle(
-            fontFamily: 'Al-QuranAlKareem',
+            fontFamily: 'trado',
             fontSize: 18,
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
@@ -136,7 +136,6 @@ class SurahWidget extends StatelessWidget {
           )),
       subtitle: Text("عدد الايات : ${surah.numberOfAyat} ",
           style: TextStyle(
-            fontFamily: 'Cairo',
             color: Color(0xff949393),
             fontSize: 14,
             fontWeight: FontWeight.w300,

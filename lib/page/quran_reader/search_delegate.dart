@@ -66,7 +66,7 @@ class AyahSearchDelegate extends SearchDelegate<SearchResult> {
                   },
                   subtitle: Text(surah.name),
                   leading: Text('﴿${ayah.numberInSurah}﴾',
-                      style: TextStyle(fontFamily: 'Al-QuranAlKareem')),
+                      style: TextStyle(fontFamily: 'trado')),
                   title: Text(ayah.text,
                       style: TextStyle(fontFamily: 'trado', fontSize: 21)));
             },

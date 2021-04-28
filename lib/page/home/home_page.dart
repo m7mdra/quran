@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> {
                                   )),
                               Text(lastRead.surah,
                                   style: TextStyle(
-                                    fontFamily: 'Al-QuranAlKareem',
+                                    fontFamily: '',
                                     fontSize: 20,
                                   )),
                               Text("${AppLocalizations.of(context).page} ${lastRead.page}"),
@@ -337,101 +337,3 @@ final homeMenuDataList = [
       subtitle: 'الأدعية ، الأذكار و حصن المسلم'),
 ];
 
-class LastReadingSliverDelegate extends SliverPersistentHeaderDelegate {
-  final LastReadBloc _lastReadBloc;
-
-  LastReadingSliverDelegate(this._lastReadBloc);
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return BlocBuilder(
-      cubit: _lastReadBloc,
-      builder: (BuildContext context, state) {
-        if (state is LastReadLoaded) {
-          var lastRead = state.lastRead;
-          return Card(
-            elevation: 6,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            QuranReaderPage(page: lastRead.page)));
-              },
-              borderRadius: BorderRadius.circular(16),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Column(
-                      children: [
-                        Text(AppLocalizations.of(context).lastReading,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                            )),
-                        Text(lastRead.surah,
-                            style: TextStyle(
-                              fontFamily: 'Al-QuranAlKareem',
-                              fontSize: 20,
-                            )),
-                        Text("الصحفة ${lastRead.page}"),
-                      ],
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                    ),
-                    SvgPicture.asset('assets/images/last_reading.svg'),
-                  ],
-                ),
-              ),
-            ),
-          );
-        } else
-          return Container();
-      },
-    );
-  }
-
-  @override
-  double get maxExtent => 130;
-
-  @override
-  double get minExtent => 120;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
-  }
-}
-
-class SliverLogoDelegate extends SliverPersistentHeaderDelegate {
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Image.asset(
-      isDarkMode(context)
-          ? 'assets/images/logo_dark.png'
-          : 'assets/images/logo_light.png',
-      height: 100,
-    );
-  }
-
-  @override
-  // TODO: implement maxExtent
-  double get maxExtent => 120;
-
-  @override
-  // TODO: implement minExtent
-  double get minExtent => 100;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
-  }
-}

@@ -62,7 +62,6 @@ class _HizbQuarterPageState extends State<HizbQuarterPage>
                 ),
                 subtitle: Text("صفحة رقم  ${quarter.pageId} ",
                     style: TextStyle(
-                      fontFamily: 'Cairo',
                       color: Color(0xff949393),
                       fontSize: 14,
                       fontWeight: FontWeight.w300,
