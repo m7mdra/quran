@@ -112,14 +112,13 @@ class SurahWidget extends StatelessWidget {
     return ListTile(
       dense: true,
       onTap: () {
-        // context
-        //     .read<LastReadBloc>()
-        //     .add(SaveReadingSurah(surah.name, surah.page, 0));
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => QuranReaderPage(page: surah.page)));
-        print(surah.toMap());
+        context
+            .read<LastReadBloc>()
+            .add(SaveReadingSurah(surah.name, surah.page, 0));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => QuranReaderPage(page: surah.page)));
       },
       leading: Text("﴿${surah.number}﴾",
           style: TextStyle(

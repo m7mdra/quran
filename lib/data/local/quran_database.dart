@@ -71,7 +71,19 @@ class QuranDatabase {
   Future<List<Surah>> findSurahWithKeyword(String keyword) async {
     var db = await database;
     var query = await db.rawQuery(
-        """SELECT * FROM surat where surat.name LIKE '%$keyword%' """);
+        """SELECT surat.id,
+ surat.name,
+ surat.englishname,
+surat.englishtranslation,
+surat.revelationCity,
+ surat.numberOfAyats,
+ ayat.page_id
+FROM   surat
+ LEFT JOIN ayat
+ON surat.id = ayat.surat_id
+
+where surat.name LIKE '%$keyword%'
+GROUP  BY surat.id""");
     return query.map((e) => Surah.fromMap(e)).toList();
   }
 
