@@ -187,7 +187,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
             _quranCubit.pageChanged(page + 1);
 
             setState(() {
-            title = ayat[page+1].map((e) => e.surahName).toSet().join(",").replaceAll("سورة", "");
+              getSurahName(ayat, page);
               _currentPage = page + 1;
             });
           },
@@ -208,14 +208,12 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
                       Text(
                           "${AppLocalizations.of(context).juz} ${ayatList.first.juzId}",
                           style: TextStyle(fontSize: 16)),
-                      Text(
-                        "${AppLocalizations.of(context).page} ${page + 1}",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w600),
-                      ),
+                      Text("${AppLocalizations.of(context).page} ${page + 1}",
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.w600)),
                       Text(
                           "${AppLocalizations.of(context).hizbQurater} ${ayatList.first.hizbQuarterId}",
-                          style: TextStyle(fontSize: 16)),
+                          style: TextStyle(fontSize: 16))
                     ],
                   )
                 ],
@@ -226,6 +224,14 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
         ),
       ),
     );
+  }
+
+  void getSurahName(Map<int, List<Ayah>> ayat, int page) {
+    title = ayat[page + 1]
+        .map((e) => e.surahName)
+        .toSet()
+        .join(",")
+        .replaceAll("سورة", "");
   }
 
   Padding specialSurahPage(List<Ayah> ayatList, BuildContext context) {

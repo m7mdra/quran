@@ -9,7 +9,10 @@ class GetBookmarkCubit extends Cubit<BookmarkState> {
   final BookmarkRepository _repository;
 
   GetBookmarkCubit(this._repository) : super(GetBookmarksInitial());
-
+  void deleteBookmark(int id)async{
+    await _repository.deleteBookmark(id);
+    loadBookmarks();
+  }
   void loadBookmarks() async {
     try {
       emit(GetBookmarksLoading());

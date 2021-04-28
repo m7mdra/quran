@@ -58,6 +58,9 @@ class _BookmarksPageState extends State<BookmarksPage>
                   itemBuilder: (context, index) {
                     var bookmark = state.list[index];
                     return BookmarkWidget(
+                      onDelete: (bookmark){
+                        _getBookmarkCubit.deleteBookmark(bookmark.id);
+                      },
                       onTap: (bookmark) async {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
