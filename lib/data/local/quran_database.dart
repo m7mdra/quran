@@ -68,6 +68,13 @@ class QuranDatabase {
     return query.map((e) => Surah.fromMap(e)).toList();
   }
 
+  Future<List<Surah>> findSurahWithKeyword(String keyword) async {
+    var db = await database;
+    var query = await db.rawQuery(
+        """SELECT * FROM surat where surat.name LIKE '%$keyword%' """);
+    return query.map((e) => Surah.fromMap(e)).toList();
+  }
+
   Future<List<Ayah>> ayatInPage(int page) async {
     var db = await database;
     var query = await db.rawQuery("""
@@ -99,8 +106,8 @@ class QuranDatabase {
 
   Future<List<Edition>> translationEditions() async {
     var db = await database;
-    var query = await db
-        .rawQuery("SELECT * FROM edition WHERE type ='translation' AND format = 'text'");
+    var query = await db.rawQuery(
+        "SELECT * FROM edition WHERE type ='translation' AND format = 'text'");
     return query.map((e) => Edition.fromMap(e)).toList();
   }
 

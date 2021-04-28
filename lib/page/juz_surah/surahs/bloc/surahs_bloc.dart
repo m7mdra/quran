@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quran/data/local/quran_database.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'surahs_event.dart';
 import 'surahs_state.dart';
@@ -9,6 +10,8 @@ class SurahsBloc extends Bloc<SurahsEvent, SurahsState> {
 
   SurahsBloc(this._quranDatabase) : super(SurahsLoadingState());
 
+
+
   @override
   Stream<SurahsState> mapEventToState(SurahsEvent event) async* {
     if (event is LoadSurahListIndexed) {
@@ -16,6 +19,15 @@ class SurahsBloc extends Bloc<SurahsEvent, SurahsState> {
         yield SurahsLoadingState();
         var data = await _quranDatabase.surahById(event.index);
         yield SurahsLoadedSuccessState(data, event.index);
+      } catch (error) {
+        yield SurahsErrorState();
+      }
+    }
+    if (event is FindSurahWithName) {
+      try {
+        yield SurahsLoadingState();
+        var data = await _quranDatabase.findSurahWithKeyword(event.name);
+        yield SurahsLoadedSuccessState(data);
       } catch (error) {
         yield SurahsErrorState();
       }
