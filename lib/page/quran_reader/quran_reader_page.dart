@@ -45,6 +45,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   LastReadBloc _lastReadBloc;
   double _scaleFactor = 1.0;
   double _baseScaleFactor = 1.0;
+  String title;
 
   @override
   void initState() {
@@ -122,7 +123,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           height: _isVisible ? 80 : 0,
           duration: Duration(milliseconds: 200),
           child: IslamicAppBar(
-            title: AppLocalizations.of(context).quranReader,
+            title: title ?? AppLocalizations.of(context).quranReader,
             actions: actions(context),
           ),
         ),
@@ -150,9 +151,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
             cubit: _quranCubit,
             builder: (context, state) {
               if (state is QuranLoadingState) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
+                return Center(child: CircularProgressIndicator());
               }
               if (state is QuranSuccessState) {
                 return quranPageView(state.ayat);
@@ -186,7 +185,9 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           clipBehavior: Clip.antiAlias,
           onPageChanged: (page) {
             _quranCubit.pageChanged(page + 1);
+
             setState(() {
+            title = ayat[page+1].map((e) => e.surahName).toSet().join(",").replaceAll("سورة", "");
               _currentPage = page + 1;
             });
           },
