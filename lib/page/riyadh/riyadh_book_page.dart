@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:quran/common.dart';
 import 'package:quran/di.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -16,10 +16,11 @@ class RiyadhBookPage extends StatefulWidget {
 class _RiyadhBookPageState extends State<RiyadhBookPage> {
   RiyadhBookBloc _bookBloc;
   ProgressCubit _progressCubit;
-
+  PdfController _pdfController;
   @override
   void initState() {
     super.initState();
+
     _progressCubit = ProgressCubit(0);
     _bookBloc = RiyadhBookBloc(
         DependencyProvider.provide(),
@@ -114,7 +115,8 @@ class _RiyadhBookPageState extends State<RiyadhBookPage> {
   }
 
   Widget _buildPdfView(String path) {
-    return PDFView(filePath: path, preventLinkNavigation: true);
+    _pdfController=PdfController(document: PdfDocument.openFile(path));
+    return PdfView(controller: _pdfController);
   }
 }
 
