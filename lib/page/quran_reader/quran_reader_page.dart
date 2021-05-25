@@ -1,12 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/local/model/search_result.dart';
 import 'package:quran/di.dart';
+import 'package:quran/helper/helper.dart';
 import 'package:quran/page/quran_reader/quran_controls_modal_widget.dart';
 import 'package:quran/page/quran_reader/search_delegate.dart';
 import 'package:quran/page/quran_reader/surah_player.dart';
@@ -106,8 +108,9 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: isDarkMode(context) ? Theme.of(context).backgroundColor :Color(0xffFFFDF5),
-
+      backgroundColor: isDarkMode(context)
+          ? Theme.of(context).backgroundColor
+          : Color(0xffFFFDF5),
       bottomSheet: AnimatedContainer(
         child: QuranControlsModal(
           onSaveBookMarkClick: (name) {
@@ -262,22 +265,30 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   }
 
   Widget ayatScrollView(List<Ayah> ayatList, BuildContext context) {
-    return SingleChildScrollView(
-        controller: _scrollController,
-        padding: const EdgeInsets.all(16),
-        child: Text.rich(
-          TextSpan(
-              text: "",
-              semanticsLabel: 'semanticsLabel',
-              style: TextStyle(fontFamily: 'trado', fontSize: 30),
-              children: ayatList.map((e) {
-                return buildAyahTextSpan(e, context);
-              }).toList()),
-          semanticsLabel: 'semanticsLabel',
-          textAlign: TextAlign.center,
-          textDirection: TextDirection.rtl,
-          textScaleFactor: _scaleFactor,
-        ));
+    return Container(
+      color: Color(0xffFCFCB6),
+      child: SingleChildScrollView(
+          controller: _scrollController,
+          padding: const EdgeInsets.all(16),
+          child: Text.rich(
+            TextSpan(
+                text: "",
+                //semanticsLabel: 'semanticsLabel',
+                style: TextStyle(
+                    fontFamily: 'UthmanTN1B',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.black),
+                children: ayatList.map((e) {
+                  return buildAyahTextSpan(e, context);
+                }).toList()),
+            //semanticsLabel: 'semanticsLabel',
+            textAlign: TextAlign.justify,
+            //overflow: TextOverflow.visible,
+            //textDirection: TextDirection.rtl,
+            //textScaleFactor: _scaleFactor,
+          )),
+    );
   }
 
   actions(BuildContext context) {
@@ -323,18 +334,28 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
 
   TextSpan buildAyah(Ayah e, BuildContext context) {
     return TextSpan(
-        style: _playingAyahId == e.number
-            ? TextStyle(
-                backgroundColor: Theme.of(context).primaryColor.withAlpha(100))
-            : null,
-        text: e.number == 1
-            ? "${e.text} ﴿${e.numberInSurah}﴾"
-            : "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${e.numberInSurah}﴾",
-        semanticsLabel: 'semanticsLabel',
-        recognizer: DoubleTapGestureRecognizer()
-          ..onDoubleTapDown = (tapDown) {
-            showContextMenuAt(tapDown, context, e);
-          });
+        //style: TextStyle(fontSize: 24, color: Colors.black),
+        children: <InlineSpan>[
+          TextSpan(
+            text: e.number == 1
+                ? "${e.text}"
+                : "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")}",
+            //style: TextStyle(color: Colors.black)
+          ),
+          WidgetSpan(
+            //alignment: ui.PlaceholderAlignment.middle,
+            child: Text(
+              " ﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾ ",
+              //style: TextStyle(fontSize: 40, color: Colors.white)
+              style: TextStyle(
+                  fontFamily: 'UthmanTN1B',
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black
+                  //fontSize: 15,
+                  ),
+            ),
+          ),
+        ]);
   }
 
   void showContextMenuAt(

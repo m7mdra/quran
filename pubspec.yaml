@@ -109,6 +109,10 @@ flutter:
     - family: QQMajeed
       fonts:
         - asset: assets/fonts/alquran/Al-Qalam-Quran-Majeed.ttf
+
+    - family: UthmanTN1B
+      fonts:
+        - asset: assets/fonts/alquran/UthmanTN1B Ver10.otf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
