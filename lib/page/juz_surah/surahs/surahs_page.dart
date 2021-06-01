@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:quran/common.dart';
 import 'package:quran/data/local/model/surah.dart';
 import 'package:quran/di.dart';
 import 'package:quran/page/quran_reader/bloc/reader/last_read_bloc.dart';
@@ -37,8 +36,8 @@ class _SurahsPageState extends State<SurahsPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-      return Column(
+    return Scaffold(
+      body: Column(
         children: [
           Card(
             elevation: 0,
@@ -92,7 +91,8 @@ class _SurahsPageState extends State<SurahsPage>
             },
           ),
         ],
-      );
+      ),
+    );
   }
 
   @override

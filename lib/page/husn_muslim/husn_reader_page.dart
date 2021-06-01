@@ -159,8 +159,8 @@ class _HusnChapterWidgetState extends State<HusnChapterWidget> {
                         textAlign: TextAlign.justify,
                         style: TextStyle(
                           fontFamily: 'trado',
-                          fontSize: 30,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 21,
+                          fontWeight: FontWeight.w700,
                           fontStyle: FontStyle.normal,
                         ));
                   },

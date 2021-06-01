@@ -30,8 +30,8 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-      return BlocBuilder(
+    return Scaffold(
+      body: BlocBuilder(
         cubit: _bloc,
         builder: (BuildContext context, state) {
           if (state is JuzsLoadingState) {
@@ -86,7 +86,8 @@ class _JuzPageState extends State<JuzPage> with AutomaticKeepAliveClientMixin {
             child: Text('Failed to load juz data'),
           );
         },
-      );
+      ),
+    );
   }
 
   @override
