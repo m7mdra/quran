@@ -18,6 +18,7 @@ class SurahTitleWidget extends StatelessWidget {
           ),
           Text(
             surah,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 30,
               fontFamily: 'trado',

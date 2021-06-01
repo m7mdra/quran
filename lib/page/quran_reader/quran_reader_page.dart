@@ -1,15 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/local/model/search_result.dart';
 import 'package:quran/di.dart';
-import 'package:quran/helper/helper.dart';
 import 'package:quran/page/quran_reader/quran_controls_modal_widget.dart';
 import 'package:quran/page/quran_reader/search_delegate.dart';
 import 'package:quran/page/quran_reader/surah_player.dart';
@@ -135,35 +132,37 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           ),
         ),
       ),
-      body: BlocListener(
-        cubit: _quranCubit,
-        listener: (context, state) {
-          if (state is QuranSuccessState) {
-            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-              _pageController.jumpToPage(widget.page - 1);
-            });
-          }
-          if (state is OnSharePage) {
-            Share.share(state.page);
-          }
-        },
-        listenWhen: (previous, current) {
-          return current is! QuranSuccessState || current is! OnSharePage;
-        },
-        child: BlocBuilder(
-          buildWhen: (pre, current) {
-            return current is! OnSharePage;
-          },
+      body: SafeArea(
+        child: BlocListener(
           cubit: _quranCubit,
-          builder: (context, state) {
-            if (state is QuranLoadingState) {
-              return Center(child: CircularProgressIndicator());
-            }
+          listener: (context, state) {
             if (state is QuranSuccessState) {
-              return quranPageView(state.ayat);
+              WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                _pageController.jumpToPage(widget.page - 1);
+              });
             }
-            return Container();
+            if (state is OnSharePage) {
+              Share.share(state.page);
+            }
           },
+          listenWhen: (previous, current) {
+            return current is! QuranSuccessState || current is! OnSharePage;
+          },
+          child: BlocBuilder(
+            buildWhen: (pre, current) {
+              return current is! OnSharePage;
+            },
+            cubit: _quranCubit,
+            builder: (context, state) {
+              if (state is QuranLoadingState) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (state is QuranSuccessState) {
+                return quranPageView(state.ayat);
+              }
+              return Container();
+            },
+          ),
         ),
       ),
     );
@@ -264,31 +263,22 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   }
 
   Widget ayatScrollView(List<Ayah> ayatList, BuildContext context) {
-    return Container(
-      //color: Color(0xffFCFCB6),
-      child: SingleChildScrollView(
-          controller: _scrollController,
-          padding: const EdgeInsets.all(16),
-          child: Text.rich(
-            TextSpan(
-                text: "",
-                //semanticsLabel: 'semanticsLabel',
-                style: TextStyle(
-                  fontFamily: 'UthmanTN1B',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  //color: Colors.black
-                ),
-                children: ayatList.map((e) {
-                  return buildAyahTextSpan(e, context);
-                }).toList()),
-            //semanticsLabel: 'semanticsLabel',
-            textAlign: TextAlign.justify,
-            //overflow: TextOverflow.visible,
-            //textDirection: TextDirection.rtl,
-            //textScaleFactor: _scaleFactor,
-          )),
-    );
+    return SingleChildScrollView(
+        controller: _scrollController,
+        padding: const EdgeInsets.all(16),
+        child: Text.rich(
+          TextSpan(
+              text: "",
+              semanticsLabel: 'semanticsLabel',
+              style: TextStyle(fontFamily: 'trado', fontSize: 30),
+              children: ayatList.map((e) {
+                return buildAyahTextSpan(e, context);
+              }).toList()),
+          semanticsLabel: 'semanticsLabel',
+          textAlign: TextAlign.justify,
+          textDirection: TextDirection.rtl,
+          textScaleFactor: _scaleFactor,
+        ));
   }
 
   actions(BuildContext context) {
@@ -334,39 +324,30 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
 
   TextSpan buildAyah(Ayah e, BuildContext context) {
     return TextSpan(
-      //style: TextStyle(fontSize: 24, color: Colors.black),
-      children: <InlineSpan>[
-        TextSpan(
-          text: e.number == 1
-              ? "${e.text}"
-              : "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")}",
-          //style: TextStyle(color: Colors.black)
-        ),
-        WidgetSpan(
-          //alignment: ui.PlaceholderAlignment.middle,
-          child: Text(
-            " ﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾ ",
-            //style: TextStyle(fontSize: 40, color: Colors.white)
-            style: TextStyle(
-              fontFamily: 'UthmanTN1B',
-              fontWeight: FontWeight.bold,
-              //fontSize: 15,
-            ),
+        children: [
+          TextSpan(
+            text: e.number == 1
+                ? "${e.text}"
+                : "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")}",
           ),
-        ),
-      ],
+          WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+              child: Container(
 
-      style: _playingAyahId == e.number
-          ? TextStyle(
-              backgroundColor: Theme.of(context).primaryColor.withAlpha(100))
-          : null,
-
-      recognizer: DoubleTapGestureRecognizer()
-        ..onDoubleTapDown = (tapDown) {
-          print("****************************");
-          showContextMenuAt(tapDown, context, e);
-        },
-    );
+                child: Text(
+            '﴿${e.numberInSurah}﴾',
+            style: TextStyle(fontFamily: 'trado', fontSize: 30),
+          ),
+              ))
+        ],
+        style: _playingAyahId == e.number
+            ? TextStyle(
+                backgroundColor: Theme.of(context).primaryColor.withAlpha(100))
+            : null,
+        recognizer: DoubleTapGestureRecognizer()
+          ..onDoubleTapDown = (tapDown) {
+            showContextMenuAt(tapDown, context, e);
+          });
   }
 
   void showContextMenuAt(
