@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quran/data/local/model/ayah.dart';
 import 'package:quran/data/local/model/search_result.dart';
 import 'package:quran/di.dart';
+import 'package:quran/helper/helper.dart';
 import 'package:quran/page/quran_reader/quran_controls_modal_widget.dart';
 import 'package:quran/page/quran_reader/search_delegate.dart';
 import 'package:quran/page/quran_reader/surah_player.dart';
@@ -275,8 +276,8 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
                 return buildAyahTextSpan(e, context);
               }).toList()),
           semanticsLabel: 'semanticsLabel',
-          textAlign: TextAlign.justify,
-          textDirection: TextDirection.rtl,
+          textAlign: TextAlign.center,
+
           textScaleFactor: _scaleFactor,
         ));
   }
@@ -324,22 +325,9 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
 
   TextSpan buildAyah(Ayah e, BuildContext context) {
     return TextSpan(
-        children: [
-          TextSpan(
-            text: e.number == 1
-                ? "${e.text}"
-                : "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")}",
-          ),
-          WidgetSpan(
-            alignment: PlaceholderAlignment.middle,
-              child: Container(
-
-                child: Text(
-            '﴿${e.numberInSurah}﴾',
-            style: TextStyle(fontFamily: 'trado', fontSize: 30),
-          ),
-              ))
-        ],
+        text: e.number == 1
+            ? "${e.text} ﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾"
+            : "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾",
         style: _playingAyahId == e.number
             ? TextStyle(
                 backgroundColor: Theme.of(context).primaryColor.withAlpha(100))
