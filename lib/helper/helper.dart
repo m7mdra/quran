@@ -6,5 +6,6 @@ String replaceFarsiNumber(String input) {
     input = input.replaceAll(english[i], farsi[i]);
   }
 
-  return input;
+
+  return input.split("").reversed.join();
 }

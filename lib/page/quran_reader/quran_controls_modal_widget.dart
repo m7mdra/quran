@@ -73,7 +73,7 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
               onTap: () {
                 context
                     .bloc<TafseerBloc>()
-                    .add(LoadPageTafseer(widget.page + 1));
+                    .add(LoadPageTafseer(widget.page ));
                 showDialog(
                     context: context, builder: (context) => TafseerWidget());
               },
@@ -95,12 +95,12 @@ class _QuranModalWidgetState extends State<QuranControlsModal> {
                 Container(
                   decoration: BoxDecoration(
                       color: Color(0xff95B93E), shape: BoxShape.circle),
-                  child: StreamBuilder<AudioPlayerState>(
+                  child: StreamBuilder<PlayerState>(
                       stream: player.onPlayerStateChanged,
                       builder: (context, snapshot) {
                         var state = snapshot.data;
                         return IconButton(
-                          icon: state == AudioPlayerState.PLAYING
+                          icon: state == PlayerState.PLAYING
                               ? Icon(Icons.pause)
                               : Icon(Icons.play_arrow),
                           onPressed: () async {

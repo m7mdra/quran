@@ -16,10 +16,10 @@ class SurahPlayer {
       StreamController.broadcast();
 
   StreamController<String> _errorController = StreamController.broadcast();
-  StreamController<AudioPlayerState> _playerStateChanged =
+  StreamController<PlayerState> _playerStateChanged =
       StreamController.broadcast();
 
-  Stream<AudioPlayerState> get onPlayerStateChanged =>
+  Stream<PlayerState> get onPlayerStateChanged =>
       _playerStateChanged.stream;
 
   Stream<int> get currentPlayingIndex => _currentPlayingIndexController.stream;
@@ -27,15 +27,15 @@ class SurahPlayer {
   Stream<String> get errorStream => _errorController.stream;
   List<Ayah> _playlist = [];
 
-  AudioPlayerState get _state => _player.state;
+  PlayerState get _state => _player.state;
 
-  bool get isPlaying => _state == AudioPlayerState.PLAYING;
+  bool get isPlaying => _state == PlayerState.PLAYING;
 
-  bool get isStopped => _state == AudioPlayerState.STOPPED;
+  bool get isStopped => _state == PlayerState.STOPPED;
 
-  bool get isCompleted => _state == AudioPlayerState.COMPLETED;
+  bool get isCompleted => _state == PlayerState.COMPLETED;
 
-  bool get isPaused => _state == AudioPlayerState.PAUSED;
+  bool get isPaused => _state == PlayerState.PAUSED;
 
   SurahPlayer(this._preference, this.quranDatabase) {
     WidgetsFlutterBinding.ensureInitialized();

@@ -252,7 +252,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(24.0),
                   child: ayatScrollView(ayatList, context),
                 )
               ],
@@ -266,18 +266,17 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   Widget ayatScrollView(List<Ayah> ayatList, BuildContext context) {
     return SingleChildScrollView(
         controller: _scrollController,
-        padding: const EdgeInsets.all(16),
+        padding: _isVisible? const EdgeInsets.all(16):const EdgeInsets.only(left: 16,right: 16,bottom:32,top: 32),
         child: Text.rich(
           TextSpan(
-              text: "",
+              text: '',
               semanticsLabel: 'semanticsLabel',
               style: TextStyle(fontFamily: 'trado', fontSize: 30),
               children: ayatList.map((e) {
                 return buildAyahTextSpan(e, context);
               }).toList()),
           semanticsLabel: 'semanticsLabel',
-          textAlign: TextAlign.center,
-
+          textAlign: TextAlign.justify,
           textScaleFactor: _scaleFactor,
         ));
   }
@@ -326,8 +325,10 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   TextSpan buildAyah(Ayah e, BuildContext context) {
     return TextSpan(
         text: e.number == 1
-            ? "${e.text} ﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾"
-            : "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾",
+            ? '\u202E'
+                "${e.text} ﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾"
+            : '\u202E'
+                "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾",
         style: _playingAyahId == e.number
             ? TextStyle(
                 backgroundColor: Theme.of(context).primaryColor.withAlpha(100))
