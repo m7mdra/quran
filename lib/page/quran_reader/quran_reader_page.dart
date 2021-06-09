@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,7 +18,7 @@ import 'package:quran/page/quran_reader/tafseer_widget.dart';
 import 'package:quran/widget/popup_menu.dart';
 import 'package:quran/widget/surah_title_widget.dart';
 import 'package:share/share.dart';
-import 'package:flutter/services.dart';
+
 import '../../common.dart';
 import '../../widget/islamic_app_bar.dart';
 import 'bloc/bookmark/add_bookmark_cubit.dart';
@@ -87,7 +90,6 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
             _isVisible = false;
           });
       }
-
     });
   }
 
@@ -179,8 +181,8 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
       onTap: () {
         setState(() {
           _isVisible = !_isVisible;
-          SystemChrome.setEnabledSystemUIOverlays(_isVisible?SystemUiOverlay.values : []);
-
+          SystemChrome.setEnabledSystemUIOverlays(
+              _isVisible ? SystemUiOverlay.values : []);
         });
       },
       child: Directionality(
@@ -265,12 +267,17 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   Widget ayatScrollView(List<Ayah> ayatList, BuildContext context) {
     return SingleChildScrollView(
         controller: _scrollController,
-        padding: _isVisible? const EdgeInsets.all(16):const EdgeInsets.only(left: 16,right: 16,bottom:32,top: 32),
+        padding: _isVisible
+            ? const EdgeInsets.all(16)
+            : const EdgeInsets.only(left: 16, right: 16, bottom: 32, top: 32),
         child: Text.rich(
           TextSpan(
               text: '',
               semanticsLabel: 'semanticsLabel',
-              style: TextStyle(fontFamily: 'trado', fontSize: 30),
+              style: TextStyle(
+                  fontFamily: 'trado',
+                  fontSize: 30,
+                  fontWeight: FontWeight.w600),
               children: ayatList.map((e) {
                 return buildAyahTextSpan(e, context);
               }).toList()),
@@ -325,9 +332,9 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
     return TextSpan(
         text: e.number == 1
             ? '\u202E'
-                "${e.text} ﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾"
+                "${e.text}﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾"
             : '\u202E'
-                "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾",
+                "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")}﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾",
         style: _playingAyahId == e.number
             ? TextStyle(
                 backgroundColor: Theme.of(context).primaryColor.withAlpha(100))
