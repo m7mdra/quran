@@ -70,8 +70,7 @@ class QuranDatabase {
 
   Future<List<Surah>> findSurahWithKeyword(String keyword) async {
     var db = await database;
-    var query = await db.rawQuery(
-        """SELECT surat.id,
+    var query = await db.rawQuery("""SELECT surat.id,
  surat.name,
  surat.englishname,
 surat.englishtranslation,
@@ -128,6 +127,12 @@ GROUP  BY surat.id""");
     var query = await db
         .rawQuery('SELECT * FROM edition WHERE type =?', ['versebyverse']);
     return query.map((e) => Edition.fromMap(e)).toList();
+  }
+
+  Future<List<Ayah>> allAyat([int editionId = 82]) async {
+    var db = await database;
+    var query = await db.rawQuery("SELECT * from ayat WHERE  edition_id = ? ",[editionId]);
+    return query.map((e) => Ayah.fromMap(e)).toList();
   }
 
   Future<Map<int, List<Ayah>>> ayat([int editionId = 82]) async {

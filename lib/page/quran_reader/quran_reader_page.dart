@@ -15,7 +15,7 @@ import 'package:quran/page/quran_reader/tafseer_widget.dart';
 import 'package:quran/widget/popup_menu.dart';
 import 'package:quran/widget/surah_title_widget.dart';
 import 'package:share/share.dart';
-
+import 'package:flutter/services.dart';
 import '../../common.dart';
 import '../../widget/islamic_app_bar.dart';
 import 'bloc/bookmark/add_bookmark_cubit.dart';
@@ -82,15 +82,12 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
       if (position.userScrollDirection == ScrollDirection.reverse) {
         if (_isVisible)
           setState(() {
+            SystemChrome.setEnabledSystemUIOverlays([]);
+
             _isVisible = false;
           });
       }
-      if (position.userScrollDirection == ScrollDirection.forward) {
-        if (!_isVisible)
-          setState(() {
-            _isVisible = true;
-          });
-      }
+
     });
   }
 
@@ -182,6 +179,8 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
       onTap: () {
         setState(() {
           _isVisible = !_isVisible;
+          SystemChrome.setEnabledSystemUIOverlays(_isVisible?SystemUiOverlay.values : []);
+
         });
       },
       child: Directionality(

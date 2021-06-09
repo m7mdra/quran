@@ -19,8 +19,7 @@ class SurahPlayer {
   StreamController<PlayerState> _playerStateChanged =
       StreamController.broadcast();
 
-  Stream<PlayerState> get onPlayerStateChanged =>
-      _playerStateChanged.stream;
+  Stream<PlayerState> get onPlayerStateChanged => _playerStateChanged.stream;
 
   Stream<int> get currentPlayingIndex => _currentPlayingIndexController.stream;
 
@@ -99,7 +98,7 @@ class SurahPlayer {
   }
 
   void _play() async {
-    var firstAyah = await mapAyahToUrl(_playlist.first);
+    var firstAyah = await _mapAyah(_playlist.first);
 
     _currentPlayingIndexController.sink.add(_playlist.first.number);
     var result = await _player.setUrl(firstAyah);
@@ -119,10 +118,13 @@ class SurahPlayer {
     if (!isPaused && !isPlaying) await _player.resume();
   }
 
-  Future<String> mapAyahToUrl(Ayah ayah) async {
+  Future<String> _mapAyah(Ayah ayah) async {
     _currentReader = await _preference.reader();
-    return 'https://cdn.alquran.cloud/media/audio/ayah/${_currentReader.identifier}/${ayah.number}';
+    return mapAyahToUrl(ayah, _currentReader);
   }
+
+  String mapAyahToUrl(Ayah ayah, Reader reader) =>
+      'https://cdn.alquran.cloud/media/audio/ayah/${reader.identifier}/${ayah.number}';
 
   void onCompletion(void event) {
     if (_playlist.isNotEmpty) {

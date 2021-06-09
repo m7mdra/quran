@@ -11,6 +11,7 @@ import 'package:quran/data/local/quran_meta_database.dart';
 import 'package:quran/di.dart';
 import 'package:quran/main/bloc/lang/language_cubit.dart';
 import 'package:quran/main/bloc/theme/theme_cubit.dart';
+import 'package:quran/page/download_quran_by_reader_page.dart';
 import 'package:quran/page/juz_surah/surahs/bloc/surahs_bloc.dart';
 import 'package:quran/page/quran_reader/bloc/reader/last_read_bloc.dart';
 import 'package:quran/page/quran_reader/bloc/readers/readers_bloc.dart';
