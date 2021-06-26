@@ -17,6 +17,16 @@ class QuranSuccessState extends QuranState {
     return 'QuranSuccessState{ayat: ${ayat.length}}';
   }
 }
+class QuranTestSuccessState extends QuranState {
+  final List<Ayah> ayat;
+
+  QuranTestSuccessState(this.ayat);
+
+  @override
+  String toString() {
+    return 'QuranSuccessState{ayat: ${ayat.length}}';
+  }
+}
 
 class QuranErrorState extends QuranState {}
 

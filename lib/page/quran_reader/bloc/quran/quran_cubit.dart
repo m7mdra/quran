@@ -37,4 +37,14 @@ class QuranCubit extends Cubit<QuranState> {
       emit(QuranErrorState());
     }
   }
+  void loadData1() async {
+    try {
+      emit(QuranLoadingState());
+      var ayat = await _quranDatabase.allAyat();
+      emit(QuranTestSuccessState(ayat));
+    } catch (error) {
+      print(error);
+      emit(QuranErrorState());
+    }
+  }
 }

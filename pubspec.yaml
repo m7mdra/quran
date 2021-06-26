@@ -113,6 +113,11 @@ flutter:
     - family: UthmanTN1B
       fonts:
         - asset: assets/fonts/alquran/UthmanTN1B Ver10.otf
+    - family: hafs
+      fonts:
+        - asset: assets/fonts/hafs.ttf
+
+
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

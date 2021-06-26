@@ -282,7 +282,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
                 return buildAyahTextSpan(e, context);
               }).toList()),
           semanticsLabel: 'semanticsLabel',
-          textAlign: TextAlign.justify,
+          textAlign: TextAlign.center,
           textScaleFactor: _scaleFactor,
         ));
   }
@@ -331,10 +331,8 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   TextSpan buildAyah(Ayah e, BuildContext context) {
     return TextSpan(
         text: e.number == 1
-            ? '\u202E'
-                "${e.text}﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾"
-            : '\u202E'
-                "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")}﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾",
+            ? "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾"
+            : "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾",
         style: _playingAyahId == e.number
             ? TextStyle(
                 backgroundColor: Theme.of(context).primaryColor.withAlpha(100))

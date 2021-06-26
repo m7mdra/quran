@@ -129,7 +129,7 @@ GROUP  BY surat.id""");
     return query.map((e) => Edition.fromMap(e)).toList();
   }
 
-  Future<List<Ayah>> allAyat([int editionId = 82]) async {
+  Future<List<Ayah>> allAyat([int editionId = 81]) async {
     var db = await database;
     var query = await db.rawQuery("SELECT * from ayat WHERE  edition_id = ? ",[editionId]);
     return query.map((e) => Ayah.fromMap(e)).toList();

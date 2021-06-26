@@ -1,13 +1,13 @@
 PODS:
   - audioplayers (0.0.1):
     - Flutter
+  - device_info (0.0.1):
+    - Flutter
   - Flutter (1.0.0)
   - flutter_archive (0.0.1):
     - Flutter
     - ZIPFoundation (= 0.9.11)
   - flutter_compass (0.0.1):
-    - Flutter
-  - flutter_pdfview (1.0.2):
     - Flutter
   - flutter_qiblah (0.0.1):
     - Flutter
@@ -15,6 +15,8 @@ PODS:
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
   - geolocator (6.2.0):
+    - Flutter
+  - native_pdf_renderer (1.2.0):
     - Flutter
   - path_provider (0.0.1):
     - Flutter
@@ -29,12 +31,13 @@ PODS:
 
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
+  - device_info (from `.symlinks/plugins/device_info/ios`)
   - Flutter (from `Flutter`)
   - flutter_archive (from `.symlinks/plugins/flutter_archive/ios`)
   - flutter_compass (from `.symlinks/plugins/flutter_compass/ios`)
-  - flutter_pdfview (from `.symlinks/plugins/flutter_pdfview/ios`)
   - flutter_qiblah (from `.symlinks/plugins/flutter_qiblah/ios`)
   - geolocator (from `.symlinks/plugins/geolocator/ios`)
+  - native_pdf_renderer (from `.symlinks/plugins/native_pdf_renderer/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - share (from `.symlinks/plugins/share/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
@@ -48,18 +51,20 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   audioplayers:
     :path: ".symlinks/plugins/audioplayers/ios"
+  device_info:
+    :path: ".symlinks/plugins/device_info/ios"
   Flutter:
     :path: Flutter
   flutter_archive:
     :path: ".symlinks/plugins/flutter_archive/ios"
   flutter_compass:
     :path: ".symlinks/plugins/flutter_compass/ios"
-  flutter_pdfview:
-    :path: ".symlinks/plugins/flutter_pdfview/ios"
   flutter_qiblah:
     :path: ".symlinks/plugins/flutter_qiblah/ios"
   geolocator:
     :path: ".symlinks/plugins/geolocator/ios"
+  native_pdf_renderer:
+    :path: ".symlinks/plugins/native_pdf_renderer/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   share:
@@ -71,13 +76,14 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   audioplayers: 455322b54050b30ea4b1af7cd9e9d105f74efa8c
+  device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_archive: e7010a2779b4ff1483b00386bfb4e847f5836182
   flutter_compass: cbbd285cea1584c7ac9c4e0c3e1f17cbea55e855
-  flutter_pdfview: 25f53dd6097661e6395b17de506e6060585946bd
   flutter_qiblah: f69eeb708d127a2634073ab1f27771c979928f50
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geolocator: f5e3de65e241caba7ce3e8a618803387bda73384
+  native_pdf_renderer: 0e545bf94fb341e0fe7508bf72d4c1c42c30aa02
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d

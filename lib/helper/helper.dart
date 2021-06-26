@@ -7,5 +7,5 @@ String replaceFarsiNumber(String input) {
   }
 
 
-  return input.split("").reversed.join();
+  return input;
 }
