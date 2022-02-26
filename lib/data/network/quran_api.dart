@@ -3,9 +3,9 @@ import 'package:dio/dio.dart';
 class QuranApi {
   final Dio _client;
   var bookUrl =
-      "https://rawcdn.githack.com/m7mdra/quran-project-files/63cb82423aad37b68ccc861ea21d962a5dee6003/رياض-الصالحين-من-كلام-سيد-المرسلين-kutub-pdf.net.pdf";
+      "https://github.com/m7mdra/quran-project-files/blob/master/رياض-الصالحين-من-كلام-سيد-المرسلين-kutub-pdf.net.pdf?raw=true";
   var dbUrl =
-      "https://rawcdn.githack.com/m7mdra/quran-project-files/5de5b8d4d004ed1d46c0fc12952c03494d0d8b78/quran.db.zip";
+      "https://github.com/m7mdra/quran-project-files/blob/master/quran.db.zip?raw=true";
 
   QuranApi(this._client);
 

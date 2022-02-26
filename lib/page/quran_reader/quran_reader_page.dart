@@ -274,10 +274,7 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
           TextSpan(
               text: '',
               semanticsLabel: 'semanticsLabel',
-              style: TextStyle(
-                  fontFamily: 'trado',
-                  fontSize: 30,
-                  fontWeight: FontWeight.w600),
+              style: TextStyle(fontFamily: 'trado', fontSize: 30),
               children: ayatList.map((e) {
                 return buildAyahTextSpan(e, context);
               }).toList()),
@@ -318,8 +315,10 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
       return TextSpan(children: [
         TextSpan(text: "\n"),
         WidgetSpan(
-            child: SurahTitleWidget(
-          surah: e.surahName,
+            child: Center(
+          child: SurahTitleWidget(
+            surah: e.surahName,
+          ),
         )),
         TextSpan(text: "\n"),
         buildAyah(e, context)
@@ -331,8 +330,14 @@ class _QuranReaderPageState extends State<QuranReaderPage> {
   TextSpan buildAyah(Ayah e, BuildContext context) {
     return TextSpan(
         text: e.number == 1
-            ? "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾"
-            : "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")} ﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾",
+            ? "${e.text} "
+            : "${e.text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "")}",
+        children: [
+          TextSpan(
+            text: "﴿${replaceFarsiNumber(e.numberInSurah.toString())}﴾",
+            style: TextStyle(fontFamily: 'trado', fontSize: 20),
+          )
+        ],
         style: _playingAyahId == e.number
             ? TextStyle(
                 backgroundColor: Theme.of(context).primaryColor.withAlpha(100))
